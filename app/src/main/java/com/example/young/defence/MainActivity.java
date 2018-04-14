@@ -1,5 +1,11 @@
 package com.example.young.defence;
 
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -10,7 +16,13 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setFullScreen();
-        setContentView(R.layout.activity_main);
+        GameView v = new GameView(this);
+        Thread1 thread = new Thread1();
+        thread.start();
+        setContentView(v);
+// setContentView(R.layout.activity_main);
+
+
     }
 
 //    전체화면으로 만드는 메소드
@@ -27,4 +39,22 @@ public class MainActivity extends AppCompatActivity {
             getWindow().getDecorView().setSystemUiVisibility(newUiOptions);
         }
     }
+
+   /* protected class GameView extends View{
+        public GameView(Context context){
+            super(context);
+            setBackgroundColor(Color.GRAY);
+        }
+
+        protected void onDraw(Canvas canvas){
+//            Paint paint = new Paint();
+//            paint.setColor(Color.RED);
+            Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.robot);
+            Bitmap robot = Bitmap.createScaledBitmap(bitmap, bitmap.getWidth() / 3, bitmap.getHeight() / 3, false);
+            canvas.drawBitmap(robot, canvas.getWidth() / 2, canvas.getWidth() / 4 - bitmap.getWidth() / 2, null);
+
+        }
+    }*/
+
+
 }
