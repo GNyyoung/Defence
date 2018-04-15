@@ -26,7 +26,7 @@ public class Monster {
     private float moveSpeed;
 //    몬스터 현재 좌표
 //    포탑에서 발사한 투사체가 향할 좌표를 알려준다.
-    private float[] position = new float[2];
+    private float posX, posY;
 //    몬스터의 이동 목표
 //    point가 가진 좌표로 이동 후, 다음 point를 입력받는다.
     private CheckPoint point;
@@ -35,7 +35,7 @@ public class Monster {
     private int number;
 //    비트맵이 아닌 다른 이미지 형식을 가진다면 수정한다.
 //    import한것도 같이 지우기.
-    public Bitmap monster;
+    public Bitmap monsterImage;
 
     public Monster(int hp, int money, float moveSpeed, int number){
 //        몬스터 이미지 추가
@@ -51,8 +51,14 @@ public class Monster {
     }
 
 
-    public float[] getPosition(){
-        return position;
+    public float getPosX(){
+        return posX;
+    }
+    public float getPosY(){
+        return posY;
+    }
+    public int getNumber(){
+        return number;
     }
 
     public void move(){

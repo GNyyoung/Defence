@@ -5,4 +5,10 @@ package com.example.young.defence;
  */
 
 public class CheckPoint {
+    private float posX, posY;
+
+    public CheckPoint(float posX, float posY){
+        this.posX = posX;
+        this.posY = posY;
+    }
 }

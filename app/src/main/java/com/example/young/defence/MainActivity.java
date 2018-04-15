@@ -17,8 +17,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setFullScreen();
         GameView v = new GameView(this);
-        Thread1 thread = new Thread1();
-        thread.start();
         setContentView(v);
 // setContentView(R.layout.activity_main);
 
