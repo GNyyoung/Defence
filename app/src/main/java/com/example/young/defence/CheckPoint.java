@@ -11,4 +11,11 @@ public class CheckPoint {
         this.posX = posX;
         this.posY = posY;
     }
+
+    public float getPosX(){
+        return posX;
+    }
+    public float getPosY(){
+        return posY;
+    }
 }

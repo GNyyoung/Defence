@@ -66,6 +66,35 @@ public class Monster {
 //        point 좌표 불러와 position값 변화시키면서 이동
 //        (y'-y)/(x'-x)로 두 점 간의 각도 구한다.
 //        (0이면  x축, 무한이면 y축)
+//        !!원점이 좌하단에 있다고 가정하고 작성하였음
+//        !!원점이 좌상단이라면 코드 수정바람.
+        float pointX = point.getPosX();
+        float pointY = point.getPosY();
+        float distanceX = pointX - posX;
+        float distanceY = pointY - posY;
+//        빗변
+        float hypotenuse = (float)Math.sqrt(Math.pow(distanceX, 2) + Math.pow(distanceY, 2));
+//        x축, y축 이동속도
+        float speedX, speedY;
+
+//        사잇값들이 생략되어 있으니 나중에 <= 또는 >=을 조건문에서 충돌나지 않게 넣어줄것.
+        if(distanceX > 0 && distanceX / distanceY > -1 && distanceX / distanceY < 1){
+//            오른쪽 이미지 출력
+        }
+        else if(distanceX / distanceY > -1 && distanceX / distanceY < 1){
+//            왼쪽 이미지 출력
+        }
+        else if(distanceY > 0 && distanceX / distanceY < -1 && distanceX / distanceY > 1){
+//            위쪽 이미지 출력
+        }
+        else{
+//            아래쪽 이미지 출력
+        }
+
+        speedX = moveSpeed * distanceX / hypotenuse;
+        speedY = moveSpeed * distanceY / hypotenuse;
+        posX += speedX;
+        posY += speedY;
     }
 
     public void die(){
