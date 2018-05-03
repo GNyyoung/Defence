@@ -16,16 +16,14 @@ import java.util.ArrayList;
 public class Tower {
 //    포탑이 발사하는 투사체 공격력
     private int damage;
+    //    투사체 이동속도
+    private float projectileSpeed;
 //    포탑이 몬스터를 인식하는 범위
     private float radius;
 //    투사체를 발사 후 다시 발사하기까지 걸리는 시간
     private float reloadTime;
 //    포탑 이미지
     public Bitmap towerImage;
-//    투사체 이미지
-    public Bitmap projectileImage;
-//    투사체 이동속도
-    private float projectileSpeed;
 //    포탑 좌표
     private float posX, posY;
 //    포탑 인식범위 내에 있는 몬스터 목록

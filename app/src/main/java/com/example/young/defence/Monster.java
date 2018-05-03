@@ -23,6 +23,7 @@ public class Monster {
 //    죽을 때 플레이어에게 주는 돈
     private int money;
 //    몬스터 이동속도
+//    기기마다 픽셀 수가 다를테니 화면 최대 크기에서 몇분할 한것을 쓰도록 한다.
     private float moveSpeed;
 //    몬스터 현재 좌표
 //    포탑에서 발사한 투사체가 향할 좌표를 알려준다.
@@ -36,7 +37,10 @@ public class Monster {
 //    비트맵이 아닌 다른 이미지 형식을 가진다면 수정한다.
 //    import한것도 같이 지우기.
     public Bitmap monsterImage;
+    private float collisionRadius = 1;
 
+//    지금은 인자를 받아오는 걸로 해놨지만 스테이지만 받아오고
+//    values에 능력치 파일을 하나 만들어서 거기서 스테이지에 맞는 데이터를 가져올 수 있게 만들자.
     public Monster(int hp, int money, float moveSpeed, int number){
 //        몬스터 이미지 추가
 //        monster = BitmapFactory.decodeResource(res, id);
@@ -95,9 +99,25 @@ public class Monster {
         speedY = moveSpeed * distanceY / hypotenuse;
         posX += speedX;
         posY += speedY;
+
+        pointCollisionCheck();
     }
 
     public void die(){
+    }
 
+    public boolean CollisionCheck(float projectilePosX, float projectilePosY){
+        if(projectilePosX > posX - collisionRadius
+                && projectilePosX < posX + collisionRadius
+                && projectilePosY > posY - collisionRadius
+                && projectilePosY < posY + collisionRadius)
+            return true;
+        else
+            return false;
+    }
+
+    private void pointCollisionCheck(){
+        if(point.CollisionCheck(posX, posY)){
+        }
     }
 }
