@@ -10,6 +10,8 @@ import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
 
+import java.util.ArrayList;
+
 /**
  * Created by young on 2018-04-13.
  * 이미지는 모두 여기서 그립니다.
@@ -23,6 +25,8 @@ public class GameView extends View{
         setBackgroundColor(Color.LTGRAY);
     }
 
+//    static으로 작성해도 되는지 한번 더 판단할 필요 있음.
+    static ArrayList<Monster> monsterArrayList = new ArrayList<>();
     Robot robot = new Robot();
 
     protected void onDraw(Canvas canvas){
@@ -38,6 +42,10 @@ public class GameView extends View{
         float posX, posY;
         Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.robot);
         Bitmap bot = Bitmap.createScaledBitmap(bitmap, bitmap.getWidth() / 3, bitmap.getHeight() / 3, false);
+
+    }
+
+    public void createMonster(Monster monster){
 
     }
 }

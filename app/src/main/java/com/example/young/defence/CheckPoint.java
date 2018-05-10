@@ -7,10 +7,12 @@ package com.example.young.defence;
 public class CheckPoint {
     private float posX, posY;
     private float collisionRadius = 1;
+    private int number;
 
-    public CheckPoint(float posX, float posY){
+    public CheckPoint(float posX, float posY, int number){
         this.posX = posX;
         this.posY = posY;
+        this.number = number;
     }
 
     public float getPosX(){
@@ -28,5 +30,9 @@ public class CheckPoint {
             return true;
         else
             return false;
+    }
+
+    public int getNumber(){
+        return number;
     }
 }

@@ -38,16 +38,19 @@ public class Monster {
 //    import한것도 같이 지우기.
     public Bitmap monsterImage;
     private float collisionRadius = 1;
+    private boolean isLived = true;
+    private boolean isActivated = false;
 
 //    지금은 인자를 받아오는 걸로 해놨지만 스테이지만 받아오고
 //    values에 능력치 파일을 하나 만들어서 거기서 스테이지에 맞는 데이터를 가져올 수 있게 만들자.
-    public Monster(int hp, int money, float moveSpeed, int number){
+    public Monster(int stage, int number){
 //        몬스터 이미지 추가
 //        monster = BitmapFactory.decodeResource(res, id);
-        this.hp = hp;
-        this.money = money;
-        this.moveSpeed = moveSpeed;
+        this.hp = Data.monster1HP[stage];
+        this.money = Data.monster1Money[stage];
+        this.moveSpeed = Data.monster1Speed[stage];
         this.number = number;
+        this.point = GameManager.checkPointList.get(0);
 
 //        point는 제일 첫번째 이동해야하는 point로 초기화
 //        position은 몬스터가 생성될 위치로 한다.
@@ -100,11 +103,15 @@ public class Monster {
         posX += speedX;
         posY += speedY;
 
-        pointCollisionCheck();
+//        몬스터와 포인터의 거리가 이동속도보다 짧으면 다음 포인트를 입력받는다.
+        if(hypotenuse <= moveSpeed){
+            point = GameManager.checkPointList.get(point.getNumber() + 1);
+        }
     }
 
-    public void die(){
-    }
+//    public void die(){
+//        isLived = false;
+//    }
 
     public boolean CollisionCheck(float projectilePosX, float projectilePosY){
         if(projectilePosX > posX - collisionRadius
@@ -116,8 +123,33 @@ public class Monster {
             return false;
     }
 
+/*몬스터가 포인트 근처에 가면 다음 포인트를 넣어주는 건데 이거 없이도 될듯 함.
     private void pointCollisionCheck(){
         if(point.CollisionCheck(posX, posY)){
+//            다음 포인트를 입력받는다.
+
         }
+    }
+*/
+    public void damaged(int damage){
+        hp -= damage;
+        if(hp <= 0)
+//            die();
+            isLived = false;
+    }
+
+    public void activate(){
+        isActivated = true;
+    }
+
+    public boolean getLive(){
+        return isLived;
+    }
+    public int getMoney(){
+        return money;
+    }
+
+    public void setPoint(CheckPoint checkPoint){
+        point = checkPoint;
     }
 }

@@ -6,10 +6,32 @@ package com.example.young.defence;
  */
 
 public class Data {
-    static float[] checkPointposX = {
+    final static float[] checkPointposX = {
 
     };
     final static float[] checkPointposY = {
 
     };
+
+//    스테이지 별 소환 몬스터 수
+    final static int[] monter1Count = {
+
+    };
+//    스테이지 별 몬스터 능력치
+    final static int[] monster1HP = {
+
+    };
+    final static int[] monster1Money = {
+
+    };
+    final static float[] monster1Speed = {
+
+    };
+    final static int[] monster2Count = {
+
+    };
+
+    public static int playerMoney = 0;
+
+
 }

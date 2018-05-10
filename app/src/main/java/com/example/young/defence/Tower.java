@@ -30,6 +30,7 @@ public class Tower {
     private ArrayList<Monster> targetList = new ArrayList<Monster>();
 //    포탑의 공격목표
     private Monster target;
+    public boolean isTargeted = false;
 
     public Tower(int damage, float radius, float reloadTime, float posX, float posY){
 //        towerImage = BitmapFactory.decodeResource(res, id);
@@ -42,7 +43,7 @@ public class Tower {
     }
 
 //    몬스터와 포탑 사이의 거리를 체크하고 radius보다 거리가 가까우면 targetList에 추가
-    private void identifyTarget(Monster monster){
+    public void identifyTarget(Monster monster){
         float x = monster.getPosX();
         float y = monster.getPosY();
         boolean isExist = false;
@@ -89,25 +90,32 @@ public class Tower {
             attack(target);
         }
 //        타겟이 있는 상태에서 몬스터가 포탑 범위에 새로 들어왔을 때
+//        생각 안하고 코드 고친거라 잘못됐을 수도 있음.
         else if(!targetList.isEmpty()){
+            Monster candidate = target;
             for(int i = 0; i < targetList.size(); i++){
-                if(targetList.get(i).getNumber() < target.getNumber())
-                    target = targetList.get(i);
-                    attack(target);
+                if(targetList.get(i).getNumber() < candidate.getNumber()){
+                    candidate = targetList.get(i);
+                }
             }
+            target = candidate;
+            attack(target);
         }
     }
 
 //    타겟을 공격.
     private void attack(Monster target){
+        isTargeted = true;
 //        몬스터가 죽으면 다시 타겟 설정
-        if(target == null)
-            designateTarget();
-        else{
+        if(target != null) {
+            Projectile projectile = new Projectile(damage, projectileSpeed, posX, posY);
+
 //            이부분은 스레드가 필요할듯.
 //            reloadTime마다 투사체를 포탑 좌표에서 생성하여 몬스터 좌표까지 이동.
 //            몬스터가 계속 이동하므로 투사체도 몬스터 좌표를 계속 갱신한다.
-//
+        }
+        else{
+            designateTarget();
         }
 
     }
