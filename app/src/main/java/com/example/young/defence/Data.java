@@ -14,7 +14,7 @@ public class Data {
     };
 
 //    스테이지 별 소환 몬스터 수
-    final static int[] monter1Count = {
+    final static int[] monster1Count = {
 
     };
 //    스테이지 별 몬스터 능력치
