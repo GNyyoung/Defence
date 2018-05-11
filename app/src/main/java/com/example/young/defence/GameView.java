@@ -22,7 +22,7 @@ import java.util.ArrayList;
 public class GameView extends View{
     public GameView(Context context){
         super(context);
-        setBackgroundColor(Color.LTGRAY);
+        setBackgroundResource(R.drawable.map1);
     }
 
 //    static으로 작성해도 되는지 한번 더 판단할 필요 있음.
