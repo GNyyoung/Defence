@@ -14,9 +14,7 @@ public class Data {
     };
 
 //    스테이지 별 소환 몬스터 수
-    final static int[] monster1Count = {
-
-    };
+    final static int[] monster1Count = {0,5};
 //    스테이지 별 몬스터 능력치
     final static int[] monster1HP = {
 
@@ -25,10 +23,10 @@ public class Data {
 
     };
     final static float[] monster1Speed = {
-
+        0,5
     };
     final static int[] monster2Count = {
-
+        5
     };
 
     public static int playerMoney = 0;
