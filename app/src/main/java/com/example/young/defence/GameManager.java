@@ -38,7 +38,7 @@ public class GameManager {
 
     private void startStage(Thread1 thread, int stage){
         ArrayList<Monster> monsterArrayList = new ArrayList<>();
-        int monsterCount = Data.monter1Count[stage];
+        int monsterCount = Data.monster1Count[stage];
         for(int i = 0; i < monsterCount; i++){
             Monster monster = new Monster(stage, i);
             monsterArrayList.add(monster);
