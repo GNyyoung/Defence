@@ -20,7 +20,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(v);
 // setContentView(R.layout.activity_main);
 
-        GameManager gameManager = new GameManager();
+        GameManager gameManager = new GameManager(this);
     }
 
 //    전체화면으로 만드는 메소드

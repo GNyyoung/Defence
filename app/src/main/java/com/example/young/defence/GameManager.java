@@ -14,10 +14,11 @@ public class GameManager {
     public static ArrayList<CheckPoint> checkPointList = new ArrayList<CheckPoint>();
     public static ArrayList<Monster> monsterArrayList = new ArrayList<Monster>();
     public static ArrayList<Tower> towerArrayList = new ArrayList<Tower>();
+    public Context context;
 
-
-    public GameManager(){
+    public GameManager(Context context){
 //        try,catch 하는법 기억 안남... 나중에 수정 바람.
+        this.context = context;
         if(Data.checkPointposX.length == Data.checkPointposY.length){
             for(int i = 0; i < Data.checkPointposX.length; i++){
                 CheckPoint point = new CheckPoint(Data.checkPointposX[i], Data.checkPointposY[i], i);
@@ -38,10 +39,9 @@ public class GameManager {
     }
 
     private void startStage(Thread1 thread, int stage){
-        ArrayList<Monster> monsterArrayList = new ArrayList<>();
         int monsterCount = Data.monster1Count[stage];
         for(int i = 0; i < monsterCount; i++){
-            Monster monster = new Monster(stage, i);
+            Monster monster = new Monster(context, stage, i);
             monsterArrayList.add(monster);
             thread.setMonsterCount(monsterCount);
         }

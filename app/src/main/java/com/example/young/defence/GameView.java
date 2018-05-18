@@ -25,22 +25,24 @@ public class GameView extends View{
         setBackgroundResource(R.drawable.map1);
     }
 
-//    static으로 작성해도 되는지 한번 더 판단할 필요 있음.
-    static ArrayList<Monster> monsterArrayList = new ArrayList<>();
+    GameManager gameManager = new GameManager(getContext());
+
     Robot robot = new Robot();
     Tower tower = new Tower(getContext(), 10, 10,10,50,50);
-    CheckPoint checkPoint = new CheckPoint(500,200,1);
+    CheckPoint checkPoint = new CheckPoint(500,200,0);
+    CheckPoint checkPoint2 = new CheckPoint(700,300,1);
     protected void onDraw(Canvas canvas){
+
         canvas.drawBitmap(tower.towerImage,50,50,null);
 //        canvas.drawBitmap(robot.bot, robot.posX, canvas.getHeight() / 2, null);
-        canvas.drawBitmap(monsterArrayList.get(0).monsterImage,50,50,null);
+        canvas.drawBitmap(gameManager.monsterArrayList.get(0).monsterImage,50,50,null);
 
-//        while(checkPoint.getPosX()>robot.posX) {
-//
-//
-//            monsterArrayList.get(0).getPosX()
+        while(checkPoint.getPosX()==gameManager.monsterArrayList.get(0).getPosX()) {
+
+
+            gameManager.monsterArrayList.get(0).move();
             invalidate();
-//        }
+        }
 
 
     }
