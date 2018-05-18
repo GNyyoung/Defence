@@ -28,12 +28,20 @@ public class GameView extends View{
 //    static으로 작성해도 되는지 한번 더 판단할 필요 있음.
     static ArrayList<Monster> monsterArrayList = new ArrayList<>();
     Robot robot = new Robot();
-
+    Tower tower = new Tower(getContext(), 10, 10,10,50,50);
+    CheckPoint checkPoint = new CheckPoint(500,200,1);
     protected void onDraw(Canvas canvas){
+        canvas.drawBitmap(tower.towerImage,50,50,null);
+//        canvas.drawBitmap(robot.bot, robot.posX, canvas.getHeight() / 2, null);
+        canvas.drawBitmap(monsterArrayList.get(0).monsterImage,50,50,null);
 
-        canvas.drawBitmap(robot.bot, robot.posX, canvas.getHeight() / 2, null);
-        robot.posX += 10;
-        invalidate();
+//        while(checkPoint.getPosX()>robot.posX) {
+//
+//
+//            monsterArrayList.get(0).getPosX()
+            invalidate();
+//        }
+
 
     }
 

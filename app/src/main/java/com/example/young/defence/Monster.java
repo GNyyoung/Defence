@@ -1,5 +1,6 @@
 package com.example.young.defence;
 
+import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -40,17 +41,20 @@ public class Monster {
     private float collisionRadius = 1;
     private boolean isLived = true;
     private boolean isActivated = false;
-
+    public Context context;
 //    지금은 인자를 받아오는 걸로 해놨지만 스테이지만 받아오고
 //    values에 능력치 파일을 하나 만들어서 거기서 스테이지에 맞는 데이터를 가져올 수 있게 만들자.
-    public Monster(int stage, int number){
+    public Monster(Context context, int stage, int number){
 //        몬스터 이미지 추가
-//        monster = BitmapFactory.decodeResource(res, id);
+        this.context = context;
+        monsterImage = BitmapFactory.decodeResource(context.getResources(), R.drawable.robot);
         this.hp = Data.monster1HP[stage];
         this.money = Data.monster1Money[stage];
         this.moveSpeed = Data.monster1Speed[stage];
         this.number = number;
         this.point = GameManager.checkPointList.get(0);
+        posX = point.getPosX();
+        posY = point.getPosY();
 
 //        point는 제일 첫번째 이동해야하는 point로 초기화
 //        position은 몬스터가 생성될 위치로 한다.

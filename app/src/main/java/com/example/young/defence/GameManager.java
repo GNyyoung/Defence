@@ -1,5 +1,7 @@
 package com.example.young.defence;
 
+import android.content.Context;
+
 import java.util.ArrayList;
 
 /**
@@ -10,7 +12,6 @@ import java.util.ArrayList;
 public class GameManager {
 
     final public static ArrayList<CheckPoint> checkPointList = new ArrayList<CheckPoint>();
-
 
 
     public GameManager(){

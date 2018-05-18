@@ -7,17 +7,17 @@ package com.example.young.defence;
 
 public class Data {
     final static float[] checkPointposX = {
-
+        1,2
     };
     final static float[] checkPointposY = {
-
+        1,4
     };
 
 //    스테이지 별 소환 몬스터 수
     final static int[] monster1Count = {0,5};
 //    스테이지 별 몬스터 능력치
-    final static int[] monster1HP = {};
-    final static int[] monster1Money = {};
+    final static int[] monster1HP = {1,2,3};
+    final static int[] monster1Money = {2,4,5};
     final static float[] monster1Speed = {0,5};
     final static int[] monster2Count = {5};
 

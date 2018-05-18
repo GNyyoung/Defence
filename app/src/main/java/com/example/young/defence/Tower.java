@@ -1,5 +1,6 @@
 package com.example.young.defence;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
@@ -29,11 +30,13 @@ public class Tower {
 //    포탑 인식범위 내에 있는 몬스터 목록
     private ArrayList<Monster> targetList = new ArrayList<Monster>();
 //    포탑의 공격목표
+    public Context context;
     private Monster target;
     public boolean isTargeted = false;
 
-    public Tower(int damage, float radius, float reloadTime, float posX, float posY){
-//        towerImage = BitmapFactory.decodeResource(res, id);
+    public Tower(Context context, int damage, float radius, float reloadTime, float posX, float posY){
+        this.context = context;
+        towerImage = BitmapFactory.decodeResource(context.getResources(), R.drawable.turret_base);
 //        projectileImage = BitmapFactory.decodeResource(res, id);
         this.damage = damage;
         this.reloadTime = reloadTime;
