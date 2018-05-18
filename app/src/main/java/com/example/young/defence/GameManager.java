@@ -9,7 +9,9 @@ import java.util.ArrayList;
 
 public class GameManager {
 
-    final public static ArrayList<CheckPoint> checkPointList = new ArrayList<CheckPoint>();
+    public static ArrayList<CheckPoint> checkPointList = new ArrayList<CheckPoint>();
+    public static ArrayList<Monster> monsterArrayList = new ArrayList<Monster>();
+    public static ArrayList<Tower> towerArrayList = new ArrayList<Tower>();
 
 
 
@@ -31,6 +33,7 @@ public class GameManager {
         Thread1 thread = new Thread1();
         int stage = 1;
         startStage(thread, stage);
+//        이렇게 짜놓으면 다음 스테이지로 진행할 수가 없으니 내용 수정해야함.
     }
 
     private void startStage(Thread1 thread, int stage){
@@ -39,10 +42,10 @@ public class GameManager {
         for(int i = 0; i < monsterCount; i++){
             Monster monster = new Monster(stage, i);
             monsterArrayList.add(monster);
-            thread.monsterArrayList = monsterArrayList;
             thread.setMonsterCount(monsterCount);
         }
 
+        thread.start();
     }
 
 }

@@ -141,7 +141,6 @@ public class Monster {
     public void activate(){
         isActivated = true;
     }
-
     public boolean getLive(){
         return isLived;
     }

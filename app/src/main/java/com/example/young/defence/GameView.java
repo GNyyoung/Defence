@@ -26,10 +26,12 @@ public class GameView extends View{
     }
 
 //    static으로 작성해도 되는지 한번 더 판단할 필요 있음.
-    static ArrayList<Monster> monsterArrayList = new ArrayList<>();
+    private ArrayList<Monster> monsterArrayList = new ArrayList<>();
     Robot robot = new Robot();
 
     protected void onDraw(Canvas canvas){
+
+        monsterArrayList = GameManager.monsterArrayList;
 
         canvas.drawBitmap(robot.bot, robot.posX, canvas.getHeight() / 2, null);
         robot.posX += 10;
@@ -48,5 +50,6 @@ public class GameView extends View{
     public void createMonster(Monster monster){
 
     }
+
 }
 
