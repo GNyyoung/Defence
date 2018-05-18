@@ -13,30 +13,33 @@ import java.util.ArrayList;
 
 public class Thread1 extends Thread{
 
-    ArrayList<Monster> monsterArrayList = new ArrayList<Monster>();
-    ArrayList<Tower> towerArrayList = new ArrayList<Tower>();
+    private ArrayList<Monster> monsterArrayList = GameManager.monsterArrayList;
+    private ArrayList<Tower> towerArrayList = GameManager.towerArrayList;
 //    ArrayList<Projectile> projectileList = new ArrayList<Projectile>();
     private int monsterCount = 0;
 
     public void run(){
+//        스테이지 시작 시 몬스터 생성에 관한 코드
         if(monsterArrayList.size() < monsterCount){
             try{
                 for(int number = 0; number < monsterCount; number++){
                     spawn(number);
-                    sleep(1500);
+                    Thread.sleep(1500);
                 }
             } catch(Exception e){
 //            뭐넣어야하지...?
             }
         }
 
-        for(int i = monsterArrayList.size(); i > 0 ; i--){
+//        죽은 몬스터가 있는지 확인하고 리스트에서 제거
+        for(int i = monsterArrayList.size() - 1; i >= 0 ; i--){
             if(monsterArrayList.get(i).getLive() == false){
                 Monster diedMonster = monsterArrayList.remove(i);
                 Data.playerMoney += diedMonster.getMoney();
             }
         }
 
+//        타워가 공격할 수 있는 몬스터가 있는지 확인
         if(towerArrayList.isEmpty() == false){
             for(int i = 0; i < towerArrayList.size(); i++){
                 if(towerArrayList.get(i).isTargeted == false){
@@ -47,9 +50,7 @@ public class Thread1 extends Thread{
             }
         }
 
-
-//        여기서 몬스터 리스트 받아다 게임 뷰에서 이미지가 나오게 해주면 됨.
-        GameView.monsterArrayList = monsterArrayList;
+        GameManager.monsterArrayList = monsterArrayList;
     }
 
     /*
