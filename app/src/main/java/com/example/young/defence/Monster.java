@@ -11,6 +11,7 @@ import android.graphics.BitmapFactory;
  *   몬스터와 point와의 각도에 따라 이미지를 다르게 출력(앞, 옆, 뒤)
  * 2.몬스터 초기화(생성자)
  * 3.몬스터 파괴(목적지에 닿았을 때, 공격받아 죽을 때)
+ * 4.마지막 포인트에 도달하면 게임매니저에서 해당 몬스터를 제거하고 데미지를 준다.
  *
  * override 고려 안하고 작성중
  * 분명 사용할테니 나중에 코드 짤 때 그에 맞춰 수정하도록 한다.
@@ -51,7 +52,6 @@ public class Monster {
         this.moveSpeed = Data.monster1Speed[stage];
         this.number = number;
         this.point = GameManager.checkPointList.get(0);
-
 //        point는 제일 첫번째 이동해야하는 point로 초기화
 //        position은 몬스터가 생성될 위치로 한다.
 
