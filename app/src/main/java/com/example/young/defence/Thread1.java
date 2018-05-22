@@ -1,6 +1,8 @@
 package com.example.young.defence;
 
 import android.graphics.Canvas;
+import android.os.Debug;
+import android.util.Log;
 
 import java.util.ArrayList;
 
@@ -17,40 +19,53 @@ public class Thread1 extends Thread{
     private ArrayList<Tower> towerArrayList = GameManager.towerArrayList;
 //    ArrayList<Projectile> projectileList = new ArrayList<Projectile>();
     private int monsterCount = 0;
+    private boolean isRun = true;
 
     public void run(){
-//        스테이지 시작 시 몬스터 생성에 관한 코드
         if(monsterArrayList.size() < monsterCount){
+            Log.i("Thread1_SpawnMonster", "start spawn");
             try{
                 for(int number = 0; number < monsterCount; number++){
                     spawn(number);
-                    Thread.sleep(1500);
+                    sleep(1500);
                 }
-            } catch(Exception e){
+            } catch(InterruptedException e){
 //            뭐넣어야하지...?
             }
         }
+        while(isRun){
+            Log.i("Thread1", "Run");
+//        스테이지 시작 시 몬스터 생성에 관한 코드
+
 
 //        죽은 몬스터가 있는지 확인하고 리스트에서 제거
-        for(int i = monsterArrayList.size() - 1; i >= 0 ; i--){
-            if(monsterArrayList.get(i).getLive() == false){
-                Monster diedMonster = monsterArrayList.remove(i);
-                Data.playerMoney += diedMonster.getMoney();
+            Log.i("Thread1_DeadMonster", "start check");
+            for(int i = monsterArrayList.size() - 1; i >= 0 ; i--){
+                if(monsterArrayList.get(i).getLive() == false){
+                    Monster deadMonster = monsterArrayList.remove(i);
+                    Data.playerMoney += deadMonster.getMoney();
+                }
+                else{
+                    monsterArrayList.get(i).move();
+                }
             }
-        }
 
 //        타워가 공격할 수 있는 몬스터가 있는지 확인
-        if(towerArrayList.isEmpty() == false){
-            for(int i = 0; i < towerArrayList.size(); i++){
-                if(towerArrayList.get(i).isTargeted == false){
-                    for(int j = 0; j < monsterArrayList.size(); j++){
-                        towerArrayList.get(i).identifyTarget(monsterArrayList.get(j));
+            if(towerArrayList.isEmpty() == false){
+                for(int i = 0; i < towerArrayList.size(); i++){
+                    if(towerArrayList.get(i).isTargeted == false){
+                        for(int j = 0; j < monsterArrayList.size(); j++){
+                            towerArrayList.get(i).identifyTarget(monsterArrayList.get(j));
+                        }
                     }
                 }
             }
-        }
 
-        GameManager.monsterArrayList = monsterArrayList;
+            GameManager.monsterArrayList = monsterArrayList;
+            try{
+                    sleep(30);
+            } catch(InterruptedException e){}
+        }
     }
 
     /*

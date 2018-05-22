@@ -1,6 +1,7 @@
 package com.example.young.defence;
 
 import android.content.Context;
+import android.util.Log;
 
 import java.util.ArrayList;
 
@@ -35,6 +36,7 @@ public class GameManager {
         Thread1 thread = new Thread1();
         int stage = 1;
         startStage(thread, stage);
+        Log.i("GameManager", "gameStart");
 //        이렇게 짜놓으면 다음 스테이지로 진행할 수가 없으니 내용 수정해야함.
     }
 
@@ -46,6 +48,7 @@ public class GameManager {
             thread.setMonsterCount(monsterCount);
         }
 
+        Log.i("GameManager", Integer.toString(monsterArrayList.size()));
         thread.start();
     }
 

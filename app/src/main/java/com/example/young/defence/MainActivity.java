@@ -16,11 +16,11 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setFullScreen();
+        GameManager gameManager = new GameManager(this);
         GameView v = new GameView(this);
         setContentView(v);
 // setContentView(R.layout.activity_main);
 
-        GameManager gameManager = new GameManager(this);
     }
 
 //    전체화면으로 만드는 메소드

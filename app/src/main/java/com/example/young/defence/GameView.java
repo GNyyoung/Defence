@@ -7,6 +7,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -23,28 +24,21 @@ public class GameView extends View{
     public GameView(Context context){
         super(context);
         setBackgroundResource(R.drawable.map1);
+        Log.i("GameView", Float.toString(GameManager.checkPointList.get(0).getPosX()));
     }
-
-    GameManager gameManager = new GameManager(getContext());
 
     Robot robot = new Robot();
     Tower tower = new Tower(getContext(), 10, 10,10,50,50);
-    CheckPoint checkPoint = new CheckPoint(500,200,0);
-    CheckPoint checkPoint2 = new CheckPoint(700,300,1);
+
     protected void onDraw(Canvas canvas){
-
-        canvas.drawBitmap(tower.towerImage,50,50,null);
+        for(int i = 0; i < GameManager.monsterArrayList.size(); i++){
+            Monster monster = GameManager.monsterArrayList.get(i);
+            canvas.drawBitmap(tower.towerImage,50,50,null);
 //        canvas.drawBitmap(robot.bot, robot.posX, canvas.getHeight() / 2, null);
-        canvas.drawBitmap(gameManager.monsterArrayList.get(0).monsterImage,50,50,null);
-
-        while(checkPoint.getPosX()==gameManager.monsterArrayList.get(0).getPosX()) {
-
-
-            gameManager.monsterArrayList.get(0).move();
-            invalidate();
+            canvas.drawBitmap(monster.monsterImage,monster.getPosX(),monster.getPosY(),null);
         }
-
-
+//        Log.i("GameView", Float.toString(GameManager.monsterArrayList.get(0).getPosX()));
+        invalidate();
     }
 
 

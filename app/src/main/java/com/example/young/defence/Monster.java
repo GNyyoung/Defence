@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.util.Log;
 
 /**
  * Created by young on 2018-04-13.
@@ -56,6 +57,8 @@ public class Monster {
         this.point = GameManager.checkPointList.get(0);
         posX = point.getPosX();
         posY = point.getPosY();
+        Log.i("Monster", "Monster: posX : " + Float.toString(posX));
+        this.point = GameManager.checkPointList.get(1);
 
 //        point는 제일 첫번째 이동해야하는 point로 초기화
 //        position은 몬스터가 생성될 위치로 한다.
@@ -83,9 +86,11 @@ public class Monster {
         float pointX = point.getPosX();
         float pointY = point.getPosY();
         float distanceX = pointX - posX;
+//        Log.i("Monster", "distanceX: " + Float.toString(distanceX));
         float distanceY = pointY - posY;
 //        빗변
         float hypotenuse = (float)Math.sqrt(Math.pow(distanceX, 2) + Math.pow(distanceY, 2));
+//        Log.i("Monster", "hypotenuse: " + Float.toString(hypotenuse));
 //        x축, y축 이동속도
         float speedX, speedY;
 
@@ -104,14 +109,22 @@ public class Monster {
         }
 
         speedX = moveSpeed * distanceX / hypotenuse;
+//        Log.i("Monster", "move: " + Float.toString(speedX));
         speedY = moveSpeed * distanceY / hypotenuse;
         posX += speedX;
         posY += speedY;
 
 //        몬스터와 포인터의 거리가 이동속도보다 짧으면 다음 포인트를 입력받는다.
         if(hypotenuse <= moveSpeed){
-            point = GameManager.checkPointList.get(point.getNumber() + 1);
+            if(point.getNumber() == GameManager.checkPointList.size() - 1){
+                GameManager.monsterArrayList.remove(0);
+            }
+            else{
+                point = GameManager.checkPointList.get(point.getNumber() + 1);
+                Log.i("Monster", "point number = " + Integer.toString(point.getNumber()));
+            }
         }
+
     }
 
 //    public void die(){
