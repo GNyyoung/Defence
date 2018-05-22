@@ -3,6 +3,7 @@ package com.example.young.defence;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.widget.ImageButton;
 
 import java.util.ArrayList;
 
@@ -36,7 +37,7 @@ public class Tower {
 
     public Tower(Context context, int damage, float radius, float reloadTime, float posX, float posY){
         this.context = context;
-        towerImage = BitmapFactory.decodeResource(context.getResources(), R.drawable.turret_base);
+        towerImage = BitmapFactory.decodeResource(context.getResources(), R.drawable.turret_ground);
 //        projectileImage = BitmapFactory.decodeResource(res, id);
         this.damage = damage;
         this.reloadTime = reloadTime;

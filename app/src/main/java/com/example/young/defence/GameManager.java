@@ -2,6 +2,7 @@ package com.example.young.defence;
 
 import android.content.Context;
 import android.util.Log;
+import android.widget.ImageButton;
 
 import java.util.ArrayList;
 
@@ -48,8 +49,17 @@ public class GameManager {
             thread.setMonsterCount(monsterCount);
         }
 
+        startTower(thread);
         Log.i("GameManager", Integer.toString(monsterArrayList.size()));
         thread.start();
     }
 
+    private void startTower(Thread1 thread){
+        int towerCount = Data.towerCount;
+        for(int i=0;i<towerCount;i++){
+            Tower tower = new Tower(context,0,0,0,Data.towerPosX[i],Data.towerPosY[i]);
+            towerArrayList.add(tower);
+            thread.setTowerCount(towerCount);
+        }
+    }
 }

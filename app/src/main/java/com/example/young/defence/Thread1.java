@@ -19,11 +19,12 @@ public class Thread1 extends Thread{
     private ArrayList<Tower> towerArrayList = GameManager.towerArrayList;
 //    ArrayList<Projectile> projectileList = new ArrayList<Projectile>();
     private int monsterCount = 0;
+    private int towerCount = 0;
     private boolean isRun = true;
 
     public void run(){
         if(monsterArrayList.size() < monsterCount){
-            Log.i("Thread1_SpawnMonster", "start spawn");
+//            Log.i("Thread1_SpawnMonster", "start spawn");
             try{
                 for(int number = 0; number < monsterCount; number++){
                     spawn(number);
@@ -34,12 +35,12 @@ public class Thread1 extends Thread{
             }
         }
         while(isRun){
-            Log.i("Thread1", "Run");
+//            Log.i("Thread1", "Run");
 //        스테이지 시작 시 몬스터 생성에 관한 코드
 
 
 //        죽은 몬스터가 있는지 확인하고 리스트에서 제거
-            Log.i("Thread1_DeadMonster", "start check");
+//            Log.i("Thread1_DeadMonster", "start check");
             for(int i = monsterArrayList.size() - 1; i >= 0 ; i--){
                 if(monsterArrayList.get(i).getLive() == false){
                     Monster deadMonster = monsterArrayList.remove(i);
@@ -90,6 +91,8 @@ public class Thread1 extends Thread{
     public void setMonsterCount(int count){
         monsterCount = count;
     }
+
+    public void setTowerCount(int count){towerCount = count;}
 
     public void createTower(Tower tower){
         towerArrayList.add(tower);
