@@ -12,11 +12,13 @@ import android.view.View;
 
 public class MainActivity extends AppCompatActivity {
 
+    GameManager gameManager = new GameManager(this);
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setFullScreen();
-        GameManager gameManager = new GameManager(this);
+        gameManager.start();
         GameView v = new GameView(this);
         setContentView(v);
 // setContentView(R.layout.activity_main);
@@ -54,5 +56,11 @@ public class MainActivity extends AppCompatActivity {
         }
     }*/
 
+    @Override
+    protected void onStop() {
+        super.onStop();
 
+        if(gameManager.isAlive())
+            gameManager.interrupt();
+    }
 }

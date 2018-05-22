@@ -10,12 +10,15 @@ import java.util.ArrayList;
  * 게임 스테이지 진행, 승패 판정은 여기서.
  */
 
-public class GameManager {
+public class GameManager extends Thread{
 
     public static ArrayList<CheckPoint> checkPointList = new ArrayList<CheckPoint>();
     public static ArrayList<Monster> monsterArrayList = new ArrayList<Monster>();
     public static ArrayList<Tower> towerArrayList = new ArrayList<Tower>();
+    public static ArrayList<Projectile> projectileArrayList = new ArrayList<Projectile>();
     public Context context;
+
+    private boolean isRun = true;
 
     public GameManager(Context context){
 //        try,catch 하는법 기억 안남... 나중에 수정 바람.
@@ -28,28 +31,80 @@ public class GameManager {
         }
 //        else
 //        오류 출력
-
-        gameStart();
     }
 
-    private void gameStart(){
-        Thread1 thread = new Thread1();
-        int stage = 1;
-        startStage(thread, stage);
-        Log.i("GameManager", "gameStart");
-//        이렇게 짜놓으면 다음 스테이지로 진행할 수가 없으니 내용 수정해야함.
+//    앱 실행 중에 뒤로 갔다 다시 켜면 스레드가 꺼지지 않은 상태에서 두개가 새로 켜져서 스레드가 4개 돌아가는 상황이 생긴다.
+
+    public void run(){
+        int stage = 0;
+        SpawnThread spawnThread = new SpawnThread();
+
+        while(isRun){
+            controlMonster();
+            controlTower();
+
+            if(Data.playerHP == 0){
+                Log.i("GameManager", "Game Over");
+                if(spawnThread.isAlive()){
+                    spawnThread.interrupt();
+                }
+                isRun = false;
+            }
+
+            if(stage == 0 || (spawnThread.checkFinish() == true && monsterArrayList.isEmpty())){
+                if(spawnThread.isAlive()){
+                    spawnThread.interrupt();
+                }
+
+                if(stage == Data.maxStage){
+                    Log.i("GameManager", "Win this Game");
+                    isRun = false;
+                }
+                else {
+                    stage++;
+                    addMonster(stage);
+                    spawnThread = new SpawnThread();
+                    spawnThread.setMonsterCount(Data.monster1Count[stage]);
+                    spawnThread.start();
+                }
+            }
+            try{
+                sleep(30);
+            } catch (InterruptedException e){}
+        }
     }
 
-    private void startStage(Thread1 thread, int stage){
+    private void controlMonster(){
+        for(int i = monsterArrayList.size() - 1; i >= 0 ; i--){
+            if(monsterArrayList.get(i).getLive() == false){
+                Monster deadMonster = monsterArrayList.remove(i);
+                Data.playerMoney += deadMonster.getMoney();
+            }
+            else{
+                monsterArrayList.get(i).move();
+            }
+        }
+    }
+
+    private void controlTower(){
+        if(towerArrayList.isEmpty() == false){
+            for(int i = 0; i < towerArrayList.size(); i++){
+                if(towerArrayList.get(i).isTargeted == false){
+                    for(int j = 0; j < monsterArrayList.size(); j++){
+                        towerArrayList.get(i).identifyTarget(monsterArrayList.get(j));
+                    }
+                }
+            }
+        }
+    }
+
+//    일정 주기마다 몬스터를 생성하는데, 다 생성이 안된 상태에서 죽은 몬스터가 있다면
+//    원래 생성해야 하는 몬스터보다 많이 생성되기 때문에 미리 배정하고 activate시킨다.
+    private void addMonster(int stage){
         int monsterCount = Data.monster1Count[stage];
         for(int i = 0; i < monsterCount; i++){
             Monster monster = new Monster(context, stage, i);
             monsterArrayList.add(monster);
-            thread.setMonsterCount(monsterCount);
         }
-
-        Log.i("GameManager", Integer.toString(monsterArrayList.size()));
-        thread.start();
     }
-
 }
