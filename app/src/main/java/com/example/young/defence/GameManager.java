@@ -2,6 +2,7 @@ package com.example.young.defence;
 
 import android.content.Context;
 import android.util.Log;
+import android.widget.ImageButton;
 
 import java.util.ArrayList;
 
@@ -20,11 +21,11 @@ public class GameManager extends Thread{
 
     private boolean isRun = true;
 
-    public GameManager(Context context){
+    public GameManager(Context context) {
 //        try,catch 하는법 기억 안남... 나중에 수정 바람.
         this.context = context;
-        if(Data.checkPointposX.length == Data.checkPointposY.length){
-            for(int i = 0; i < Data.checkPointposX.length; i++){
+        if (Data.checkPointposX.length == Data.checkPointposY.length) {
+            for (int i = 0; i < Data.checkPointposX.length; i++) {
                 CheckPoint point = new CheckPoint(Data.checkPointposX[i], Data.checkPointposY[i], i);
                 checkPointList.add(point);
             }
@@ -38,6 +39,7 @@ public class GameManager extends Thread{
     public void run(){
         int stage = 0;
         SpawnThread spawnThread = new SpawnThread();
+        startTower();
 
         while(isRun){
             controlMonster();
@@ -105,6 +107,14 @@ public class GameManager extends Thread{
         for(int i = 0; i < monsterCount; i++){
             Monster monster = new Monster(context, stage, i);
             monsterArrayList.add(monster);
+        }
+    }
+
+    private void startTower(){
+        int towerCount = Data.towerCount;
+        for(int i=0;i<towerCount;i++){
+            Tower tower = new Tower(context,0,0,0,Data.towerPosX[i],Data.towerPosY[i]);
+            towerArrayList.add(tower);
         }
     }
 }

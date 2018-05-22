@@ -8,12 +8,18 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.View;
+import android.widget.ImageButton;
+import android.widget.PopupWindow;
 
 public class MainActivity extends AppCompatActivity {
 
     GameManager gameManager = new GameManager(this);
 
+    PopupWindow popupWindow;
+    View popupView;
+    ImageButton base;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -22,7 +28,13 @@ public class MainActivity extends AppCompatActivity {
         GameView v = new GameView(this);
         setContentView(v);
 // setContentView(R.layout.activity_main);
+//        popupView = View.inflate(this,R.layout.popup,null);
+//        popupWindow = new PopupWindow(popupView,270,150,true);
+//        for(int i=0;i<GameManager.towerArrayList.size();i++){
+//            popupWindow.setAnimationStyle(android.R.style.Animation_Translucent);
+//            popupWindow.showAtLocation(popupView, Gravity.NO_GRAVITY,(int)Data.towerPosX[i]-50,(int)Data.towerPosY[i]+100);
 
+//        }
     }
 
 //    전체화면으로 만드는 메소드
