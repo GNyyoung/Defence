@@ -40,40 +40,41 @@ public class GameManager extends Thread{
         int stage = 0;
         SpawnThread spawnThread = new SpawnThread();
         startTower();
+        loop :
+            while(isRun){
+                controlMonster();
+                controlTower();
 
-        while(isRun){
-            controlMonster();
-            controlTower();
-
-            if(Data.playerHP == 0){
-                Log.i("GameManager", "Game Over");
-                if(spawnThread.isAlive()){
-                    spawnThread.interrupt();
-                }
-                isRun = false;
-            }
-
-            if(stage == 0 || (spawnThread.checkFinish() == true && monsterArrayList.isEmpty())){
-                if(spawnThread.isAlive()){
-                    spawnThread.interrupt();
-                }
-
-                if(stage == Data.maxStage){
-                    Log.i("GameManager", "Win this Game");
+                if(Data.playerHP == 0){
+                    Log.i("GameManager", "Game Over");
+                    if(spawnThread.isAlive()){
+                        spawnThread.interrupt();
+                    }
                     isRun = false;
+                    break loop;
                 }
-                else {
-                    stage++;
-                    addMonster(stage);
-                    spawnThread = new SpawnThread();
-                    spawnThread.setMonsterCount(Data.monster1Count[stage]);
-                    spawnThread.start();
+
+                if(stage == 0 || (spawnThread.checkFinish() == true && monsterArrayList.isEmpty())){
+                    if(spawnThread.isAlive()){
+                        spawnThread.interrupt();
+                    }
+
+                    if(stage == Data.maxStage){
+                        Log.i("GameManager", "Win this Game");
+                        isRun = false;
+                    }
+                    else {
+                        stage++;
+                        addMonster(stage);
+                        spawnThread = new SpawnThread();
+                        spawnThread.setMonsterCount(Data.monster1Count[stage]);
+                        spawnThread.start();
+                    }
                 }
+                try{
+                    sleep(30);
+                } catch (InterruptedException e){}
             }
-            try{
-                sleep(30);
-            } catch (InterruptedException e){}
-        }
     }
 
     private void controlMonster(){

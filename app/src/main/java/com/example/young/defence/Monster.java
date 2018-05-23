@@ -123,7 +123,7 @@ public class Monster {
                 }
                 else{
                     point = GameManager.checkPointList.get(point.getNumber() + 1);
-                    Log.i("Monster", "point number = " + Integer.toString(point.getNumber()));
+//                    Log.i("Monster", "point number = " + Integer.toString(point.getNumber()));
                 }
             }
         }

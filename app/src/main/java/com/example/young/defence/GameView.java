@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.text.Layout;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.MotionEvent;
@@ -23,6 +24,8 @@ public class GameView extends View {
     View popupview_ground, popupview_base;
     ImageButton base, evolution1, evolution2;
     int clickedTower;
+    Bitmap monsterImage;
+
     public GameView(Context context){
         super(context);
         setBackgroundResource(R.drawable.map1);
@@ -35,16 +38,9 @@ public class GameView extends View {
         base = findViewById(R.id.base);
         evolution1 = findViewById(R.id.evolution1);
         evolution2 = findViewById(R.id.evolution2);
-//        base.setOnClickListener(new View.OnClickListener(){
-//            @Override
-//            public void onClick(View view){
-//                Tower tower = GameManager.towerArrayList.get(clickedTower);
-//                tower.towerImage = BitmapFactory.decodeResource(getResources(), R.drawable.turret_base);
-//            }
-//        });
+        Bitmap monsterBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.robot);
+        monsterImage = Bitmap.createScaledBitmap(monsterBitmap, monsterBitmap.getWidth() / 3, monsterBitmap.getHeight() / 3, false);
     }
-
-    Robot robot = new Robot();
 
     protected void onDraw(Canvas canvas){
         for(int i = 0; i<GameManager.towerArrayList.size();i++){
@@ -53,9 +49,8 @@ public class GameView extends View {
         }
         for(int i = 0; i < GameManager.monsterArrayList.size(); i++){
             Monster monster = GameManager.monsterArrayList.get(i);
-
 //        canvas.drawBitmap(robot.bot, robot.posX, canvas.getHeight() / 2, null);
-            canvas.drawBitmap(monster.monsterImage,monster.getPosX(),monster.getPosY(),null);
+            canvas.drawBitmap(monsterImage,monster.getPosX(),monster.getPosY(),null);
         }
 //        Log.i("GameView", Float.toString(GameManager.monsterArrayList.get(0).getPosX()));
 
@@ -70,8 +65,10 @@ public class GameView extends View {
 
             if(event.getAction()==MotionEvent.ACTION_DOWN){
                 Log.i("GameView", Integer.toString(GameManager.towerArrayList.size()));
+                Log.i("touchPosition", x + " , " + y);
                 for(int i=0;i<GameManager.towerArrayList.size();i++) {
                     if (x >Data.towerPosX[i]&&x<(Data.towerPosX[i]+150)&&y>Data.towerPosY[i]&&y<Data.towerPosY[i]+150){
+//                        타워가 없는 상태일 때 클릭하면 1단계 타워로 올릴 수 있는 UI가 뜬다.
                         if(GameManager.towerArrayList.get(i).towerState==0) {
                             popupWindow_ground.setAnimationStyle(android.R.style.Animation_Translucent);
                             popupWindow_ground.showAtLocation(this, Gravity.NO_GRAVITY,
@@ -81,6 +78,7 @@ public class GameView extends View {
                             Log.i("GameView", "clickedTower= " + clickedTower);
                             return true;
                         }
+//                        타워가 1단계일 때 클릭하면 2단계 타워로 업그레이드할 수 있는 UI가 뜬다.
                         else if(GameManager.towerArrayList.get(i).towerState==1){
                             popupWindow_base.setAnimationStyle(android.R.style.Animation_Translucent);
                             popupWindow_base.showAtLocation(this, Gravity.NO_GRAVITY,
