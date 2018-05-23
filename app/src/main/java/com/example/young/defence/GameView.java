@@ -4,20 +4,12 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.media.Image;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
 import android.widget.PopupWindow;
-
-import java.util.ArrayList;
 
 /**
  * Created by young on 2018-04-13.
@@ -27,18 +19,22 @@ import java.util.ArrayList;
  */
 
 public class GameView extends View {
-    PopupWindow popupWindow;
-    View popupview;
-    ImageButton base;
+    PopupWindow popupWindow_ground, popupWindow_base;
+    View popupview_ground, popupview_base;
+    ImageButton base, evolution1, evolution2;
     int clickedTower;
     public GameView(Context context){
         super(context);
         setBackgroundResource(R.drawable.map1);
         Log.i("GameView", Float.toString(GameManager.checkPointList.get(0).getPosX()));
 
-        popupview = View.inflate(getContext(), R.layout.popup, null);
-        popupWindow = new PopupWindow(popupview,270,150,true);
+        popupview_ground = View.inflate(getContext(), R.layout.popup_ground, null);
+        popupview_base = View.inflate(getContext(), R.layout.popup_base, null);
+        popupWindow_ground = new PopupWindow(popupview_ground,270,150,true);
+        popupWindow_base = new PopupWindow(popupview_base,270,150,true);
         base = findViewById(R.id.base);
+        evolution1 = findViewById(R.id.evolution1);
+        evolution2 = findViewById(R.id.evolution2);
 //        base.setOnClickListener(new View.OnClickListener(){
 //            @Override
 //            public void onClick(View view){
@@ -75,14 +71,25 @@ public class GameView extends View {
             if(event.getAction()==MotionEvent.ACTION_DOWN){
                 Log.i("GameView", Integer.toString(GameManager.towerArrayList.size()));
                 for(int i=0;i<GameManager.towerArrayList.size();i++) {
-                    if (x >Data.towerPosX[i]&&x<(Data.towerPosX[i]+100)&&y>Data.towerPosY[i]&&y<Data.towerPosY[i]+100){
-                        popupWindow.setAnimationStyle(android.R.style.Animation_Translucent);
-                        popupWindow.showAtLocation(this, Gravity.NO_GRAVITY,
-                                (int)Data.towerPosX[i]-50, (int)Data.towerPosY[i]+100);
-                        Log.i("touch","X: "+x+"Y: "+y);
-                        clickedTower = i;
-
-                        return true;
+                    if (x >Data.towerPosX[i]&&x<(Data.towerPosX[i]+150)&&y>Data.towerPosY[i]&&y<Data.towerPosY[i]+150){
+                        if(GameManager.towerArrayList.get(i).towerState==0) {
+                            popupWindow_ground.setAnimationStyle(android.R.style.Animation_Translucent);
+                            popupWindow_ground.showAtLocation(this, Gravity.NO_GRAVITY,
+                                    (int) Data.towerPosX[i] - 50, (int) Data.towerPosY[i] + 150);
+                            Log.i("touch", "X: " + x + "Y: " + y);
+                            clickedTower = i;
+                            Log.i("GameView", "clickedTower= " + clickedTower);
+                            return true;
+                        }
+                        else if(GameManager.towerArrayList.get(i).towerState==1){
+                            popupWindow_base.setAnimationStyle(android.R.style.Animation_Translucent);
+                            popupWindow_base.showAtLocation(this, Gravity.NO_GRAVITY,
+                                    (int) Data.towerPosX[i] - 50, (int) Data.towerPosY[i] + 150);
+                            Log.i("touch", "X: " + x + "Y: " + y);
+                            clickedTower = i;
+                            Log.i("GameView", "clickedTower= " + clickedTower);
+                            return true;
+                        }
                     }
 
                 }
@@ -102,7 +109,9 @@ public class GameView extends View {
     public void createMonster(Monster monster){
 
     }
-
+    public int getClickedTower(){
+        return this.clickedTower;
+    }
 //    public void onClick_base(View view){
 //        Tower tower = GameManager.towerArrayList.get(clickedTower);
 //        tower.towerImage = BitmapFactory.decodeResource(getResources(), R.drawable.turret_base);
