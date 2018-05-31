@@ -24,7 +24,7 @@ public class GameView extends View {
     View popupview_ground, popupview_base;
     ImageButton base, evolution1, evolution2;
     int clickedTower;
-    Bitmap monsterImage;
+    Bitmap monsterImage, monsterBitmap;
 
     public GameView(Context context){
         super(context);
@@ -38,8 +38,8 @@ public class GameView extends View {
         base = findViewById(R.id.base);
         evolution1 = findViewById(R.id.evolution1);
         evolution2 = findViewById(R.id.evolution2);
-        Bitmap monsterBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.robot);
-        monsterImage = Bitmap.createScaledBitmap(monsterBitmap, monsterBitmap.getWidth() / 3, monsterBitmap.getHeight() / 3, false);
+        monsterBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.right1);
+        //monsterImage = Bitmap.createScaledBitmap(monsterBitmap, monsterBitmap.getWidth() / 3, monsterBitmap.getHeight() / 3, false);
     }
 
     protected void onDraw(Canvas canvas){
@@ -50,7 +50,7 @@ public class GameView extends View {
         for(int i = 0; i < GameManager.monsterArrayList.size(); i++){
             Monster monster = GameManager.monsterArrayList.get(i);
 //        canvas.drawBitmap(robot.bot, robot.posX, canvas.getHeight() / 2, null);
-            canvas.drawBitmap(monsterImage,monster.getPosX(),monster.getPosY(),null);
+            canvas.drawBitmap(monsterBitmap,monster.getPosX(),monster.getPosY(),null);
         }
 //        Log.i("GameView", Float.toString(GameManager.monsterArrayList.get(0).getPosX()));
 
