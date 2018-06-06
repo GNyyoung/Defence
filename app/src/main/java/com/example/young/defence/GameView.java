@@ -38,7 +38,7 @@ public class GameView extends View {
 
         popupview = View.inflate(getContext(), R.layout.popup, null);
         popupWindow = new PopupWindow(popupview,270,150,true);
-        base = findViewById(R.id.base);
+        base = findViewById(R.id.imageButton);
 //        base.setOnClickListener(new View.OnClickListener(){
 //            @Override
 //            public void onClick(View view){
