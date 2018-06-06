@@ -35,6 +35,8 @@ public class Tower {
     private Monster target;
     public boolean isTargeted = false;
 
+    public int towerState; //towerState 0=땅, 1=기본타워, 2=분홍, 3=노랑;
+
     public Tower(Context context, int damage, float radius, float reloadTime, float posX, float posY){
         this.context = context;
         towerImage = BitmapFactory.decodeResource(context.getResources(), R.drawable.turret_ground);
@@ -44,6 +46,7 @@ public class Tower {
         this.radius = radius;
         this.posX = posX;
         this.posY = posY;
+        towerState=0;
     }
 
 //    몬스터와 포탑 사이의 거리를 체크하고 radius보다 거리가 가까우면 targetList에 추가

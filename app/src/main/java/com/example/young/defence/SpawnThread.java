@@ -20,7 +20,7 @@ public class SpawnThread extends Thread{
     public void run(){
         Log.i("SpawnThread", "start spawn");
         try{
-            sleep(2000);
+            sleep(10000);
             for(int number = 0; number < monsterCount; number++){
                 Log.i("SpawnThread", "monster spawn");
                 spawn(number);

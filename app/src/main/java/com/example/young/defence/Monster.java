@@ -49,7 +49,7 @@ public class Monster {
     public Monster(Context context, int stage, int number){
 //        몬스터 이미지 추가
         this.context = context;
-        monsterImage = BitmapFactory.decodeResource(context.getResources(), R.drawable.robot);
+        monsterImage = BitmapFactory.decodeResource(context.getResources(), R.drawable.right1);
         this.hp = Data.monster1HP[stage];
         this.money = Data.monster1Money[stage];
         this.moveSpeed = Data.monster1Speed[stage];
@@ -123,7 +123,7 @@ public class Monster {
                 }
                 else{
                     point = GameManager.checkPointList.get(point.getNumber() + 1);
-                    Log.i("Monster", "point number = " + Integer.toString(point.getNumber()));
+//                    Log.i("Monster", "point number = " + Integer.toString(point.getNumber()));
                 }
             }
         }

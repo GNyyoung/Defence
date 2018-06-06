@@ -1,27 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="90dp"
-    android:layout_height="40dp">
+    android:layout_width="270dp"
+    android:layout_height="150dp">
 
     <ImageButton
-        android:id="@+id/imageButton"
+        android:id="@+id/evolution1"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_weight="1"
-        app:srcCompat="@drawable/turret_pop1" />
-
-    <ImageButton
-        android:id="@+id/imageButton2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
+        android:backgroundTint="@android:color/transparent"
+        android:onClick="onClick_Evo1"
         app:srcCompat="@drawable/turret_pop2" />
 
     <ImageButton
-        android:id="@+id/imageButton3"
+        android:id="@+id/evolution2"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_weight="1"
+        android:backgroundTint="@android:color/transparent"
+        android:onClick="onClick_Evo2"
         app:srcCompat="@drawable/turret_pop3" />
 </LinearLayout>
