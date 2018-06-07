@@ -17,6 +17,7 @@ public class GameManager extends Thread{
     public static ArrayList<Monster> monsterArrayList = new ArrayList<Monster>();
     public static ArrayList<Tower> towerArrayList = new ArrayList<Tower>();
     public static ArrayList<Projectile> projectileArrayList = new ArrayList<Projectile>();
+    private int delay = 30;
     public Context context;
 
     private boolean isRun = true;
@@ -43,6 +44,7 @@ public class GameManager extends Thread{
         loop :
             while(isRun){
                 controlMonster();
+                controlProjectile();
                 controlTower();
 
                 if(Data.playerHP == 0){
@@ -72,7 +74,7 @@ public class GameManager extends Thread{
                     }
                 }
                 try{
-                    sleep(30);
+                    sleep(delay);
                 } catch (InterruptedException e){}
             }
     }
@@ -88,14 +90,29 @@ public class GameManager extends Thread{
             }
         }
     }
-
     private void controlTower(){
         if(towerArrayList.isEmpty() == false){
             for(int i = 0; i < towerArrayList.size(); i++){
-                if(towerArrayList.get(i).isTargeted == false){
+                if(towerArrayList.get(i).isTargeted() == false){
                     for(int j = 0; j < monsterArrayList.size(); j++){
                         towerArrayList.get(i).identifyTarget(monsterArrayList.get(j));
                     }
+                }
+                else{
+                    towerArrayList.get(i).increaseTimer(delay);
+                    towerArrayList.get(i).attack();
+                }
+            }
+        }
+    }
+    private void controlProjectile(){
+        if(projectileArrayList.isEmpty() == false){
+            for(int i = projectileArrayList.size() - 1; i >= 0; i--){
+                if(projectileArrayList.get(i).getLive() == false){
+                    projectileArrayList.remove(i);
+                }
+                else{
+                    projectileArrayList.get(i).followTarget();
                 }
             }
         }
@@ -114,7 +131,7 @@ public class GameManager extends Thread{
     private void startTower(){
         int towerCount = Data.towerCount;
         for(int i=0;i<towerCount;i++){
-            Tower tower = new Tower(context,0,0,0,Data.towerPosX[i],Data.towerPosY[i]);
+            Tower tower = new Tower(context,1,400,600,Data.towerPosX[i],Data.towerPosY[i]);
             towerArrayList.add(tower);
         }
     }

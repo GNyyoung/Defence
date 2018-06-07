@@ -41,6 +41,7 @@ public class Monster {
 //    import한것도 같이 지우기.
     public Bitmap monsterImage;
     private float collisionRadius = 1;
+//    몬스터가 생존했는지 체크. 죽었을 경우 false로 설정해서 arrayList에서 제거한다.
     private boolean isLived = true;
     private boolean isActivated = false;
     public Context context;

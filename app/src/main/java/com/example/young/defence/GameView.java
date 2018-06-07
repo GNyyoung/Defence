@@ -4,7 +4,10 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.text.Layout;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.MotionEvent;
@@ -20,6 +23,7 @@ import android.widget.PopupWindow;
  *
  * 해야할 일
  * 1. 체력, 돈 표시하는 뷰 추가
+ * 2. 기준좌표가 왼쪽 위라서 생기는 위치 문제 해결
  */
 
 public class GameView extends View {
@@ -28,6 +32,9 @@ public class GameView extends View {
     ImageButton base, evolution1, evolution2;
     int clickedTower;
     Bitmap monsterImage, monsterBitmap;
+    Bitmap projectileImage, projectileBitmap;
+    private int deviceDpi;
+    private Paint paint = new Paint();
 
     public GameView(Context context){
         super(context);
@@ -43,22 +50,38 @@ public class GameView extends View {
         evolution2 = findViewById(R.id.evolution2);
         monsterBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.right1);
         //monsterImage = Bitmap.createScaledBitmap(monsterBitmap, monsterBitmap.getWidth() / 3, monsterBitmap.getHeight() / 3, false);
+        projectileBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.robot);
+        projectileImage = Bitmap.createScaledBitmap(projectileBitmap, projectileBitmap.getWidth() / 10, projectileBitmap.getHeight() / 10, false);
     }
 
     protected void onDraw(Canvas canvas){
+        paint.setColor(Color.RED);
+        paint.setAlpha(44);
         for(int i = 0; i<GameManager.towerArrayList.size();i++){
-            canvas.drawBitmap(GameManager.towerArrayList.get(i).towerImage,Data.towerPosX[i],Data.towerPosY[i],null);
-
+            canvas.drawBitmap(GameManager.towerArrayList.get(i).towerImage, Data.towerPosX[i] * (deviceDpi / 420), Data.towerPosY[i] * (deviceDpi / 420),null);
+            if(GameManager.towerArrayList.get(i).towerState > 0){
+                canvas.drawCircle(Data.towerPosX[i], Data.towerPosY[i], 400, paint);
+            }
         }
         for(int i = 0; i < GameManager.monsterArrayList.size(); i++){
             Monster monster = GameManager.monsterArrayList.get(i);
+            float monsterPosX = monster.getPosX() * (deviceDpi / 420) - (monsterBitmap.getWidth() / 2);
+            float monsterPosY = monster.getPosY() * (deviceDpi / 420) - (monsterBitmap.getHeight() / 2);
 //        canvas.drawBitmap(robot.bot, robot.posX, canvas.getHeight() / 2, null);
-            canvas.drawBitmap(monsterBitmap,monster.getPosX(),monster.getPosY(),null);
+            canvas.drawBitmap(monsterBitmap, monsterPosX, monsterPosY,null);
+        }
+        for(int i = 0; i < GameManager.projectileArrayList.size(); i++){
+            Projectile projectile = GameManager.projectileArrayList.get(i);
+            float projectilePosX = projectile.getPosX() * (deviceDpi / 420) - (projectileImage.getWidth() / 2);
+            float projectilePosY = projectile.getPosY() * (deviceDpi / 420) - (projectileImage.getHeight() / 2);
+            canvas.drawBitmap(projectileImage, projectilePosX, projectilePosY, null);
         }
 //        Log.i("GameView", Float.toString(GameManager.monsterArrayList.get(0).getPosX()));
 
         invalidate();
     }
+
+//    타워 설치와 업그레이드에 관한 이벤트
     @Override
     public boolean onTouchEvent(MotionEvent event){
         float x = event.getX();
@@ -79,6 +102,7 @@ public class GameView extends View {
                             Log.i("touch", "X: " + x + "Y: " + y);
                             clickedTower = i;
                             Log.i("GameView", "clickedTower= " + clickedTower);
+                            GameManager.towerArrayList.get(i).activate();
                             return true;
                         }
 //                        타워가 1단계일 때 클릭하면 2단계 타워로 업그레이드할 수 있는 UI가 뜬다.
@@ -90,6 +114,7 @@ public class GameView extends View {
                             clickedTower = i;
                             Log.i("GameView", "clickedTower= " + clickedTower);
                             return true;
+
                         }
                     }
 
@@ -99,17 +124,6 @@ public class GameView extends View {
         return false;
     }
 
-
-    private class Robot{
-        float posX, posY;
-        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.robot);
-        Bitmap bot = Bitmap.createScaledBitmap(bitmap, bitmap.getWidth() / 3, bitmap.getHeight() / 3, false);
-
-    }
-
-    public void createMonster(Monster monster){
-
-    }
     public int getClickedTower(){
         return this.clickedTower;
     }
@@ -117,5 +131,10 @@ public class GameView extends View {
 //        Tower tower = GameManager.towerArrayList.get(clickedTower);
 //        tower.towerImage = BitmapFactory.decodeResource(getResources(), R.drawable.turret_base);
 //    }
+
+    public void setDpi(int Dpi){
+        deviceDpi = Dpi;
+        Log.i("MainActivity", "DPI : " + Integer.toString(deviceDpi));
+    }
 }
 

@@ -8,6 +8,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
@@ -17,6 +18,7 @@ import android.widget.PopupWindow;
 public class MainActivity extends AppCompatActivity {
     GameView gameView ;
     GameManager gameManager = new GameManager(this);
+    private int deviceDpi;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +35,11 @@ public class MainActivity extends AppCompatActivity {
 //            popupWindow.showAtLocation(popupView, Gravity.NO_GRAVITY,(int)Data.towerPosX[i]-50,(int)Data.towerPosY[i]+100);
 
 //        }
+        DisplayMetrics outMetrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(outMetrics);
+        deviceDpi = outMetrics.densityDpi;
+        gameView.setDpi(deviceDpi);
+        Log.i("MainActivity", "DPI : " + Integer.toString(deviceDpi));
     }
 
 //    전체화면으로 만드는 메소드

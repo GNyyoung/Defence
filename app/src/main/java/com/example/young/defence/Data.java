@@ -16,9 +16,9 @@ public class Data {
 //    int widthDp = (int)(gameView.getWidth()/density);
 //    int heightDp = (int)(gameView.getHeight()/density);
 
-    final static float[] checkPointposX = {90, 366, 381, 819, 819, 1400, 1400, 2080
+    final static float[] checkPointposX = {90, 370, 370, 820, 820, 1400, 1400, 2080
     };
-    final static float[] checkPointposY = {587, 587, 274, 274, 702, 702, 472, 472
+    final static float[] checkPointposY = {590, 590, 275, 275, 700, 700, 480, 480
     };
 
     final static int maxStage = 2;
