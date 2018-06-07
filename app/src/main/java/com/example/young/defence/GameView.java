@@ -17,6 +17,9 @@ import android.widget.PopupWindow;
  * 이미지는 모두 여기서 그립니다.
  * 밑의 로봇 클래스는 테스트용으로 작성해놓은 것이고,
  * 앞으로는 다른 파일에 움직임 등 작성하고 여기서 불러와 그립니다.
+ *
+ * 해야할 일
+ * 1. 체력, 돈 표시하는 뷰 추가
  */
 
 public class GameView extends View {

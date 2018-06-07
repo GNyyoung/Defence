@@ -15,7 +15,7 @@ import android.widget.ImageButton;
 import android.widget.PopupWindow;
 
 public class MainActivity extends AppCompatActivity {
-    GameView v ;
+    GameView gameView ;
     GameManager gameManager = new GameManager(this);
 
     @Override
@@ -23,8 +23,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setFullScreen();
         gameManager.start();
-        v=new GameView(this);
-        setContentView(v);
+        gameView=new GameView(this);
+        setContentView(gameView);
 // setContentView(R.layout.activity_main);
 //        popupView = View.inflate(this,R.layout.popup_ground,null);
 //        popupWindow = new PopupWindow(popupView,270,150,true);
@@ -67,24 +67,24 @@ public class MainActivity extends AppCompatActivity {
     }*/
    public void onClick_Base(View view){
 
-       Tower tower = GameManager.towerArrayList.get(v.getClickedTower());
+       Tower tower = GameManager.towerArrayList.get(gameView.getClickedTower());
        tower.towerImage = BitmapFactory.decodeResource(getResources(), R.drawable.turret_base);
-       GameManager.towerArrayList.get(v.getClickedTower()).towerState=1;
-       v.popupWindow_ground.dismiss();
+       GameManager.towerArrayList.get(gameView.getClickedTower()).towerState=1;
+       gameView.popupWindow_ground.dismiss();
 
    }
    public void onClick_Evo1(View view){
-       Tower tower = GameManager.towerArrayList.get(v.getClickedTower());
+       Tower tower = GameManager.towerArrayList.get(gameView.getClickedTower());
        tower.towerImage = BitmapFactory.decodeResource(getResources(), R.drawable.turret_e1);
-       GameManager.towerArrayList.get(v.getClickedTower()).towerState=2;
-       v.popupWindow_base.dismiss();
+       GameManager.towerArrayList.get(gameView.getClickedTower()).towerState=2;
+       gameView.popupWindow_base.dismiss();
 
    }
     public void onClick_Evo2(View view){
-        Tower tower = GameManager.towerArrayList.get(v.getClickedTower());
+        Tower tower = GameManager.towerArrayList.get(gameView.getClickedTower());
         tower.towerImage = BitmapFactory.decodeResource(getResources(), R.drawable.turret_e2);
-        GameManager.towerArrayList.get(v.getClickedTower()).towerState=3;
-        v.popupWindow_base.dismiss();
+        GameManager.towerArrayList.get(gameView.getClickedTower()).towerState=3;
+        gameView.popupWindow_base.dismiss();
     }
     @Override
     protected void onStop() {
