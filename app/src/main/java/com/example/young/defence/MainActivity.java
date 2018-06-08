@@ -83,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
        GameManager.towerArrayList.get(gameView.getClickedTower()).towerState=1;
        GameManager.towerArrayList.get(gameView.getClickedTower()).activate();
        gameView.popupWindow_ground.dismiss();
-
+       GameManager.towerArrayList.get(gameView.getClickedTower()).activate();
    }
    public void onClick_Evo1(View view){
        Tower tower = GameManager.towerArrayList.get(gameView.getClickedTower());

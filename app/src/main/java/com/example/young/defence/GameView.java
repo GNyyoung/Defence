@@ -14,6 +14,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.PopupWindow;
+import android.widget.Toast;
 
 /**
  * Created by young on 2018-04-13.
@@ -30,9 +31,11 @@ public class GameView extends View {
     PopupWindow popupWindow_ground, popupWindow_base;
     View popupview_ground, popupview_base;
     ImageButton base, evolution1, evolution2;
+    Bitmap stop, play;
     int clickedTower;
     Bitmap monsterImage, monsterBitmap;
     Bitmap projectileImage, projectileBitmap;
+    Bitmap heart, heartBitmap;
     private int deviceDpi;
     private Paint paint = new Paint();
 
@@ -50,14 +53,17 @@ public class GameView extends View {
         evolution2 = findViewById(R.id.evolution2);
         monsterBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.right1);
         //monsterImage = Bitmap.createScaledBitmap(monsterBitmap, monsterBitmap.getWidth() / 3, monsterBitmap.getHeight() / 3, false);
-        projectileBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.robot);
-        projectileImage = Bitmap.createScaledBitmap(projectileBitmap, projectileBitmap.getWidth() / 10, projectileBitmap.getHeight() / 10, false);
+        projectileBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.projectile);
+        heart = BitmapFactory.decodeResource(getResources(),R.drawable.heart);
+        heartBitmap = Bitmap.createScaledBitmap(heart,heart.getWidth()/20,heart.getHeight()/20,false);
+        stop = BitmapFactory.decodeResource(getResources(),R.drawable.stop);
+        play = BitmapFactory.decodeResource(getResources(),R.drawable.play);
+//        projectileImage = Bitmap.createScaledBitmap(projectileBitmap, projectileBitmap.getWidth() / 10, projectileBitmap.getHeight() / 10, false);
     }
 
     protected void onDraw(Canvas canvas){
         paint.setColor(Color.RED);
         paint.setAlpha(44);
-//        Log.i("GameView", "TowerCount : " + Integer.toString(GameManager.towerArrayList.size()));
         for(int i = 0; i<GameManager.towerArrayList.size();i++){
             canvas.drawBitmap(
                     GameManager.towerArrayList.get(i).towerImage,
@@ -79,12 +85,14 @@ public class GameView extends View {
         }
         for(int i = 0; i < GameManager.projectileArrayList.size(); i++){
             Projectile projectile = GameManager.projectileArrayList.get(i);
-            float projectilePosX = projectile.getPosX() * (deviceDpi / 420) - (projectileImage.getWidth() / 2);
-            float projectilePosY = projectile.getPosY() * (deviceDpi / 420) - (projectileImage.getHeight() / 2);
-            canvas.drawBitmap(projectileImage, projectilePosX, projectilePosY, null);
+            float projectilePosX = projectile.getPosX() * (deviceDpi / 420) - (projectileBitmap.getWidth() / 2);
+            float projectilePosY = projectile.getPosY() * (deviceDpi / 420) - (projectileBitmap.getHeight() / 2);
+            canvas.drawBitmap(projectileBitmap, projectilePosX, projectilePosY, null);
         }
 //        Log.i("GameView", Float.toString(GameManager.monsterArrayList.get(0).getPosX()));
-
+        canvas.drawBitmap(heartBitmap,30,20,null);
+        canvas.drawBitmap(stop,2300,20,null);
+        canvas.drawBitmap(play,2050,20,null);
         invalidate();
     }
 
@@ -125,6 +133,13 @@ public class GameView extends View {
                     }
 
                 }
+                if(x >2050&&x<2050+play.getWidth()&&y>20&&y<20+play.getHeight()){
+                    Log.i("touch_play","터치되었습니다");
+                }
+                if(x >2300&&x<2300+stop.getWidth()&&y>20&&y<20+stop.getHeight()){
+                    Log.i("touch_stop","터치되었습니다");
+                }
+
             }
 
         return false;

@@ -66,9 +66,11 @@ public class Tower {
         float distance = (float)Math.sqrt(Math.pow((posX - x), 2) + Math.pow((posY - y), 2));
         if(distance <= radius){
             targetList.add(monster);
-//            Log.i("Tower", "addTarget");
+            Log.i("Tower", "addTarget");
             designateTarget();
+
         }
+
     }
 
 //    타겟이 아예 없어서 새로 타겟을 설정하는거랑
@@ -131,13 +133,14 @@ public class Tower {
         else
             return false;
     }
+
     public void increaseTimer(int time){
         timer += time;
     }
+
     public void resetTargetList(){
         targetList.clear();
         if(target != null && target.getLive() == false)
             target = null;
     }
 }
-
