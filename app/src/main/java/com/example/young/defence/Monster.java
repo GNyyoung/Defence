@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.AnimationDrawable;
+import android.graphics.drawable.BitmapDrawable;
 import android.util.Log;
 
 /**
@@ -40,18 +42,31 @@ public class Monster {
 //    비트맵이 아닌 다른 이미지 형식을 가진다면 수정한다.
 //    import한것도 같이 지우기.
     public Bitmap monsterImage;
+    public AnimationDrawable animationDrawable;
+//    public BitmapDrawable right1, right2, right3, right4;
     private float collisionRadius = 20;
 //    몬스터가 생존했는지 체크. 죽었을 경우 false로 설정해서 arrayList에서 제거한다.
     private boolean isLived = true;
 //    몬스터가 활성화됐는지 확인. 활성화되어야 움직인다.
     private boolean isActivated = false;
+
     public Context context;
 //    지금은 인자를 받아오는 걸로 해놨지만 스테이지만 받아오고
 //    values에 능력치 파일을 하나 만들어서 거기서 스테이지에 맞는 데이터를 가져올 수 있게 만들자.
     public Monster(Context context, int stage, int number){
 //        몬스터 이미지 추가
         this.context = context;
-        monsterImage = BitmapFactory.decodeResource(context.getResources(), R.drawable.right1);
+//        monsterImage = BitmapFactory.decodeResource(context.getResources(), R.drawable.animation);
+        BitmapDrawable right1 = (BitmapDrawable)context.getResources().getDrawable(R.drawable.left1);
+        BitmapDrawable right2 = (BitmapDrawable)context.getResources().getDrawable(R.drawable.left2);
+        BitmapDrawable right3 = (BitmapDrawable)context.getResources().getDrawable(R.drawable.front3);
+        BitmapDrawable right4 = (BitmapDrawable)context.getResources().getDrawable(R.drawable.back4);
+        animationDrawable = new AnimationDrawable();
+        animationDrawable.addFrame(right1,500);
+        animationDrawable.addFrame(right2,500);
+        animationDrawable.addFrame(right3,500);
+        animationDrawable.addFrame(right4,500);
+        animationDrawable.setOneShot(false);
         this.hp = Data.monster1HP[stage];
         this.money = Data.monster1Money[stage];
         this.moveSpeed = Data.monster1Speed[stage];

@@ -31,7 +31,7 @@ import android.widget.Toast;
  */
 
 public class GameView extends View {
-    public PopupWindow popupWindow_ground, popupWindow_base;
+    PopupWindow popupWindow_ground, popupWindow_base;
     View popupview_ground, popupview_base;
     ImageButton base, evolution1, evolution2;
     Bitmap stop, play, pause;
@@ -39,9 +39,9 @@ public class GameView extends View {
     Bitmap monsterImage, monsterBitmap;
     Bitmap projectileImage, projectileBitmap;
     Bitmap heart, heartBitmap, money, moneyBitmap;
-    private int deviceDpi;
+    private float deviceDpi;
     private Paint paint = new Paint();
-    int dp;
+    float dpX, dpY;
 
     public GameView(Context context){
         super(context);
@@ -73,8 +73,8 @@ public class GameView extends View {
         for(int i = 0; i<GameManager.towerArrayList.size();i++){
             canvas.drawBitmap(
                     GameManager.towerArrayList.get(i).towerImage,
-                    Data.towerPosX[i] * dp,
-                    Data.towerPosY[i] * dp,null);
+                    Data.towerPosX[i] * dpX,
+                    Data.towerPosY[i] * dpY,null);
             if(GameManager.towerArrayList.get(i).towerState > 0){
                 canvas.drawCircle(
                         Data.towerPosX[i] + (GameManager.towerArrayList.get(i).towerImage.getWidth() / 2),
@@ -84,22 +84,22 @@ public class GameView extends View {
         }
         for(int i = 0; i < GameManager.monsterArrayList.size(); i++){
             Monster monster = GameManager.monsterArrayList.get(i);
-            float monsterPosX = monster.getPosX() * dp - (monsterBitmap.getWidth() / 2);
-            float monsterPosY = monster.getPosY() * dp - (monsterBitmap.getHeight() / 2);
+            float monsterPosX = monster.getPosX() * dpX - (monsterBitmap.getWidth() / 2);
+            float monsterPosY = monster.getPosY() * dpY - (monsterBitmap.getHeight() / 2);
 //        canvas.drawBitmap(robot.bot, robot.posX, canvas.getHeight() / 2, null);
             canvas.drawBitmap(monsterBitmap, monsterPosX, monsterPosY,null);
         }
         for(int i = 0; i < GameManager.projectileArrayList.size(); i++){
             Projectile projectile = GameManager.projectileArrayList.get(i);
-            float projectilePosX = projectile.getPosX() * dp - (projectileBitmap.getWidth() / 2);
-            float projectilePosY = projectile.getPosY() * dp - (projectileBitmap.getHeight() / 2);
+            float projectilePosX = projectile.getPosX() * dpX - (projectileBitmap.getWidth() / 2);
+            float projectilePosY = projectile.getPosY() * dpY - (projectileBitmap.getHeight() / 2);
             canvas.drawBitmap(projectileBitmap, projectilePosX, projectilePosY, null);
         }
 //        Log.i("GameView", Float.toString(GameManager.monsterArrayList.get(0).getPosX()));
-        canvas.drawBitmap(heart,30 * dp, 20 * dp,null);
-        canvas.drawBitmap(pause,2000 * dp, 50 * dp,null);
-        canvas.drawBitmap(heart,30 * dp,20 * dp,null);
-        canvas.drawBitmap(money,700 * dp,20 * dp,null);
+        canvas.drawBitmap(heart,30 * dpX, 20 * dpY,null);
+        canvas.drawBitmap(pause,2000 * dpX,50 * dpY,null);
+//        canvas.drawBitmap(heart,30,20,null);
+        canvas.drawBitmap(money,700 * dpX,20 * dpY,null);
         invalidate();
     }
 
@@ -165,7 +165,8 @@ public class GameView extends View {
 
     public void setDp(int Dpi){
         deviceDpi = Dpi;
-        dp = deviceDpi / 420;
+        dpX = (float)(deviceDpi / 420 * 16 / 18.5);
+        dpY = deviceDpi / 420;
     }
 }
 
