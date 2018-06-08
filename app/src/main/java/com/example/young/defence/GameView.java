@@ -35,7 +35,7 @@ public class GameView extends View {
     int clickedTower;
     Bitmap monsterImage, monsterBitmap;
     Bitmap projectileImage, projectileBitmap;
-    Bitmap heart, heartBitmap;
+    Bitmap heart, heartBitmap, money, moneyBitmap;
     private int deviceDpi;
     private Paint paint = new Paint();
 
@@ -59,6 +59,7 @@ public class GameView extends View {
         heartBitmap = Bitmap.createScaledBitmap(heart,heart.getWidth()/20,heart.getHeight()/20,false);
         stop = BitmapFactory.decodeResource(getResources(),R.drawable.stop);
         play = BitmapFactory.decodeResource(getResources(),R.drawable.play);
+        money = BitmapFactory.decodeResource(getResources(),R.drawable.money);
 //        projectileImage = Bitmap.createScaledBitmap(projectileBitmap, projectileBitmap.getWidth() / 10, projectileBitmap.getHeight() / 10, false);
     }
 
@@ -94,6 +95,7 @@ public class GameView extends View {
         canvas.drawBitmap(heartBitmap,30,20,null);
         canvas.drawBitmap(stop,2300,20,null);
         canvas.drawBitmap(play,2050,20,null);
+        canvas.drawBitmap(money,700,20,null);
         invalidate();
     }
 
