@@ -146,7 +146,6 @@ public class GameManager extends Thread{
         for(int i = 0; i < monsterCount; i++){
             Monster monster = new Monster(context, stage, i);
             monsterArrayList.add(monster);
-            monster.animationDrawable.start();
         }
     }
 

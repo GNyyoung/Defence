@@ -16,6 +16,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.Toast;
 
@@ -54,7 +55,7 @@ public class GameView extends View {
         base = findViewById(R.id.base);
         evolution1 = findViewById(R.id.evolution1);
         evolution2 = findViewById(R.id.evolution2);
-        monsterBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.right1);
+//        monsterBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.right1);
         //monsterImage = Bitmap.createScaledBitmap(monsterBitmap, monsterBitmap.getWidth() / 3, monsterBitmap.getHeight() / 3, false);
         projectileBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.projectile);
         heart = BitmapFactory.decodeResource(getResources(),R.drawable.heart);
@@ -64,6 +65,7 @@ public class GameView extends View {
         money = BitmapFactory.decodeResource(getResources(),R.drawable.money);
 //        projectileImage = Bitmap.createScaledBitmap(projectileBitmap, projectileBitmap.getWidth() / 10, projectileBitmap.getHeight() / 10, false);
         pause = stop;
+
     }
 
     protected void onDraw(Canvas canvas){
@@ -83,10 +85,12 @@ public class GameView extends View {
         }
         for(int i = 0; i < GameManager.monsterArrayList.size(); i++){
             Monster monster = GameManager.monsterArrayList.get(i);
-            float monsterPosX = monster.getPosX() * dpX - (monsterBitmap.getWidth() / 2);
-            float monsterPosY = monster.getPosY() * dpY - (monsterBitmap.getHeight() / 2);
-//        canvas.drawBitmap(robot.bot, robot.posX, canvas.getHeight() / 2, null);
-            canvas.drawBitmap(monsterBitmap, monsterPosX, monsterPosY,null);
+            float monsterPosX = monster.getPosX() * dpX - (monster.monsterImage.getWidth() / 2);
+            float monsterPosY = monster.getPosY() * dpY - (monster.monsterImage.getHeight() / 2);
+
+            canvas.drawBitmap(monster.monsterImage, monsterPosX, monsterPosY,null);
+
+
         }
         for(int i = 0; i < GameManager.projectileArrayList.size(); i++){
             Projectile projectile = GameManager.projectileArrayList.get(i);

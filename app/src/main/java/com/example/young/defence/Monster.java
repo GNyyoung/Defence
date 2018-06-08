@@ -49,24 +49,26 @@ public class Monster {
     private boolean isLived = true;
 //    몬스터가 활성화됐는지 확인. 활성화되어야 움직인다.
     private boolean isActivated = false;
-
+    public int state=1;
     public Context context;
 //    지금은 인자를 받아오는 걸로 해놨지만 스테이지만 받아오고
 //    values에 능력치 파일을 하나 만들어서 거기서 스테이지에 맞는 데이터를 가져올 수 있게 만들자.
     public Monster(Context context, int stage, int number){
 //        몬스터 이미지 추가
         this.context = context;
-//        monsterImage = BitmapFactory.decodeResource(context.getResources(), R.drawable.animation);
-        BitmapDrawable right1 = (BitmapDrawable)context.getResources().getDrawable(R.drawable.left1);
-        BitmapDrawable right2 = (BitmapDrawable)context.getResources().getDrawable(R.drawable.left2);
-        BitmapDrawable right3 = (BitmapDrawable)context.getResources().getDrawable(R.drawable.front3);
-        BitmapDrawable right4 = (BitmapDrawable)context.getResources().getDrawable(R.drawable.back4);
-        animationDrawable = new AnimationDrawable();
-        animationDrawable.addFrame(right1,500);
-        animationDrawable.addFrame(right2,500);
-        animationDrawable.addFrame(right3,500);
-        animationDrawable.addFrame(right4,500);
-        animationDrawable.setOneShot(false);
+        monsterImage = BitmapFactory.decodeResource(context.getResources(), R.drawable.right1);
+
+
+//        BitmapDrawable right1 = (BitmapDrawable)context.getResources().getDrawable(R.drawable.left1);
+//        BitmapDrawable right2 = (BitmapDrawable)context.getResources().getDrawable(R.drawable.left2);
+//        BitmapDrawable right3 = (BitmapDrawable)context.getResources().getDrawable(R.drawable.front3);
+//        BitmapDrawable right4 = (BitmapDrawable)context.getResources().getDrawable(R.drawable.back4);
+//        animationDrawable = new AnimationDrawable();
+//        animationDrawable.addFrame(right1,500);
+//        animationDrawable.addFrame(right2,500);
+//        animationDrawable.addFrame(right3,500);
+//        animationDrawable.addFrame(right4,500);
+//        animationDrawable.setOneShot(false);
         this.hp = Data.monster1HP[stage];
         this.money = Data.monster1Money[stage];
         this.moveSpeed = Data.monster1Speed[stage];
@@ -103,9 +105,9 @@ public class Monster {
         if(isActivated == true){
             float pointX = point.getPosX();
             float pointY = point.getPosY();
-            float distanceX = pointX - posX;
+            final float distanceX = pointX - posX;
 //        Log.i("Monster", "distanceX: " + Float.toString(distanceX));
-            float distanceY = pointY - posY;
+            final float distanceY = pointY - posY;
 //        빗변
             float hypotenuse = (float)Math.sqrt(Math.pow(distanceX, 2) + Math.pow(distanceY, 2));
 //        Log.i("Monster", "hypotenuse: " + Float.toString(hypotenuse));
@@ -113,18 +115,88 @@ public class Monster {
             float speedX, speedY;
 
 //        사잇값들이 생략되어 있으니 나중에 <= 또는 >=을 조건문에서 충돌나지 않게 넣어줄것.
-            if(distanceX > 0 && distanceX / distanceY > -1 && distanceX / distanceY < 1){
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    if(distanceX > 0 && distanceY==0){
 //            오른쪽 이미지 출력
-            }
-            else if(distanceX / distanceY > -1 && distanceX / distanceY < 1){
-//            왼쪽 이미지 출력
-            }
-            else if(distanceY > 0 && distanceX / distanceY < -1 && distanceX / distanceY > 1){
+                        if(state==1) {
+                            monsterImage = BitmapFactory.decodeResource(context.getResources(), R.drawable.right1);
+                            state++;
+                        }
+                        else if(state==2) {
+                            monsterImage = BitmapFactory.decodeResource(context.getResources(), R.drawable.right2);
+                            state++;
+                        }
+                        else if(state==3) {
+                            monsterImage = BitmapFactory.decodeResource(context.getResources(), R.drawable.right3);
+                            state++;
+                        }
+                        else if(state==4) {
+                            monsterImage = BitmapFactory.decodeResource(context.getResources(), R.drawable.right4);
+                            state=1;
+                        }
+                    }
+                    else if(distanceX == 0 && distanceY < 0){
 //            위쪽 이미지 출력
-            }
-            else{
+                        if(state==1) {
+                            monsterImage = BitmapFactory.decodeResource(context.getResources(), R.drawable.back1);
+                            state++;
+                        }
+                        else if(state==2) {
+                            monsterImage = BitmapFactory.decodeResource(context.getResources(), R.drawable.back2);
+                            state++;
+                        }
+                        else if(state==3) {
+                            monsterImage = BitmapFactory.decodeResource(context.getResources(), R.drawable.back3);
+                            state++;
+                        }
+                        else if(state==4) {
+                            monsterImage = BitmapFactory.decodeResource(context.getResources(), R.drawable.back4);
+                            state=1;
+                        }
+                    }
+                    else if(distanceX == 0 && distanceY > 0){
 //            아래쪽 이미지 출력
-            }
+                        if(state==1) {
+                            monsterImage = BitmapFactory.decodeResource(context.getResources(), R.drawable.front1);
+                            state++;
+                        }
+                        else if(state==2) {
+                            monsterImage = BitmapFactory.decodeResource(context.getResources(), R.drawable.front2);
+                            state++;
+                        }
+                        else if(state==3) {
+                            monsterImage = BitmapFactory.decodeResource(context.getResources(), R.drawable.front3);
+                            state++;
+                        }
+                        else if(state==4) {
+                            monsterImage = BitmapFactory.decodeResource(context.getResources(), R.drawable.front4);
+                            state=1;
+                        }
+                    }
+                    else if(distanceX < 0 && distanceY==0){
+//            아래쪽 이미지 출력 오른쪽
+                        if(state==1) {
+                            monsterImage = BitmapFactory.decodeResource(context.getResources(), R.drawable.left1);
+                            state++;
+                        }
+                        else if(state==2) {
+                            monsterImage = BitmapFactory.decodeResource(context.getResources(), R.drawable.left2);
+                            state++;
+                        }
+                        else if(state==3) {
+                            monsterImage = BitmapFactory.decodeResource(context.getResources(), R.drawable.left3);
+                            state++;
+                        }
+                        else if(state==4) {
+                            monsterImage = BitmapFactory.decodeResource(context.getResources(), R.drawable.left4);
+                            state=1;
+                        }
+                    }
+                }
+            });
+
 
             speedX = moveSpeed * distanceX / hypotenuse;
 //        Log.i("Monster", "move: " + Float.toString(speedX));
