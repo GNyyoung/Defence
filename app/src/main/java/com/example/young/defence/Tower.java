@@ -68,42 +68,9 @@ public class Tower {
             targetList.add(monster);
             Log.i("Tower", "addTarget");
             designateTarget();
-            /*
-            if(targetList.isEmpty()){
-                targetList.add(monster);
-                Log.i("Tower", "addTarget");
-                designateTarget();
-            }
-            else{
-//                이미 타겟리스트에 있는 몬스터라면 메소드 종료.
-                for(int i = 0; i < targetList.size(); i++){
-                    int number = targetList.get(i).getNumber();
-                    if(monster.getNumber() == number){
-                        return;
-                    }
-                }
 
-                targetList.add(monster);
-                Log.i("Tower", "addTarget");
-                designateTarget();
-            }*/
         }
-//            어레이리스트에 있는 몬스터 중 포탑 범위 밖으로 나간 애가 있는지 체크
-//            나간 경우 그 몬스터 = 타겟인지 체크
-//            타겟일 경우 타겟 = null로 하고 designateTarget()실행
-//            타겟이 아닐 경우 remove
-        /*
-        else{
-            for(int i = targetList.size() - 1; i >= 0; i--){
-                if(targetList.get(i).getNumber() == monster.getNumber()){
-                    targetList.remove(i);
-                    Log.i("Tower", "removeTarget");
-                    if(target.getNumber() == monster.getNumber()){
-                        target = null;
-                    }
-                }
-            }
-        }*/
+
     }
 
 //    타겟이 아예 없어서 새로 타겟을 설정하는거랑

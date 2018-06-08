@@ -78,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
        tower.towerImage = BitmapFactory.decodeResource(getResources(), R.drawable.turret_base);
        GameManager.towerArrayList.get(gameView.getClickedTower()).towerState=1;
        gameView.popupWindow_ground.dismiss();
-
+       GameManager.towerArrayList.get(gameView.getClickedTower()).activate();
    }
    public void onClick_Evo1(View view){
        Tower tower = GameManager.towerArrayList.get(gameView.getClickedTower());
