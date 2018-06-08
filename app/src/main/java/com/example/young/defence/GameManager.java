@@ -91,22 +91,25 @@ public class GameManager extends Thread{
         }
     }
     private void controlTower(){
-        if(towerArrayList.isEmpty() == false){
+        if(towerArrayList.isEmpty())
+            return;
+        else{
             for(int i = 0; i < towerArrayList.size(); i++){
-                if(towerArrayList.get(i).isTargeted() == false){
-                    for(int j = 0; j < monsterArrayList.size(); j++){
-                        towerArrayList.get(i).identifyTarget(monsterArrayList.get(j));
-                    }
+                towerArrayList.get(i).resetTargetList();
+                for(int j = 0; j < monsterArrayList.size(); j++){
+                    towerArrayList.get(i).identifyTarget(monsterArrayList.get(j));
                 }
-                else{
+                if(towerArrayList.get(i).isTargeted()){
                     towerArrayList.get(i).increaseTimer(delay);
                     towerArrayList.get(i).attack();
                 }
             }
         }
     }
+
     private void controlProjectile(){
         if(projectileArrayList.isEmpty() == false){
+            Log.i("GameManager", "ProjectileCount : " + Integer.toString(projectileArrayList.size()));
             for(int i = projectileArrayList.size() - 1; i >= 0; i--){
                 if(projectileArrayList.get(i).getLive() == false){
                     projectileArrayList.remove(i);

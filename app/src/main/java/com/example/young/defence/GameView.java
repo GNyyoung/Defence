@@ -58,9 +58,15 @@ public class GameView extends View {
         paint.setColor(Color.RED);
         paint.setAlpha(44);
         for(int i = 0; i<GameManager.towerArrayList.size();i++){
-            canvas.drawBitmap(GameManager.towerArrayList.get(i).towerImage, Data.towerPosX[i] * (deviceDpi / 420), Data.towerPosY[i] * (deviceDpi / 420),null);
+            canvas.drawBitmap(
+                    GameManager.towerArrayList.get(i).towerImage,
+                    Data.towerPosX[i] * (deviceDpi / 420),
+                    Data.towerPosY[i] * (deviceDpi / 420),null);
             if(GameManager.towerArrayList.get(i).towerState > 0){
-                canvas.drawCircle(Data.towerPosX[i], Data.towerPosY[i], 400, paint);
+                canvas.drawCircle(
+                        Data.towerPosX[i] + (GameManager.towerArrayList.get(i).towerImage.getWidth() / 2),
+                        Data.towerPosY[i] + (GameManager.towerArrayList.get(i).towerImage.getWidth() / 2),
+                        400, paint);
             }
         }
         for(int i = 0; i < GameManager.monsterArrayList.size(); i++){

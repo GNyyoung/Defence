@@ -40,9 +40,10 @@ public class Monster {
 //    비트맵이 아닌 다른 이미지 형식을 가진다면 수정한다.
 //    import한것도 같이 지우기.
     public Bitmap monsterImage;
-    private float collisionRadius = 1;
+    private float collisionRadius = 20;
 //    몬스터가 생존했는지 체크. 죽었을 경우 false로 설정해서 arrayList에서 제거한다.
     private boolean isLived = true;
+//    몬스터가 활성화됐는지 확인. 활성화되어야 움직인다.
     private boolean isActivated = false;
     public Context context;
 //    지금은 인자를 받아오는 걸로 해놨지만 스테이지만 받아오고

@@ -5,7 +5,7 @@ import android.graphics.Bitmap;
 /**
  * Created by young on 2018-05-03.
  * 해결할것
- * 1. 타겟에게 맞아도 이미지가 사라지지 않음.
+ * 1. 타겟에게 맞아도 이미지가 사라지지 않음. / 해결
  */
 
 public class Projectile {
@@ -29,22 +29,26 @@ public class Projectile {
 
 //    thread에서 반복 실행
     public void followTarget(){
-        float targetPosX = target.getPosX();
-        float targetPosY = target.getPosY();
+        if(target.getLive() == false)
+            isLived = false;
+        else{
+            float targetPosX = target.getPosX();
+            float targetPosY = target.getPosY();
 
 
-        float distanceX = targetPosX - posX;
-        float distanceY = targetPosY - posY;
+            float distanceX = targetPosX - posX;
+            float distanceY = targetPosY - posY;
 
-        float hypotenuse = (float)Math.sqrt(Math.pow(distanceX, 2) + Math.pow(distanceY, 2));
-        float speedX, speedY;
+            float hypotenuse = (float)Math.sqrt(Math.pow(distanceX, 2) + Math.pow(distanceY, 2));
+            float speedX, speedY;
 
-        speedX = speed * distanceX / hypotenuse;
-        speedY = speed * distanceY / hypotenuse;
-        posX += speedX;
-        posY += speedY;
+            speedX = speed * distanceX / hypotenuse;
+            speedY = speed * distanceY / hypotenuse;
+            posX += speedX;
+            posY += speedY;
 
-        monsterCollisionCheck(target);
+            monsterCollisionCheck(target);
+        }
     }
 
     private void monsterCollisionCheck(Monster target){
