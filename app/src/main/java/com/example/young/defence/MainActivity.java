@@ -31,18 +31,10 @@ public class MainActivity extends AppCompatActivity {
         gameManager.start();
         gameView=new GameView(this);
         setContentView(gameView);
-// setContentView(R.layout.activity_main);
-//        popupView = View.inflate(this,R.layout.popup_ground,null);
-//        popupWindow = new PopupWindow(popupView,270,150,true);
-//        for(int i=0;i<GameManager.towerArrayList.size();i++){
-//            popupWindow.setAnimationStyle(android.R.style.Animation_Translucent);
-//            popupWindow.showAtLocation(popupView, Gravity.NO_GRAVITY,(int)Data.towerPosX[i]-50,(int)Data.towerPosY[i]+100);
-
-//        }
         DisplayMetrics outMetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(outMetrics);
         deviceDpi = outMetrics.densityDpi;
-        gameView.setDpi(deviceDpi);
+        gameView.setDp(deviceDpi);
         Log.i("MainActivity", "DPI : " + Integer.toString(deviceDpi));
     }
 

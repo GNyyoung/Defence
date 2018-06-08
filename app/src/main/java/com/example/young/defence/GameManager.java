@@ -42,16 +42,19 @@ public class GameManager extends Thread{
         SpawnThread spawnThread = new SpawnThread();
         startTower();
         while(true){
+            if(Data.pause == false){
+                isRun = true;
+            }
             if(isRun == false && spawnThread != null){
-                spawnThread.isRun = false;
-                spawnThread.pause = true;
+                spawnThread.stop = true;
             }
             while(isRun){
-                if(spawnThread != null && spawnThread.pause){
-                    if(spawnThread.isRun == false)
-                        Log.i("GameManager", "isRun is true");
-                    spawnThread.pause = false;
-                    spawnThread.isRun = true;
+                if(Data.pause == true){
+                    isRun = false;
+                    break;
+                }
+                if(spawnThread != null && spawnThread.isRun == false){
+                    spawnThread.stop = false;
                 }
 
                 controlMonster();

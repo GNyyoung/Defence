@@ -19,16 +19,22 @@ public class SpawnThread extends Thread{
     public boolean pause = false;
     private boolean finishSpawn = false;
     private Context context;
+    boolean stop = false;
 
     public void run(){
         try{
             sleep(3000);
         }catch (InterruptedException e){}
         while(run){
+            if(stop == false){
+                isRun = true;
+            }
             while(isRun){
-                Log.i("SpawnThread", "run: ");
+                if(stop == true){
+                    isRun = false;
+                    break;
+                }
                 spawn(spawnCount);
-                Log.i("SpawnThread", Integer.toString(spawnCount));
                 try {
                     sleep(1000);
                 }catch (InterruptedException e){}
@@ -39,11 +45,11 @@ public class SpawnThread extends Thread{
                     break;
                 }
             }
-            if(finishSpawn)
+            if(finishSpawn){
                 Log.i("SpawnThread", "FinishSpawn");
                 return;
+            }
         }
-        Log.i("SpawnThread", "ThreadEnd");
     }
 
     private void spawn(int number){

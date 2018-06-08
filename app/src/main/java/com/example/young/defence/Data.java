@@ -23,8 +23,8 @@ public class Data {
 
     final static int maxStage = 2;
 
-    final static float[] towerPosX = {600, 1200, 1800};
-    final static float[] towerPosY = {500, 700, 800};
+    final static float[] towerPosX = {550, 1100, 1700};
+    final static float[] towerPosY = {400, 800, 650};
 //    스테이지 별 소환 몬스터 수
     final static int[] monster1Count = {0,5,7};
 //    스테이지 별 몬스터 능력치
@@ -36,5 +36,7 @@ public class Data {
 
     public static int playerMoney = 0;
     public static int playerHP = 5;
+
+    public static boolean pause = false;
 
 }
