@@ -59,7 +59,6 @@ public class GameView extends View {
         //monsterImage = Bitmap.createScaledBitmap(monsterBitmap, monsterBitmap.getWidth() / 3, monsterBitmap.getHeight() / 3, false);
         projectileBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.projectile);
         heart = BitmapFactory.decodeResource(getResources(),R.drawable.heart);
-        heartBitmap = Bitmap.createScaledBitmap(heart,heart.getWidth()/20,heart.getHeight()/20,false);
         stop = BitmapFactory.decodeResource(getResources(),R.drawable.stop);
         play = BitmapFactory.decodeResource(getResources(),R.drawable.play);
         pause = stop;
@@ -97,9 +96,9 @@ public class GameView extends View {
             canvas.drawBitmap(projectileBitmap, projectilePosX, projectilePosY, null);
         }
 //        Log.i("GameView", Float.toString(GameManager.monsterArrayList.get(0).getPosX()));
-        canvas.drawBitmap(heartBitmap,30 * dp, 20 * dp,null);
+        canvas.drawBitmap(heart,30 * dp, 20 * dp,null);
         canvas.drawBitmap(pause,2000,50,null);
-        canvas.drawBitmap(heartBitmap,30,20,null);
+        canvas.drawBitmap(heart,30,20,null);
         canvas.drawBitmap(stop,2300,20,null);
         canvas.drawBitmap(play,2050,20,null);
         canvas.drawBitmap(money,700,20,null);
