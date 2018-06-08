@@ -105,8 +105,9 @@ public class Tower {
                         candidate = targetList.get(i);
                     }
                 }
-                target = candidate;
             }
+            target = candidate;
+            Log.i("Tower", "Target : " + Integer.toString(target.getNumber()));
         }
     }
 
@@ -139,5 +140,7 @@ public class Tower {
 
     public void resetTargetList(){
         targetList.clear();
+        if(target != null && target.getLive() == false)
+            target = null;
     }
 }

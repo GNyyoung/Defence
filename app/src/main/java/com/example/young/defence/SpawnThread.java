@@ -12,24 +12,44 @@ import java.util.ArrayList;
 public class SpawnThread extends Thread{
 
     private ArrayList<Monster> monsterArrayList = GameManager.monsterArrayList;
-    private int monsterCount = 0;
-    private boolean isRun = true;
+    public int monsterCount = 0;
+    public int spawnCount = 0;
+    public boolean isRun = true;
+    public boolean run = true;
+    public boolean pause = false;
     private boolean finishSpawn = false;
     private Context context;
+    boolean stop = false;
 
     public void run(){
-        Log.i("SpawnThread", "start spawn");
         try{
             sleep(3000);
-            for(int number = 0; number < monsterCount; number++){
-                Log.i("SpawnThread", "monster spawn");
-                spawn(number);
-                sleep(1000);
+        }catch (InterruptedException e){}
+        while(run){
+            if(stop == false){
+                isRun = true;
             }
-            Log.i("SpawnThread", "finish spawn");
-            finishSpawn = true;
-        } catch(InterruptedException e){}
-
+            while(isRun){
+                if(stop == true){
+                    isRun = false;
+                    break;
+                }
+                spawn(spawnCount);
+                try {
+                    sleep(1000);
+                }catch (InterruptedException e){}
+                spawnCount++;
+                if(spawnCount == monsterCount) {
+                    run = false;
+                    finishSpawn = true;
+                    break;
+                }
+            }
+            if(finishSpawn){
+                Log.i("SpawnThread", "FinishSpawn");
+                return;
+            }
+        }
     }
 
     private void spawn(int number){

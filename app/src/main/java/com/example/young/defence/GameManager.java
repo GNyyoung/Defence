@@ -20,7 +20,7 @@ public class GameManager extends Thread{
     private int delay = 30;
     public Context context;
 
-    private boolean isRun = true;
+    public boolean isRun = true;
 
     public GameManager(Context context) {
 //        try,catch 하는법 기억 안남... 나중에 수정 바람.
@@ -41,8 +41,22 @@ public class GameManager extends Thread{
         int stage = 0;
         SpawnThread spawnThread = new SpawnThread();
         startTower();
-        loop :
+        while(true){
+            if(Data.pause == false){
+                isRun = true;
+            }
+            if(isRun == false && spawnThread != null){
+                spawnThread.stop = true;
+            }
             while(isRun){
+                if(Data.pause == true){
+                    isRun = false;
+                    break;
+                }
+                if(spawnThread != null && spawnThread.isRun == false){
+                    spawnThread.stop = false;
+                }
+
                 controlMonster();
                 controlProjectile();
                 controlTower();
@@ -53,10 +67,11 @@ public class GameManager extends Thread{
                         spawnThread.interrupt();
                     }
                     isRun = false;
-                    break loop;
+                    return;
                 }
 
                 if(stage == 0 || (spawnThread.checkFinish() == true && monsterArrayList.isEmpty())){
+                    Log.i("GameManager", "StageClear");
                     if(spawnThread.isAlive()){
                         spawnThread.interrupt();
                     }
@@ -75,8 +90,11 @@ public class GameManager extends Thread{
                 }
                 try{
                     sleep(delay);
-                } catch (InterruptedException e){}
+                } catch (InterruptedException e){
+                    spawnThread.interrupt();
+                }
             }
+        }
     }
 
     private void controlMonster(){
@@ -91,7 +109,7 @@ public class GameManager extends Thread{
         }
     }
     private void controlTower(){
-        if(towerArrayList.isEmpty())
+        if(towerArrayList.isEmpty() || monsterArrayList.isEmpty())
             return;
         else{
             for(int i = 0; i < towerArrayList.size(); i++){
@@ -109,7 +127,7 @@ public class GameManager extends Thread{
 
     private void controlProjectile(){
         if(projectileArrayList.isEmpty() == false){
-            Log.i("GameManager", "ProjectileCount : " + Integer.toString(projectileArrayList.size()));
+//            Log.i("GameManager", "ProjectileCount : " + Integer.toString(projectileArrayList.size()));
             for(int i = projectileArrayList.size() - 1; i >= 0; i--){
                 if(projectileArrayList.get(i).getLive() == false){
                     projectileArrayList.remove(i);

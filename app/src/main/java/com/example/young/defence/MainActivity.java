@@ -1,11 +1,14 @@
 package com.example.young.defence;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
@@ -17,28 +20,21 @@ import android.widget.PopupWindow;
 
 public class MainActivity extends AppCompatActivity {
     GameView gameView ;
-    GameManager gameManager = new GameManager(this);
+    GameManager gameManager;
     private int deviceDpi;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setFullScreen();
+        gameManager = new GameManager(this);
         gameManager.start();
         gameView=new GameView(this);
         setContentView(gameView);
-// setContentView(R.layout.activity_main);
-//        popupView = View.inflate(this,R.layout.popup_ground,null);
-//        popupWindow = new PopupWindow(popupView,270,150,true);
-//        for(int i=0;i<GameManager.towerArrayList.size();i++){
-//            popupWindow.setAnimationStyle(android.R.style.Animation_Translucent);
-//            popupWindow.showAtLocation(popupView, Gravity.NO_GRAVITY,(int)Data.towerPosX[i]-50,(int)Data.towerPosY[i]+100);
-
-//        }
         DisplayMetrics outMetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(outMetrics);
         deviceDpi = outMetrics.densityDpi;
-        gameView.setDpi(deviceDpi);
+        gameView.setDp(deviceDpi);
         Log.i("MainActivity", "DPI : " + Integer.toString(deviceDpi));
     }
 
@@ -77,6 +73,7 @@ public class MainActivity extends AppCompatActivity {
        Tower tower = GameManager.towerArrayList.get(gameView.getClickedTower());
        tower.towerImage = BitmapFactory.decodeResource(getResources(), R.drawable.turret_base);
        GameManager.towerArrayList.get(gameView.getClickedTower()).towerState=1;
+       GameManager.towerArrayList.get(gameView.getClickedTower()).activate();
        gameView.popupWindow_ground.dismiss();
        GameManager.towerArrayList.get(gameView.getClickedTower()).activate();
    }
@@ -93,11 +90,43 @@ public class MainActivity extends AppCompatActivity {
         GameManager.towerArrayList.get(gameView.getClickedTower()).towerState=3;
         gameView.popupWindow_base.dismiss();
     }
+
+    protected void onPause(){
+        super.onPause();
+        gameManager.isRun = false;
+    }
+    protected void onResume(){
+        super.onResume();
+        gameManager.isRun = true;
+    }
     @Override
     protected void onStop() {
         super.onStop();
+        gameManager.isRun = false;
+    }
+    protected void onRestart(){
+        super.onRestart();
+        gameManager.isRun = true;
+    }
+    protected void onDestroy(){
+        super.onDestroy();
+    }
 
-        if(gameManager.isAlive())
-            gameManager.interrupt();
+    public void onBackPressed(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("종료하시겠습니까?");
+        builder.setNegativeButton("아니오", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+            }
+        });
+        builder.setPositiveButton("예", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                System.exit(0);
+            }
+        });
+        AlertDialog exitDialog = builder.create();
+        exitDialog.show();
     }
 }
