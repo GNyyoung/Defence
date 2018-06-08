@@ -31,7 +31,7 @@ import android.widget.Toast;
  */
 
 public class GameView extends View {
-    PopupWindow popupWindow_ground, popupWindow_base;
+    public PopupWindow popupWindow_ground, popupWindow_base;
     View popupview_ground, popupview_base;
     ImageButton base, evolution1, evolution2;
     Bitmap stop, play, pause;
@@ -73,8 +73,8 @@ public class GameView extends View {
         for(int i = 0; i<GameManager.towerArrayList.size();i++){
             canvas.drawBitmap(
                     GameManager.towerArrayList.get(i).towerImage,
-                    Data.towerPosX[i] * (deviceDpi / 420),
-                    Data.towerPosY[i] * (deviceDpi / 420),null);
+                    Data.towerPosX[i] * dp,
+                    Data.towerPosY[i] * dp,null);
             if(GameManager.towerArrayList.get(i).towerState > 0){
                 canvas.drawCircle(
                         Data.towerPosX[i] + (GameManager.towerArrayList.get(i).towerImage.getWidth() / 2),
@@ -97,11 +97,9 @@ public class GameView extends View {
         }
 //        Log.i("GameView", Float.toString(GameManager.monsterArrayList.get(0).getPosX()));
         canvas.drawBitmap(heart,30 * dp, 20 * dp,null);
-        canvas.drawBitmap(pause,2000,50,null);
-        canvas.drawBitmap(heart,30,20,null);
-        canvas.drawBitmap(stop,2300,20,null);
-        canvas.drawBitmap(play,2050,20,null);
-        canvas.drawBitmap(money,700,20,null);
+        canvas.drawBitmap(pause,2000 * dp, 50 * dp,null);
+        canvas.drawBitmap(heart,30 * dp,20 * dp,null);
+        canvas.drawBitmap(money,700 * dp,20 * dp,null);
         invalidate();
     }
 
