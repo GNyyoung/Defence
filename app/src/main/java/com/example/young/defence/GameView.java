@@ -57,6 +57,7 @@ public class GameView extends View {
     protected void onDraw(Canvas canvas){
         paint.setColor(Color.RED);
         paint.setAlpha(44);
+//        Log.i("GameView", "TowerCount : " + Integer.toString(GameManager.towerArrayList.size()));
         for(int i = 0; i<GameManager.towerArrayList.size();i++){
             canvas.drawBitmap(
                     GameManager.towerArrayList.get(i).towerImage,
@@ -108,7 +109,6 @@ public class GameView extends View {
                             Log.i("touch", "X: " + x + "Y: " + y);
                             clickedTower = i;
                             Log.i("GameView", "clickedTower= " + clickedTower);
-                            GameManager.towerArrayList.get(i).activate();
                             return true;
                         }
 //                        타워가 1단계일 때 클릭하면 2단계 타워로 업그레이드할 수 있는 UI가 뜬다.
