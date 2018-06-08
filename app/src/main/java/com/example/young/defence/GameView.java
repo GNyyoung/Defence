@@ -65,6 +65,7 @@ public class GameView extends View {
         pause = stop;
         money = BitmapFactory.decodeResource(getResources(),R.drawable.money);
 //        projectileImage = Bitmap.createScaledBitmap(projectileBitmap, projectileBitmap.getWidth() / 10, projectileBitmap.getHeight() / 10, false);
+        pause = stop;
     }
 
     protected void onDraw(Canvas canvas){
