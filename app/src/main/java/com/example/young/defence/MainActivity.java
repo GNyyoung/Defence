@@ -8,12 +8,14 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.os.Build;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.PopupWindow;
@@ -22,11 +24,13 @@ public class MainActivity extends AppCompatActivity {
     GameView gameView ;
     GameManager gameManager;
     private int deviceDpi;
+    private View decorView;
+    private int uiOption;
+    EndDialog endDialog = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setFullScreen();
         gameManager = new GameManager(this);
         gameManager.start();
         gameView=new GameView(this);
@@ -35,41 +39,40 @@ public class MainActivity extends AppCompatActivity {
         getWindowManager().getDefaultDisplay().getMetrics(outMetrics);
         deviceDpi = outMetrics.densityDpi;
         gameView.setDp(deviceDpi);
+        decorView = getWindow().getDecorView();
+        setFullScreen();
         Log.i("MainActivity", "DPI : " + Integer.toString(deviceDpi));
+        decorView.setOnSystemUiVisibilityChangeListener(
+            new View.OnSystemUiVisibilityChangeListener() {
+                @Override
+                public void onSystemUiVisibilityChange(int visibility) {
+                    setFullScreen();
+                }
+            });
     }
 
 //    전체화면으로 만드는 메소드
 //    내비게이션바, 상태바 제거하고 맨 위쪽 또는 아래쪽 드래그시 잠시 나온 후 사라진다.
 //    액션바는 제거하지 못함. styles.xml에서 따로 제거
     private void setFullScreen(){
-        int uiOptions = getWindow().getDecorView().getSystemUiVisibility();
-        int newUiOptions = uiOptions;
-        boolean isImmersiveModeEnabled = ((uiOptions | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY) == uiOptions);
-        if(!isImmersiveModeEnabled){
-            newUiOptions ^= View.SYSTEM_UI_FLAG_HIDE_NAVIGATION;
-            newUiOptions ^= View.SYSTEM_UI_FLAG_FULLSCREEN;
-            newUiOptions ^= View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
-            getWindow().getDecorView().setSystemUiVisibility(newUiOptions);
+        uiOption = getWindow().getDecorView().getSystemUiVisibility();
+        uiOption |= gameView.SYSTEM_UI_FLAG_HIDE_NAVIGATION;
+        uiOption |= gameView.SYSTEM_UI_FLAG_FULLSCREEN;
+        uiOption |= gameView.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
+        uiOption |= gameView.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION;
+        uiOption |= gameView.SYSTEM_UI_FLAG_LAYOUT_STABLE;
+
+        decorView.setSystemUiVisibility( uiOption );
+    }
+
+    public void onWindowFocusChanged(boolean hasFocus) {
+        if( hasFocus ) {
+            decorView.setSystemUiVisibility( uiOption );
         }
     }
 
-   /* protected class GameView extends View{
-        public GameView(Context context){
-            super(context);
-            setBackgroundColor(Color.GRAY);
-        }
-
-        protected void onDraw(Canvas canvas){
-//            Paint paint = new Paint();
-//            paint.setColor(Color.RED);
-            Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.robot);
-            Bitmap robot = Bitmap.createScaledBitmap(bitmap, bitmap.getWidth() / 3, bitmap.getHeight() / 3, false);
-            canvas.drawBitmap(robot, canvas.getWidth() / 2, canvas.getWidth() / 4 - bitmap.getWidth() / 2, null);
-
-        }
-    }*/
    public void onClick_Base(View view){
-
+       setFullScreen();
        Tower tower = GameManager.towerArrayList.get(gameView.getClickedTower());
        tower.towerImage = BitmapFactory.decodeResource(getResources(), R.drawable.turret_base);
        GameManager.towerArrayList.get(gameView.getClickedTower()).towerState=1;
@@ -78,6 +81,7 @@ public class MainActivity extends AppCompatActivity {
        GameManager.towerArrayList.get(gameView.getClickedTower()).activate();
    }
    public void onClick_Evo1(View view){
+       setFullScreen();
        Tower tower = GameManager.towerArrayList.get(gameView.getClickedTower());
        tower.towerImage = BitmapFactory.decodeResource(getResources(), R.drawable.turret_e1);
        GameManager.towerArrayList.get(gameView.getClickedTower()).towerState=2;
@@ -85,6 +89,7 @@ public class MainActivity extends AppCompatActivity {
 
    }
     public void onClick_Evo2(View view){
+        setFullScreen();
         Tower tower = GameManager.towerArrayList.get(gameView.getClickedTower());
         tower.towerImage = BitmapFactory.decodeResource(getResources(), R.drawable.turret_e2);
         GameManager.towerArrayList.get(gameView.getClickedTower()).towerState=3;
@@ -113,7 +118,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onBackPressed(){
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        /*AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage("종료하시겠습니까?");
         builder.setNegativeButton("아니오", new DialogInterface.OnClickListener() {
             @Override
@@ -127,6 +132,9 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         AlertDialog exitDialog = builder.create();
-        exitDialog.show();
+        exitDialog.show();*/
+            endDialog = new EndDialog(this);
+            endDialog.setCancelable(false);
+            endDialog.show();
     }
 }

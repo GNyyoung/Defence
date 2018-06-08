@@ -48,6 +48,7 @@ public class GameView extends View {
         super(context);
         setBackgroundResource(R.drawable.map1);
         Log.i("GameView", Float.toString(GameManager.checkPointList.get(0).getPosX()));
+
         popupview_ground = View.inflate(getContext(), R.layout.popup_ground, null);
         popupview_base = View.inflate(getContext(), R.layout.popup_base, null);
         popupWindow_ground = new PopupWindow(popupview_ground,270,150,true);
