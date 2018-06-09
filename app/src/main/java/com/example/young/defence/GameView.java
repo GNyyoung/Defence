@@ -167,7 +167,7 @@ public class GameView extends View {
 
                 }
 //
-                if(x > 2000 && x < 2000 + pause.getWidth() && y > 50 && y < 50 + pause.getHeight()){
+                if(x > 2000*dpX && x < 2000*dpX + pause.getWidth() && y > 50*dpY && y < 50*dpY + pause.getHeight()){
                     if(pause == stop) {
                         pause = play;
                         Data.pause = true;

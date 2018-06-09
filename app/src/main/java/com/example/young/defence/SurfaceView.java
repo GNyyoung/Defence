@@ -1,11 +1,13 @@
 package com.example.young.defence;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.os.Message;
 import android.support.constraint.ConstraintLayout;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -17,6 +19,9 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.PopupWindow;
 import android.widget.TextView;
+
+import java.util.logging.Handler;
+import java.util.logging.LogRecord;
 
 /**
  * Created by young on 2018-06-09.
@@ -34,13 +39,14 @@ public class SurfaceView extends android.view.SurfaceView implements SurfaceHold
     Bitmap heart, heartBitmap, money, moneyBitmap;
     private float deviceDpi;
     private Paint paint = new Paint();
+    Paint textPaint = new Paint();
     float dpX, dpY;
-    int currentMoney=0;
-    TextView moneyText;
+//    TextView moneyText;
     Context context;
     SurfaceThread surfaceThread;
     SurfaceHolder mHolder;
-    Bitmap map = BitmapFactory.decodeResource(getResources(), R.drawable.map1);
+    Bitmap map, mapBitmap;
+    ConstraintLayout constraintLayout;
     boolean isRun = true;
 
     public SurfaceView(Context context, AttributeSet attrs){
@@ -48,11 +54,12 @@ public class SurfaceView extends android.view.SurfaceView implements SurfaceHold
         this.context = context;
         mHolder = getHolder();
         mHolder.addCallback(this);
-
+        base = findViewById(R.id.base);
+        map = BitmapFactory.decodeResource(getResources(), R.drawable.map1);
         popupview_ground = SurfaceView.inflate(getContext(), R.layout.popup_ground, null);
         popupview_base = SurfaceView.inflate(getContext(), R.layout.popup_base, null);
-        popupWindow_ground = new PopupWindow(popupview_ground,270,150,true);
-        popupWindow_base = new PopupWindow(popupview_base,270,150,true);
+        popupWindow_ground = new PopupWindow(popupview_ground,250,260,true);
+        popupWindow_base = new PopupWindow(popupview_base,250,260,true);
         base = findViewById(R.id.base);
         evolution1 = findViewById(R.id.evolution1);
         evolution2 = findViewById(R.id.evolution2);
@@ -64,11 +71,12 @@ public class SurfaceView extends android.view.SurfaceView implements SurfaceHold
         pause = stop;
         money = BitmapFactory.decodeResource(getResources(),R.drawable.money);
         moneyBitmap = Bitmap.createScaledBitmap(money, money.getWidth()/2, money.getHeight()/2, false);
-        moneyText = new TextView(context);
-        moneyText.setTextColor(Color.WHITE);
-        moneyText.setX(850 * dpX);
-        moneyText.setY(10 * dpY);
-        moneyText.setTextSize(30);
+        constraintLayout = findViewById(R.id.con);
+//        moneyText = new TextView(context);
+//        moneyText.setTextColor(Color.WHITE);
+
+        textPaint.setColor(Color.WHITE);
+        textPaint.setTextSize(100);
         paint.setColor(Color.RED);
         paint.setAlpha(44);
         Log.i("SurfaceView", "서피스뷰 시작");
@@ -114,11 +122,14 @@ public class SurfaceView extends android.view.SurfaceView implements SurfaceHold
     }
     public void doDraw(Canvas canvas){
 //            ((ConstraintLayout)this.getParent()).removeView(moneyText);
-
-        Bitmap scaledMap = Bitmap.createScaledBitmap(map, canvas.getWidth(), canvas.getHeight(), false);
-        canvas.drawBitmap(scaledMap, 0, 0, null);
-        moneyText.setText(""+Data.playerMoney);
-
+//            canvas.drawBitmap(map,0,0,null);
+            mapBitmap = Bitmap.createScaledBitmap(map, canvas.getWidth(), canvas.getHeight(), false);
+            canvas.drawBitmap(mapBitmap,0,0,null);
+//            moneyText.setText(""+Data.playerMoney);
+//            moneyText.setX(850 * dpX);
+//            moneyText.setY(10 * dpY);
+//            moneyText.setTextSize(30);
+            canvas.drawText(""+Data.playerMoney,850*dpX,90*dpY,textPaint);
 //            ConstraintLayout.LayoutParams lp = new ConstraintLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT);
 //            moneyText.setLayoutParams(lp);
 //            ((ConstraintLayout)this.getParent()).addView(moneyText);
@@ -152,7 +163,7 @@ public class SurfaceView extends android.view.SurfaceView implements SurfaceHold
                     if(GameManager.towerArrayList.get(i).towerState==0) {
                         popupWindow_ground.setAnimationStyle(android.R.style.Animation_Translucent);
                         popupWindow_ground.showAtLocation(this, Gravity.NO_GRAVITY,
-                                (int) (Data.towerPosX[i]*dpX - 50*dpX), (int) (Data.towerPosY[i]*dpY) + popupWindow_ground.getHeight());
+                                (int) (Data.towerPosX[i]*dpX - 50*dpX), (int) ((Data.towerPosY[i]*dpY) + 100*dpY));
                         Log.i("touch", "X: " + x + "Y: " + y);
                         clickedTower = i;
                         Log.i("GameView", "clickedTower= " + clickedTower);
@@ -162,7 +173,7 @@ public class SurfaceView extends android.view.SurfaceView implements SurfaceHold
                     else if(GameManager.towerArrayList.get(i).towerState==1){
                         popupWindow_base.setAnimationStyle(android.R.style.Animation_Translucent);
                         popupWindow_base.showAtLocation(this, Gravity.NO_GRAVITY,
-                                (int) (Data.towerPosX[i]*dpX - 50*dpX), (int) (Data.towerPosY[i]*dpY + popupWindow_base.getHeight()));
+                                (int) (Data.towerPosX[i]*dpX - 50*dpX), (int) ((Data.towerPosY[i]*dpY) + 110*dpY));
                         Log.i("touch", "X: " + x + "Y: " + y);
                         clickedTower = i;
                         Log.i("GameView", "clickedTower= " + clickedTower);

@@ -34,7 +34,7 @@ public class Data {
     final static int[] monster2Count = {5};
     final static int towerCount = 3;
 
-    public static int playerMoney = 0;
+    public static int playerMoney = 50;
     public static int playerHP = 5;
 
     public static boolean pause = false;
