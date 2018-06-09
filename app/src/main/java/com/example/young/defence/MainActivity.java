@@ -21,27 +21,28 @@ import android.widget.ImageButton;
 import android.widget.PopupWindow;
 
 public class MainActivity extends AppCompatActivity {
-    GameView gameView ;
+    GameView gameView;
     GameManager gameManager;
-    private int deviceDpi;
+    private float deviceDpi;
     private View decorView;
     private int uiOption;
     EndDialog endDialog = null;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         gameManager = new GameManager(this);
         gameManager.start();
-        gameView=new GameView(this);
-        setContentView(gameView);
+
+//        surfaceGameView = new SurfaceGameView(this);
+        setContentView(R.layout.activity_main);
+        gameView = findViewById(R.id.gameview);
         DisplayMetrics outMetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(outMetrics);
         deviceDpi = outMetrics.densityDpi;
         gameView.setDp(deviceDpi);
         decorView = getWindow().getDecorView();
         setFullScreen();
-        Log.i("MainActivity", "DPI : " + Integer.toString(deviceDpi));
+        Log.i("MainActivity", "DPI : " + Float.toString(deviceDpi));
         decorView.setOnSystemUiVisibilityChangeListener(
             new View.OnSystemUiVisibilityChangeListener() {
                 @Override

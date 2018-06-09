@@ -7,17 +7,21 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Point;
+import android.support.constraint.ConstraintLayout;
 import android.text.Layout;
+import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
+import android.widget.TextView;
 import android.widget.Toast;
 
 /**
@@ -43,9 +47,13 @@ public class GameView extends View {
     private float deviceDpi;
     private Paint paint = new Paint();
     float dpX, dpY;
+    int currentMoney=0;
+    MainActivity mainActivity;
+    TextView moneyText;
 
-    public GameView(Context context){
-        super(context);
+    public GameView(Context context, AttributeSet attributeSet){
+        super(context, attributeSet);
+        mainActivity = (MainActivity)context;
         setBackgroundResource(R.drawable.map1);
         Log.i("GameView", Float.toString(GameManager.checkPointList.get(0).getPosX()));
 
@@ -60,18 +68,31 @@ public class GameView extends View {
         //monsterImage = Bitmap.createScaledBitmap(monsterBitmap, monsterBitmap.getWidth() / 3, monsterBitmap.getHeight() / 3, false);
         projectileBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.projectile);
         heart = BitmapFactory.decodeResource(getResources(),R.drawable.heart);
+        heartBitmap = Bitmap.createScaledBitmap(heart, heart.getWidth()/2, heart.getHeight()/2, false);
         stop = BitmapFactory.decodeResource(getResources(),R.drawable.stop);
         play = BitmapFactory.decodeResource(getResources(),R.drawable.play);
         pause = stop;
         money = BitmapFactory.decodeResource(getResources(),R.drawable.money);
+        moneyBitmap = Bitmap.createScaledBitmap(money, money.getWidth()/2, money.getHeight()/2, false);
 //        projectileImage = Bitmap.createScaledBitmap(projectileBitmap, projectileBitmap.getWidth() / 10, projectileBitmap.getHeight() / 10, false);
         pause = stop;
-
+        moneyText = new TextView(mainActivity);
+        moneyText.setTextColor(Color.WHITE);
     }
 
     protected void onDraw(Canvas canvas){
         paint.setColor(Color.RED);
         paint.setAlpha(44);
+        ((ConstraintLayout)this.getParent()).removeView(moneyText);
+
+        moneyText.setText(""+Data.playerMoney);
+        moneyText.setX(850 * dpX);
+        moneyText.setY(10 * dpY);
+        moneyText.setTextSize(30);
+        ConstraintLayout.LayoutParams lp = new ConstraintLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT);
+        moneyText.setLayoutParams(lp);
+        ((ConstraintLayout)this.getParent()).addView(moneyText);
+
         for(int i = 0; i<GameManager.towerArrayList.size();i++){
             canvas.drawBitmap(
                     GameManager.towerArrayList.get(i).towerImage,
@@ -79,8 +100,8 @@ public class GameView extends View {
                     Data.towerPosY[i] * dpY,null);
             if(GameManager.towerArrayList.get(i).towerState > 0){
                 canvas.drawCircle(
-                        Data.towerPosX[i] + (GameManager.towerArrayList.get(i).towerImage.getWidth() / 2),
-                        Data.towerPosY[i] + (GameManager.towerArrayList.get(i).towerImage.getWidth() / 2),
+                        Data.towerPosX[i]*dpX + (GameManager.towerArrayList.get(i).towerImage.getWidth() / 2),
+                        Data.towerPosY[i]*dpY + (GameManager.towerArrayList.get(i).towerImage.getWidth() / 2),
                         400, paint);
             }
         }
@@ -91,7 +112,6 @@ public class GameView extends View {
 
             canvas.drawBitmap(monster.monsterImage, monsterPosX, monsterPosY,null);
 
-
         }
         for(int i = 0; i < GameManager.projectileArrayList.size(); i++){
             Projectile projectile = GameManager.projectileArrayList.get(i);
@@ -100,10 +120,13 @@ public class GameView extends View {
             canvas.drawBitmap(projectileBitmap, projectilePosX, projectilePosY, null);
         }
 //        Log.i("GameView", Float.toString(GameManager.monsterArrayList.get(0).getPosX()));
-        canvas.drawBitmap(heart,30 * dpX, 20 * dpY,null);
+        for(int i = 0; i < Data.playerHP ; i++){
+            canvas.drawBitmap(heartBitmap,heartBitmap.getWidth() * dpX * (i+1) - heartBitmap.getWidth()/2, 20 * dpY,null);
+        }
+
         canvas.drawBitmap(pause,2000 * dpX,50 * dpY,null);
 //        canvas.drawBitmap(heart,30,20,null);
-        canvas.drawBitmap(money,700 * dpX,20 * dpY,null);
+        canvas.drawBitmap(moneyBitmap,700 * dpX,20 * dpY,null);
         invalidate();
     }
 
@@ -119,12 +142,13 @@ public class GameView extends View {
                 Log.i("GameView", Integer.toString(GameManager.towerArrayList.size()));
                 Log.i("touchPosition", x + " , " + y);
                 for(int i=0;i<GameManager.towerArrayList.size();i++) {
-                    if (x >Data.towerPosX[i]&&x<(Data.towerPosX[i]+150)&&y>Data.towerPosY[i]&&y<Data.towerPosY[i]+150){
+                    if (x >Data.towerPosX[i]*dpX&&x<(Data.towerPosX[i]*dpX+GameManager.towerArrayList.get(i).towerImage.getWidth())
+                            &&y>Data.towerPosY[i]*dpY&&y<Data.towerPosY[i]*dpY+GameManager.towerArrayList.get(i).towerImage.getHeight()){
 //                        타워가 없는 상태일 때 클릭하면 1단계 타워로 올릴 수 있는 UI가 뜬다.
                         if(GameManager.towerArrayList.get(i).towerState==0) {
                             popupWindow_ground.setAnimationStyle(android.R.style.Animation_Translucent);
                             popupWindow_ground.showAtLocation(this, Gravity.NO_GRAVITY,
-                                    (int) Data.towerPosX[i] - 50, (int) Data.towerPosY[i] + 150);
+                                    (int) (Data.towerPosX[i]*dpX - 50*dpX), (int) (Data.towerPosY[i]*dpY) + popupWindow_ground.getHeight());
                             Log.i("touch", "X: " + x + "Y: " + y);
                             clickedTower = i;
                             Log.i("GameView", "clickedTower= " + clickedTower);
@@ -134,7 +158,7 @@ public class GameView extends View {
                         else if(GameManager.towerArrayList.get(i).towerState==1){
                             popupWindow_base.setAnimationStyle(android.R.style.Animation_Translucent);
                             popupWindow_base.showAtLocation(this, Gravity.NO_GRAVITY,
-                                    (int) Data.towerPosX[i] - 50, (int) Data.towerPosY[i] + 150);
+                                    (int) (Data.towerPosX[i]*dpX - 50*dpX), (int) (Data.towerPosY[i]*dpY + popupWindow_base.getHeight()));
                             Log.i("touch", "X: " + x + "Y: " + y);
                             clickedTower = i;
                             Log.i("GameView", "clickedTower= " + clickedTower);
@@ -167,7 +191,7 @@ public class GameView extends View {
 //        tower.towerImage = BitmapFactory.decodeResource(getResources(), R.drawable.turret_base);
 //    }
 
-    public void setDp(int Dpi){
+    public void setDp(float Dpi){
         deviceDpi = Dpi;
         dpX = (float)(deviceDpi / 420 * 16 / 18.5);
         dpY = deviceDpi / 420;
