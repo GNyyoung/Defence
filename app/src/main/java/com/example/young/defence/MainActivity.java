@@ -21,7 +21,7 @@ import android.widget.ImageButton;
 import android.widget.PopupWindow;
 
 public class MainActivity extends AppCompatActivity {
-    GameView gameView;
+    SurfaceView surfaceView;
     GameManager gameManager;
     private float deviceDpi;
     private View decorView;
@@ -33,13 +33,15 @@ public class MainActivity extends AppCompatActivity {
         gameManager = new GameManager(this);
         gameManager.start();
 
-//        surfaceGameView = new SurfaceGameView(this);
+//        surfacesurfaceView = new SurfacesurfaceView(this);
         setContentView(R.layout.activity_main);
-        gameView = findViewById(R.id.gameview);
+//        surfaceView = findViewById(R.id.surfaceView);
+        surfaceView = findViewById(R.id.surfaceView);
+        
         DisplayMetrics outMetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(outMetrics);
         deviceDpi = outMetrics.densityDpi;
-        gameView.setDp(deviceDpi);
+        surfaceView.setDp(deviceDpi);
         decorView = getWindow().getDecorView();
         setFullScreen();
         Log.i("MainActivity", "DPI : " + Float.toString(deviceDpi));
@@ -57,11 +59,11 @@ public class MainActivity extends AppCompatActivity {
 //    액션바는 제거하지 못함. styles.xml에서 따로 제거
     private void setFullScreen(){
         uiOption = getWindow().getDecorView().getSystemUiVisibility();
-        uiOption |= gameView.SYSTEM_UI_FLAG_HIDE_NAVIGATION;
-        uiOption |= gameView.SYSTEM_UI_FLAG_FULLSCREEN;
-        uiOption |= gameView.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
-        uiOption |= gameView.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION;
-        uiOption |= gameView.SYSTEM_UI_FLAG_LAYOUT_STABLE;
+        uiOption |= surfaceView.SYSTEM_UI_FLAG_HIDE_NAVIGATION;
+        uiOption |= surfaceView.SYSTEM_UI_FLAG_FULLSCREEN;
+        uiOption |= surfaceView.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
+        uiOption |= surfaceView.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION;
+        uiOption |= surfaceView.SYSTEM_UI_FLAG_LAYOUT_STABLE;
 
         decorView.setSystemUiVisibility( uiOption );
     }
@@ -74,27 +76,27 @@ public class MainActivity extends AppCompatActivity {
 
    public void onClick_Base(View view){
        setFullScreen();
-       Tower tower = GameManager.towerArrayList.get(gameView.getClickedTower());
+       Tower tower = GameManager.towerArrayList.get(surfaceView.getClickedTower());
        tower.towerImage = BitmapFactory.decodeResource(getResources(), R.drawable.turret_base);
-       GameManager.towerArrayList.get(gameView.getClickedTower()).towerState=1;
-       GameManager.towerArrayList.get(gameView.getClickedTower()).activate();
-       gameView.popupWindow_ground.dismiss();
-       GameManager.towerArrayList.get(gameView.getClickedTower()).activate();
+       GameManager.towerArrayList.get(surfaceView.getClickedTower()).towerState=1;
+       GameManager.towerArrayList.get(surfaceView.getClickedTower()).activate();
+       surfaceView.popupWindow_ground.dismiss();
+       GameManager.towerArrayList.get(surfaceView.getClickedTower()).activate();
    }
    public void onClick_Evo1(View view){
        setFullScreen();
-       Tower tower = GameManager.towerArrayList.get(gameView.getClickedTower());
+       Tower tower = GameManager.towerArrayList.get(surfaceView.getClickedTower());
        tower.towerImage = BitmapFactory.decodeResource(getResources(), R.drawable.turret_e1);
-       GameManager.towerArrayList.get(gameView.getClickedTower()).towerState=2;
-       gameView.popupWindow_base.dismiss();
+       GameManager.towerArrayList.get(surfaceView.getClickedTower()).towerState=2;
+       surfaceView.popupWindow_base.dismiss();
 
    }
     public void onClick_Evo2(View view){
         setFullScreen();
-        Tower tower = GameManager.towerArrayList.get(gameView.getClickedTower());
+        Tower tower = GameManager.towerArrayList.get(surfaceView.getClickedTower());
         tower.towerImage = BitmapFactory.decodeResource(getResources(), R.drawable.turret_e2);
-        GameManager.towerArrayList.get(gameView.getClickedTower()).towerState=3;
-        gameView.popupWindow_base.dismiss();
+        GameManager.towerArrayList.get(surfaceView.getClickedTower()).towerState=3;
+        surfaceView.popupWindow_base.dismiss();
     }
 
     protected void onPause(){

@@ -48,12 +48,10 @@ public class GameView extends View {
     private Paint paint = new Paint();
     float dpX, dpY;
     int currentMoney=0;
-    MainActivity mainActivity;
     TextView moneyText;
 
     public GameView(Context context, AttributeSet attributeSet){
         super(context, attributeSet);
-        mainActivity = (MainActivity)context;
         setBackgroundResource(R.drawable.map1);
         Log.i("GameView", Float.toString(GameManager.checkPointList.get(0).getPosX()));
 
@@ -76,7 +74,7 @@ public class GameView extends View {
         moneyBitmap = Bitmap.createScaledBitmap(money, money.getWidth()/2, money.getHeight()/2, false);
 //        projectileImage = Bitmap.createScaledBitmap(projectileBitmap, projectileBitmap.getWidth() / 10, projectileBitmap.getHeight() / 10, false);
         pause = stop;
-        moneyText = new TextView(mainActivity);
+        moneyText = new TextView(context);
         moneyText.setTextColor(Color.WHITE);
     }
 
