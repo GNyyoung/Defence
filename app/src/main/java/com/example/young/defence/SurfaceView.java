@@ -40,13 +40,14 @@ public class SurfaceView extends android.view.SurfaceView implements SurfaceHold
     Context context;
     SurfaceThread surfaceThread;
     SurfaceHolder mHolder;
+    Bitmap map = BitmapFactory.decodeResource(getResources(), R.drawable.map1);
+    boolean isRun = true;
 
     public SurfaceView(Context context, AttributeSet attrs){
         super(context, attrs);
         this.context = context;
         mHolder = getHolder();
         mHolder.addCallback(this);
-
 
         popupview_ground = SurfaceView.inflate(getContext(), R.layout.popup_ground, null);
         popupview_base = SurfaceView.inflate(getContext(), R.layout.popup_base, null);
@@ -65,11 +66,12 @@ public class SurfaceView extends android.view.SurfaceView implements SurfaceHold
         moneyBitmap = Bitmap.createScaledBitmap(money, money.getWidth()/2, money.getHeight()/2, false);
         moneyText = new TextView(context);
         moneyText.setTextColor(Color.WHITE);
+        moneyText.setX(850 * dpX);
+        moneyText.setY(10 * dpY);
+        moneyText.setTextSize(30);
         paint.setColor(Color.RED);
         paint.setAlpha(44);
         Log.i("SurfaceView", "서피스뷰 시작");
-
-
     }
 
     public void surfaceCreated(SurfaceHolder holder){
@@ -82,71 +84,55 @@ public class SurfaceView extends android.view.SurfaceView implements SurfaceHold
     }
     public void surfaceDestroyed(SurfaceHolder holder){
         Log.i("SurfaceView", "서피스뷰 종료");
+        boolean done = true;
+        while (done) {
+            try {
+                surfaceThread.join();
+                done = false;
+            } catch (InterruptedException e) {
+                Log.e("interrupted", e + "");
+            }
+        }
     }
 
     class SurfaceThread extends Thread{
-//        SurfaceHolder mHolder;
-
-//        public SurfaceThread(SurfaceHolder holder, Context context){
-//            mHolder = holder;
-//        }
-
         public void run(){
             Log.i("SurfaceThread", "스레드 동작");
             Canvas canvas = null;
-            while (true){
-                canvas = mHolder.lockCanvas();
-                onDraw(canvas);
-                mHolder.unlockCanvasAndPost(canvas);
+            while (isRun){
+                if(Data.destroyActivity){
+                    Data.destroyActivity = false;
+                    return;
+                }
+                else {
+                    canvas = mHolder.lockCanvas();
+                    doDraw(canvas);
+                    mHolder.unlockCanvasAndPost(canvas);
+                }
             }
         }
-
-        public void onDraw(Canvas canvas){
+    }
+    public void doDraw(Canvas canvas){
 //            ((ConstraintLayout)this.getParent()).removeView(moneyText);
 
-            moneyText.setText(""+Data.playerMoney);
-            moneyText.setX(850 * dpX);
-            moneyText.setY(10 * dpY);
-            moneyText.setTextSize(30);
+        Bitmap scaledMap = Bitmap.createScaledBitmap(map, canvas.getWidth(), canvas.getHeight(), false);
+        canvas.drawBitmap(scaledMap, 0, 0, null);
+        moneyText.setText(""+Data.playerMoney);
+
 //            ConstraintLayout.LayoutParams lp = new ConstraintLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT);
 //            moneyText.setLayoutParams(lp);
 //            ((ConstraintLayout)this.getParent()).addView(moneyText);
 
-            for(int i = 0; i<GameManager.towerArrayList.size();i++){
-                canvas.drawBitmap(
-                        GameManager.towerArrayList.get(i).towerImage,
-                        Data.towerPosX[i] * dpX,
-                        Data.towerPosY[i] * dpY,null);
-                if(GameManager.towerArrayList.get(i).towerState > 0){
-                    canvas.drawCircle(
-                            Data.towerPosX[i]*dpX + (GameManager.towerArrayList.get(i).towerImage.getWidth() / 2),
-                            Data.towerPosY[i]*dpY + (GameManager.towerArrayList.get(i).towerImage.getWidth() / 2),
-                            400, paint);
-                }
-            }
-            for(int i = 0; i < GameManager.monsterArrayList.size(); i++){
-                Monster monster = GameManager.monsterArrayList.get(i);
-                float monsterPosX = monster.getPosX() * dpX - (monster.monsterImage.getWidth() / 2);
-                float monsterPosY = monster.getPosY() * dpY - (monster.monsterImage.getHeight() / 2);
+        drawTower(canvas);
+        drawMonster(canvas);
+        drawProjectile(canvas);
 
-                canvas.drawBitmap(monster.monsterImage, monsterPosX, monsterPosY,null);
 
-            }
-            for(int i = 0; i < GameManager.projectileArrayList.size(); i++){
-                Projectile projectile = GameManager.projectileArrayList.get(i);
-                float projectilePosX = projectile.getPosX() * dpX - (projectileBitmap.getWidth() / 2);
-                float projectilePosY = projectile.getPosY() * dpY - (projectileBitmap.getHeight() / 2);
-                canvas.drawBitmap(projectileBitmap, projectilePosX, projectilePosY, null);
-            }
-//        Log.i("GameView", Float.toString(GameManager.monsterArrayList.get(0).getPosX()));
-            for(int i = 0; i < Data.playerHP ; i++){
-                canvas.drawBitmap(heartBitmap,heartBitmap.getWidth() * dpX * (i+1) - heartBitmap.getWidth()/2, 20 * dpY,null);
-            }
-
-            canvas.drawBitmap(pause,2000 * dpX,50 * dpY,null);
-//        canvas.drawBitmap(heart,30,20,null);
-            canvas.drawBitmap(moneyBitmap,700 * dpX,20 * dpY,null);
+        for(int i = 0; i < Data.playerHP ; i++){
+            canvas.drawBitmap(heartBitmap,heartBitmap.getWidth() * dpX * (i+1) - heartBitmap.getWidth()/2, 20 * dpY,null);
         }
+        canvas.drawBitmap(pause,2000 * dpX,50 * dpY,null);
+        canvas.drawBitmap(moneyBitmap,700 * dpX,20 * dpY,null);
     }
 
 
@@ -209,5 +195,37 @@ public class SurfaceView extends android.view.SurfaceView implements SurfaceHold
         deviceDpi = Dpi;
         dpX = (float)(deviceDpi / 420 * 16 / 18.5);
         dpY = deviceDpi / 420;
+    }
+
+    private void drawTower(Canvas canvas){
+        for(int i = 0; i<GameManager.towerArrayList.size();i++){
+            canvas.drawBitmap(
+                    GameManager.towerArrayList.get(i).towerImage,
+                    Data.towerPosX[i] * dpX,
+                    Data.towerPosY[i] * dpY,null);
+            if(GameManager.towerArrayList.get(i).towerState > 0){
+                canvas.drawCircle(
+                        Data.towerPosX[i]*dpX + (GameManager.towerArrayList.get(i).towerImage.getWidth() / 2),
+                        Data.towerPosY[i]*dpY + (GameManager.towerArrayList.get(i).towerImage.getWidth() / 2),
+                        400, paint);
+            }
+        }
+    }
+    private void drawMonster(Canvas canvas){
+        for(int i = 0; i < GameManager.monsterArrayList.size(); i++){
+            Monster monster = GameManager.monsterArrayList.get(i);
+            float monsterPosX = monster.getPosX() * dpX - (monster.monsterImage.getWidth() / 2);
+            float monsterPosY = monster.getPosY() * dpY - (monster.monsterImage.getHeight() / 2);
+
+            canvas.drawBitmap(monster.monsterImage, monsterPosX, monsterPosY,null);
+        }
+    }
+    private  void drawProjectile(Canvas canvas){
+        for(int i = 0; i < GameManager.projectileArrayList.size(); i++){
+            Projectile projectile = GameManager.projectileArrayList.get(i);
+            float projectilePosX = projectile.getPosX() * dpX - (projectileBitmap.getWidth() / 2);
+            float projectilePosY = projectile.getPosY() * dpY - (projectileBitmap.getHeight() / 2);
+            canvas.drawBitmap(projectileBitmap, projectilePosX, projectilePosY, null);
+        }
     }
 }

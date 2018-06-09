@@ -7,40 +7,59 @@
     android:background="@drawable/dialog_background">
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/endText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="50dp"
-        android:layout_marginStart="50dp"
-        android:layout_marginTop="40dp"
-        android:text="종료하시겠습니까?"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="24dp"
+        android:text="패배 또는 승리"
         android:textColor="#FFFFFF"
-        android:textSize="24sp"
+        android:textSize="26sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
-        android:id="@+id/buttonYes"
-        android:layout_width="65dp"
-        android:layout_height="40dp"
-        android:layout_marginEnd="12dp"
-        android:backgroundTint="#FFCC99"
-        android:text="예"
-        app:layout_constraintEnd_toStartOf="@+id/buttonNo"
-        app:layout_constraintTop_toTopOf="@+id/buttonNo" />
+    <TextView
+        android:id="@+id/monsterCount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:text="잡은 수"
+        android:textColor="#E0E0E0"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="@+id/endText"
+        app:layout_constraintHorizontal_bias="0.494"
+        app:layout_constraintStart_toStartOf="@+id/endText"
+        app:layout_constraintTop_toBottomOf="@+id/endText" />
 
     <Button
-        android:id="@+id/buttonNo"
-        android:layout_width="65dp"
-        android:layout_height="40dp"
+        android:id="@+id/exit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginTop="16dp"
-        android:backgroundTint="#FFCC99"
-        android:text="아니오"
+        android:layout_marginEnd="16dp"
+        android:backgroundTint="#EECC99"
+        android:text="나가기"
+        android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
+        app:layout_constraintTop_toTopOf="@+id/restart"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <Button
+        android:id="@+id/restart"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="60dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:backgroundTint="#EECC99"
+        android:text="다시!"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toStartOf="@+id/exit"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/monsterCount" />
 </android.support.constraint.ConstraintLayout>

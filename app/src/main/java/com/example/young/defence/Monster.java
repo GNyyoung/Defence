@@ -215,9 +215,6 @@ public class Monster {
         }
     }
 
-//    public void die(){
-//        isLived = false;
-//    }
 
     public boolean CollisionCheck(float projectilePosX, float projectilePosY){
         if(projectilePosX > posX - collisionRadius
@@ -239,9 +236,10 @@ public class Monster {
 */
     public void damaged(int damage){
         hp -= damage;
-        if(hp <= 0)
-//            die();
+        if(hp <= 0){
             isLived = false;
+            Data.killedCount++;
+        }
     }
 
     public void activate(){

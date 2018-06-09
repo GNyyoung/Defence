@@ -16,7 +16,7 @@ public class Data {
 //    int widthDp = (int)(gameView.getWidth()/density);
 //    int heightDp = (int)(gameView.getHeight()/density);
 
-    final static float[] checkPointposX = {90, 370, 370, 820, 820, 1400, 1400, 2080
+    final static float[] checkPointposX = {0, 370, 370, 820, 820, 1400, 1400, 2080
     };
     final static float[] checkPointposY = {590, 590, 275, 275, 700, 700, 480, 480
     };
@@ -38,5 +38,8 @@ public class Data {
     public static int playerHP = 5;
 
     public static boolean pause = false;
+    public static int killedCount = 0;
+    public static boolean destroyActivity = false;
+    public static int delay = 30;
 
 }

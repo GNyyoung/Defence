@@ -20,6 +20,7 @@ public class SpawnThread extends Thread{
     private boolean finishSpawn = false;
     private Context context;
     boolean stop = false;
+    private int spawnTimer = 0;
 
     public void run(){
         try{
@@ -34,16 +35,20 @@ public class SpawnThread extends Thread{
                     isRun = false;
                     break;
                 }
-                spawn(spawnCount);
-                try {
-                    sleep(1000);
-                }catch (InterruptedException e){}
-                spawnCount++;
+                spawnTimer += Data.delay;
+                if(spawnTimer / 1000 > 0){
+                    spawn(spawnCount);
+                    spawnCount++;
+                    spawnTimer = 0;
+                }
                 if(spawnCount == monsterCount) {
                     run = false;
                     finishSpawn = true;
                     break;
                 }
+                try{
+                    sleep(Data.delay);
+                }catch (InterruptedException e){}
             }
             if(finishSpawn){
                 Log.i("SpawnThread", "FinishSpawn");

@@ -1,10 +1,13 @@
 package com.example.young.defence;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.util.Log;
 import android.widget.ImageButton;
 
 import java.util.ArrayList;
+import java.util.logging.Handler;
+import java.util.logging.LogRecord;
 
 /**
  * Created by young on 2018-05-03.
@@ -17,7 +20,6 @@ public class GameManager extends Thread{
     public static ArrayList<Monster> monsterArrayList = new ArrayList<Monster>();
     public static ArrayList<Tower> towerArrayList = new ArrayList<Tower>();
     public static ArrayList<Projectile> projectileArrayList = new ArrayList<Projectile>();
-    private int delay = 30;
     public Context context;
 
     public boolean isRun = true;
@@ -38,6 +40,7 @@ public class GameManager extends Thread{
 //    앱 실행 중에 뒤로 갔다 다시 켜면 스레드가 꺼지지 않은 상태에서 두개가 새로 켜져서 스레드가 4개 돌아가는 상황이 생긴다.
 
     public void run(){
+        Log.i("GameManager", "게임매니저 스레드 생성");
         int stage = 0;
         SpawnThread spawnThread = new SpawnThread();
         startTower();
@@ -61,12 +64,22 @@ public class GameManager extends Thread{
                 controlProjectile();
                 controlTower();
 
+//                플레이어 체력이 0으로 되면 게임오버.
                 if(Data.playerHP == 0){
                     Log.i("GameManager", "Game Over");
                     if(spawnThread.isAlive()){
                         spawnThread.interrupt();
                     }
-                    isRun = false;
+                    if(context.getClass() == MainActivity.class){
+                        ((MainActivity)context).runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                GameoverDialog gameoverDialog = ((MainActivity) context).gameoverDialog;
+                                gameoverDialog.setCancelable(false);
+                                gameoverDialog.show();
+                            }
+                        });
+                    }
                     return;
                 }
 
@@ -78,7 +91,7 @@ public class GameManager extends Thread{
 
                     if(stage == Data.maxStage){
                         Log.i("GameManager", "Win this Game");
-                        isRun = false;
+                        return;
                     }
                     else {
                         stage++;
@@ -89,7 +102,7 @@ public class GameManager extends Thread{
                     }
                 }
                 try{
-                    sleep(delay);
+                    sleep(Data.delay);
                 } catch (InterruptedException e){
                     spawnThread.interrupt();
                 }
@@ -118,7 +131,7 @@ public class GameManager extends Thread{
                     towerArrayList.get(i).identifyTarget(monsterArrayList.get(j));
                 }
                 if(towerArrayList.get(i).isTargeted()){
-                    towerArrayList.get(i).increaseTimer(delay);
+                    towerArrayList.get(i).increaseTimer(Data.delay);
                     towerArrayList.get(i).attack();
                 }
             }
@@ -156,4 +169,6 @@ public class GameManager extends Thread{
             towerArrayList.add(tower);
         }
     }
+
+
 }

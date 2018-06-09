@@ -1,8 +1,12 @@
 package com.example.young.defence;
 
 import android.app.Activity;
+import android.app.Dialog;
+import android.app.TaskStackBuilder;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -19,6 +23,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.PopupWindow;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
     SurfaceView surfaceView;
@@ -27,15 +32,14 @@ public class MainActivity extends AppCompatActivity {
     private View decorView;
     private int uiOption;
     EndDialog endDialog = null;
+    GameoverDialog gameoverDialog = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         gameManager = new GameManager(this);
         gameManager.start();
 
-//        surfacesurfaceView = new SurfacesurfaceView(this);
         setContentView(R.layout.activity_main);
-//        surfaceView = findViewById(R.id.surfaceView);
         surfaceView = findViewById(R.id.surfaceView);
         
         DisplayMetrics outMetrics = new DisplayMetrics();
@@ -45,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
         decorView = getWindow().getDecorView();
         setFullScreen();
         Log.i("MainActivity", "DPI : " + Float.toString(deviceDpi));
+        gameoverDialog = new GameoverDialog(this);
         decorView.setOnSystemUiVisibilityChangeListener(
             new View.OnSystemUiVisibilityChangeListener() {
                 @Override
@@ -75,69 +80,100 @@ public class MainActivity extends AppCompatActivity {
     }
 
    public void onClick_Base(View view){
-       setFullScreen();
-       Tower tower = GameManager.towerArrayList.get(surfaceView.getClickedTower());
-       tower.towerImage = BitmapFactory.decodeResource(getResources(), R.drawable.turret_base);
-       GameManager.towerArrayList.get(surfaceView.getClickedTower()).towerState=1;
-       GameManager.towerArrayList.get(surfaceView.getClickedTower()).activate();
-       surfaceView.popupWindow_ground.dismiss();
-       GameManager.towerArrayList.get(surfaceView.getClickedTower()).activate();
+        if(Data.playerMoney >= 20){
+            Data.playerMoney -= 20;
+            Tower tower = GameManager.towerArrayList.get(surfaceView.getClickedTower());
+            tower.towerImage = BitmapFactory.decodeResource(getResources(), R.drawable.turret_base);
+            GameManager.towerArrayList.get(surfaceView.getClickedTower()).towerState=1;
+            GameManager.towerArrayList.get(surfaceView.getClickedTower()).activate();
+            surfaceView.popupWindow_ground.dismiss();
+            GameManager.towerArrayList.get(surfaceView.getClickedTower()).activate();
+        }
+        else
+            Toast.makeText(this, "금액이 부족합니다.", Toast.LENGTH_SHORT).show();
+
    }
    public void onClick_Evo1(View view){
-       setFullScreen();
-       Tower tower = GameManager.towerArrayList.get(surfaceView.getClickedTower());
-       tower.towerImage = BitmapFactory.decodeResource(getResources(), R.drawable.turret_e1);
-       GameManager.towerArrayList.get(surfaceView.getClickedTower()).towerState=2;
-       surfaceView.popupWindow_base.dismiss();
+       if(Data.playerMoney >= 30){
+           Data.playerMoney -= 30;
+           Tower tower = GameManager.towerArrayList.get(surfaceView.getClickedTower());
+           tower.towerImage = BitmapFactory.decodeResource(getResources(), R.drawable.turret_e1);
+           GameManager.towerArrayList.get(surfaceView.getClickedTower()).towerState=2;
+           surfaceView.popupWindow_base.dismiss();
+       }
+       else
+           Toast.makeText(this, "금액이 부족합니다.", Toast.LENGTH_SHORT).show();
 
    }
     public void onClick_Evo2(View view){
-        setFullScreen();
-        Tower tower = GameManager.towerArrayList.get(surfaceView.getClickedTower());
-        tower.towerImage = BitmapFactory.decodeResource(getResources(), R.drawable.turret_e2);
-        GameManager.towerArrayList.get(surfaceView.getClickedTower()).towerState=3;
-        surfaceView.popupWindow_base.dismiss();
+       if(Data.playerMoney >= 30){
+           Data.playerMoney -= 30;
+           Tower tower = GameManager.towerArrayList.get(surfaceView.getClickedTower());
+           tower.towerImage = BitmapFactory.decodeResource(getResources(), R.drawable.turret_e2);
+           GameManager.towerArrayList.get(surfaceView.getClickedTower()).towerState=3;
+           surfaceView.popupWindow_base.dismiss();
+       }
+       else
+           Toast.makeText(this, "금액이 부족합니다.", Toast.LENGTH_SHORT).show();
+
     }
 
     protected void onPause(){
         super.onPause();
-        gameManager.isRun = false;
+        Data.pause = true;
     }
     protected void onResume(){
         super.onResume();
-        gameManager.isRun = true;
+        Data.pause = false;
     }
-    @Override
     protected void onStop() {
         super.onStop();
-        gameManager.isRun = false;
+        Log.i("MainActivity", "액티비티 정지");
+        Data.pause = true;
     }
     protected void onRestart(){
         super.onRestart();
-        gameManager.isRun = true;
+        Log.i("MainActivity", "액티비티 재시작");
+        Data.pause = false;
     }
     protected void onDestroy(){
         super.onDestroy();
+        Log.i("MainActivity", "액티비티 종료");
     }
 
     public void onBackPressed(){
-        /*AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage("종료하시겠습니까?");
-        builder.setNegativeButton("아니오", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-            }
-        });
-        builder.setPositiveButton("예", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                System.exit(0);
-            }
-        });
-        AlertDialog exitDialog = builder.create();
-        exitDialog.show();*/
             endDialog = new EndDialog(this);
             endDialog.setCancelable(false);
             endDialog.show();
+    }
+
+//    public void restart(){
+//        Intent intent = new Intent(this, RestartActivity.class);
+//        startActivity(intent);
+//        finish();
+//    }
+//
+//    public class Receiver extends BroadcastReceiver{
+//        public void onReceive(Context context, Intent intent){
+//            Log.i("Receiver", "메세지 받았음");
+//            restart();
+//        }
+//    }
+
+    private void reset(){
+        Data.playerMoney = 0;
+        Data.killedCount = 0;
+        Data.pause = false;
+        Data.playerHP = 5;
+        GameManager.towerArrayList.clear();
+        GameManager.monsterArrayList.clear();
+        GameManager.projectileArrayList.clear();
+        GameManager.checkPointList.clear();
+    }
+
+    protected void onNewIntent(Intent intent){
+        super.onNewIntent(intent);
+        reset();
+        recreate();
     }
 }
