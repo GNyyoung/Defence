@@ -76,7 +76,7 @@ public class GameView extends View {
         moneyBitmap = Bitmap.createScaledBitmap(money, money.getWidth()/2, money.getHeight()/2, false);
 //        projectileImage = Bitmap.createScaledBitmap(projectileBitmap, projectileBitmap.getWidth() / 10, projectileBitmap.getHeight() / 10, false);
         pause = stop;
-        moneyText = new TextView(mainActivity);
+        moneyText = new TextView(context);
         moneyText.setTextColor(Color.WHITE);
     }
 
@@ -169,7 +169,7 @@ public class GameView extends View {
 
                 }
 //
-                if(x > 2000 && x < 2000 + pause.getWidth() && y > 50 && y < 50 + pause.getHeight()){
+                if(x > 2000*dpX && x < 2000*dpX + pause.getWidth() && y > 50*dpY && y < 50*dpY + pause.getHeight()){
                     if(pause == stop) {
                         pause = play;
                         Data.pause = true;

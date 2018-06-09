@@ -56,7 +56,10 @@ public class Monster {
     public Monster(Context context, int stage, int number){
 //        몬스터 이미지 추가
         this.context = context;
-        monsterImage = BitmapFactory.decodeResource(context.getResources(), R.drawable.right1);
+        if(stage==1)
+            monsterImage = BitmapFactory.decodeResource(context.getResources(), R.drawable.right1);
+        else if(stage==2)
+            monsterImage = BitmapFactory.decodeResource(context.getResources(), R.drawable.right2_1);
 
 
 //        BitmapDrawable right1 = (BitmapDrawable)context.getResources().getDrawable(R.drawable.left1);
