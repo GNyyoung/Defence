@@ -33,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
     private int uiOption;
     EndDialog endDialog = null;
     GameoverDialog gameoverDialog = null;
+    WinDialog winDialog = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,6 +51,8 @@ public class MainActivity extends AppCompatActivity {
         setFullScreen();
         Log.i("MainActivity", "DPI : " + Float.toString(deviceDpi));
         gameoverDialog = new GameoverDialog(this);
+        winDialog = new WinDialog(this);
+
         decorView.setOnSystemUiVisibilityChangeListener(
             new View.OnSystemUiVisibilityChangeListener() {
                 @Override

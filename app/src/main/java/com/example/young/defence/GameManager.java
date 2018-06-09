@@ -66,7 +66,7 @@ public class GameManager extends Thread{
 
 //                플레이어 체력이 0으로 되면 게임오버.
                 if(Data.playerHP == 0){
-                    Log.i("GameManager", "Game Over");
+                    Log.i("GameManager", "게임오버");
                     if(spawnThread.isAlive()){
                         spawnThread.interrupt();
                     }
@@ -90,7 +90,17 @@ public class GameManager extends Thread{
                     }
 
                     if(stage == Data.maxStage){
-                        Log.i("GameManager", "Win this Game");
+                        Log.i("GameManager", "게임 승리");
+                        if(context.getClass() == MainActivity.class){
+                            ((MainActivity)context).runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    WinDialog winDialog = ((MainActivity) context).winDialog;
+                                    winDialog.setCancelable(false);
+                                    winDialog.show();
+                                }
+                            });
+                        }
                         return;
                     }
                     else {
