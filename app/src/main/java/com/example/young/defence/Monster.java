@@ -35,7 +35,7 @@ public class Monster {
     private float posX, posY;
 //    몬스터의 이동 목표
 //    point가 가진 좌표로 이동 후, 다음 point를 입력받는다.
-    private CheckPoint point;
+    public CheckPoint point;
 //    몬스터 고유 일련번호
 //    포탑이 누구를 먼저 때릴지 판단할 때 사용한다.
     private int number;
@@ -51,15 +51,25 @@ public class Monster {
     private boolean isActivated = false;
     public int state=1;
     public Context context;
+    public float hypotenuse;
 //    지금은 인자를 받아오는 걸로 해놨지만 스테이지만 받아오고
 //    values에 능력치 파일을 하나 만들어서 거기서 스테이지에 맞는 데이터를 가져올 수 있게 만들자.
-    public Monster(Context context, int stage, int number){
+    public Monster(Context context, int stage, int number, int version){
 //        몬스터 이미지 추가
         this.context = context;
-        if(stage==1)
+        if(version == 1){
             monsterImage = BitmapFactory.decodeResource(context.getResources(), R.drawable.right1);
-        else if(stage==2)
+            this.hp = Data.monster1HP[stage];
+            this.money = Data.monster1Money;
+            this.moveSpeed = Data.monster1Speed;
+        }
+
+        else if(version == 2) {
             monsterImage = BitmapFactory.decodeResource(context.getResources(), R.drawable.right2_1);
+            this.hp = Data.monster2HP[stage];
+            this.money = Data.monster2Money;
+            this.moveSpeed = Data.monster2Speed;
+        }
 
 
 //        BitmapDrawable right1 = (BitmapDrawable)context.getResources().getDrawable(R.drawable.left1);
@@ -72,9 +82,6 @@ public class Monster {
 //        animationDrawable.addFrame(right3,500);
 //        animationDrawable.addFrame(right4,500);
 //        animationDrawable.setOneShot(false);
-        this.hp = Data.monster1HP[stage];
-        this.money = Data.monster1Money[stage];
-        this.moveSpeed = Data.monster1Speed[stage];
         this.number = number;
         this.point = GameManager.checkPointList.get(0);
         posX = point.getPosX();
@@ -112,7 +119,7 @@ public class Monster {
 //        Log.i("Monster", "distanceX: " + Float.toString(distanceX));
             final float distanceY = pointY - posY;
 //        빗변
-            float hypotenuse = (float)Math.sqrt(Math.pow(distanceX, 2) + Math.pow(distanceY, 2));
+            hypotenuse = (float)Math.sqrt(Math.pow(distanceX, 2) + Math.pow(distanceY, 2));
 //        Log.i("Monster", "hypotenuse: " + Float.toString(hypotenuse));
 //        x축, y축 이동속도
             float speedX, speedY;
@@ -199,7 +206,6 @@ public class Monster {
 
 
             speedX = moveSpeed * distanceX / hypotenuse;
-//        Log.i("Monster", "move: " + Float.toString(speedX));
             speedY = moveSpeed * distanceY / hypotenuse;
             posX += speedX;
             posY += speedY;
@@ -218,7 +224,6 @@ public class Monster {
         }
     }
 
-
     public boolean CollisionCheck(float projectilePosX, float projectilePosY){
         if(projectilePosX > posX - collisionRadius
                 && projectilePosX < posX + collisionRadius
@@ -229,14 +234,6 @@ public class Monster {
             return false;
     }
 
-/*몬스터가 포인트 근처에 가면 다음 포인트를 넣어주는 건데 이거 없이도 될듯 함.
-    private void pointCollisionCheck(){
-        if(point.CollisionCheck(posX, posY)){
-//            다음 포인트를 입력받는다.
-
-        }
-    }
-*/
     public void damaged(int damage){
         hp -= damage;
         if(hp <= 0){

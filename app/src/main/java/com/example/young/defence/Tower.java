@@ -66,7 +66,6 @@ public class Tower {
         float distance = (float)Math.sqrt(Math.pow((posX - x), 2) + Math.pow((posY - y), 2));
         if(distance <= radius){
             targetList.add(monster);
-            Log.i("Tower", "addTarget");
             designateTarget();
 
         }
@@ -78,8 +77,32 @@ public class Tower {
 //    타겟이 죽어서 재설정할 때
 //    number가 가장 작은 애를 타겟으로 설정
     private void designateTarget(){
-        boolean isGetOutRange = false;
 
+        checkTargetStatus();
+
+        if(target != null || targetList.isEmpty() == true)
+            return;
+        else{
+            Monster candidate = targetList.get(0);
+            if(targetList.size() > 1){
+                for(int i = 1; i < targetList.size(); i++){
+                    if(targetList.get(i).point.getNumber() > candidate.point.getNumber()){
+                        candidate = targetList.get(i);
+                    }
+                    else if(targetList.get(i).point.getNumber() == candidate.point.getNumber()){
+                        if(targetList.get(i).hypotenuse < candidate.hypotenuse){
+                            candidate = targetList.get(i);
+                        }
+                    }
+                }
+            }
+            target = candidate;
+            Log.i("Tower", "타겟 : " + Integer.toString(target.getNumber()));
+        }
+    }
+//    타겟이 죽거나 범위 밖으로 나갔는지 확인해서 타겟을 null로 바꾼다.
+    private void checkTargetStatus(){
+        boolean isGetOutRange = false;
         if(target != null){
             if(target.getLive() == false)
                 target = null;
@@ -93,21 +116,6 @@ public class Tower {
                 if(isGetOutRange == false)
                     target = null;
             }
-        }
-
-        if(target != null || targetList.isEmpty() == true)
-            return;
-        else{
-            Monster candidate = targetList.get(0);
-            if(targetList.size() > 1){
-                for(int i = 1; i < targetList.size(); i++){
-                    if(targetList.get(i).getNumber() < candidate.getNumber()){
-                        candidate = targetList.get(i);
-                    }
-                }
-            }
-            target = candidate;
-            Log.i("Tower", "Target : " + Integer.toString(target.getNumber()));
         }
     }
 

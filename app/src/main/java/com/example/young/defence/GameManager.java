@@ -18,6 +18,8 @@ public class GameManager extends Thread{
 
     public static ArrayList<CheckPoint> checkPointList = new ArrayList<CheckPoint>();
     public static ArrayList<Monster> monsterArrayList = new ArrayList<Monster>();
+    public static ArrayList<Monster> monster1ArrayList = new ArrayList<Monster>();
+    public static ArrayList<Monster> monster2ArrayList = new ArrayList<Monster>();
     public static ArrayList<Tower> towerArrayList = new ArrayList<Tower>();
     public static ArrayList<Projectile> projectileArrayList = new ArrayList<Projectile>();
     public Context context;
@@ -42,6 +44,7 @@ public class GameManager extends Thread{
     public void run(){
         Log.i("GameManager", "게임매니저 스레드 생성");
         int stage = 0;
+        int duration = 0;
         SpawnThread spawnThread = new SpawnThread();
         startTower();
         while(true){
@@ -64,6 +67,14 @@ public class GameManager extends Thread{
                 controlProjectile();
                 controlTower();
 
+                if(Data.startStage){
+                    if(duration > 2500){
+                        Data.startStage = false;
+                        break;
+                    }
+                    duration += Data.delay;
+                }
+
 //                플레이어 체력이 0으로 되면 게임오버.
                 if(Data.playerHP == 0){
                     Log.i("GameManager", "게임오버");
@@ -82,13 +93,13 @@ public class GameManager extends Thread{
                     }
                     return;
                 }
-
+//                몬스터리스트가 비어있고 스폰이 완료되면 다음 스테이지 시작
                 if(stage == 0 || (spawnThread.checkFinish() == true && monsterArrayList.isEmpty())){
                     Log.i("GameManager", "StageClear");
                     if(spawnThread.isAlive()){
                         spawnThread.interrupt();
                     }
-
+//                    스테이지가 데이터에 저장된 최대 스테이지와 일치하면 승리
                     if(stage == Data.maxStage){
                         Log.i("GameManager", "게임 승리");
                         if(context.getClass() == MainActivity.class){
@@ -104,10 +115,15 @@ public class GameManager extends Thread{
                         return;
                     }
                     else {
+                        Log.i("GameManager", "다음 스테이지");
+                        resetMonsterList();
                         stage++;
+                        Data.stage = stage;
+                        Data.startStage = true;
                         addMonster(stage);
                         spawnThread = new SpawnThread();
-                        spawnThread.setMonsterCount(Data.monster1Count[stage]);
+                        spawnThread.setMonsterCount(stage);
+                        spawnThread.setMonsterList();
                         spawnThread.start();
                     }
                 }
@@ -165,10 +181,19 @@ public class GameManager extends Thread{
 //    일정 주기마다 몬스터를 생성하는데, 다 생성이 안된 상태에서 죽은 몬스터가 있다면
 //    원래 생성해야 하는 몬스터보다 많이 생성되기 때문에 미리 배정하고 activate시킨다.
     private void addMonster(int stage){
-        int monsterCount = Data.monster1Count[stage];
-        for(int i = 0; i < monsterCount; i++){
-            Monster monster = new Monster(context, stage, i);
-            monsterArrayList.add(monster);
+        if( Data.monster1Count[stage] > 0){
+            for(int i = 0; i < Data.monster1Count[stage]; i++){
+                Monster monster1 = new Monster(context, stage, i, 1);
+                monsterArrayList.add(monster1);
+                monster1ArrayList.add(monster1);
+            }
+        }
+        if(Data.monster2Count[stage] > 0){
+            for(int i = 0; i < Data.monster2Count[stage]; i++){
+                Monster monster2 = new Monster(context, stage, i, 2);
+                monsterArrayList.add(monster2);
+                monster2ArrayList.add(monster2);
+            }
         }
     }
 
@@ -180,5 +205,9 @@ public class GameManager extends Thread{
         }
     }
 
+    private void resetMonsterList(){
+        monster1ArrayList.clear();
+        monster2ArrayList.clear();
+    }
 
 }

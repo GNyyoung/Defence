@@ -104,6 +104,7 @@ public class SurfaceView extends android.view.SurfaceView implements SurfaceHold
     }
 
     class SurfaceThread extends Thread{
+        int alpha = 0;
         public void run(){
             Log.i("SurfaceThread", "스레드 동작");
             Canvas canvas = null;
@@ -115,12 +116,15 @@ public class SurfaceView extends android.view.SurfaceView implements SurfaceHold
                 else {
                     canvas = mHolder.lockCanvas();
                     doDraw(canvas);
+
+                    if(Data.startStage){
+                        startStage(canvas);
+                    }
                     mHolder.unlockCanvasAndPost(canvas);
                 }
             }
         }
-    }
-    public void doDraw(Canvas canvas){
+        public void doDraw(Canvas canvas){
 //            ((ConstraintLayout)this.getParent()).removeView(moneyText);
 //            canvas.drawBitmap(map,0,0,null);
             mapBitmap = Bitmap.createScaledBitmap(map, canvas.getWidth(), canvas.getHeight(), false);
@@ -134,17 +138,29 @@ public class SurfaceView extends android.view.SurfaceView implements SurfaceHold
 //            moneyText.setLayoutParams(lp);
 //            ((ConstraintLayout)this.getParent()).addView(moneyText);
 
-        drawTower(canvas);
-        drawMonster(canvas);
-        drawProjectile(canvas);
+            drawTower(canvas);
+            drawMonster(canvas);
+            drawProjectile(canvas);
 
 
-        for(int i = 0; i < Data.playerHP ; i++){
-            canvas.drawBitmap(heartBitmap,heartBitmap.getWidth() * dpX * (i+1) - heartBitmap.getWidth()/2, 20 * dpY,null);
+            for(int i = 0; i < Data.playerHP ; i++){
+                canvas.drawBitmap(heartBitmap,heartBitmap.getWidth() * dpX * (i+1) - heartBitmap.getWidth()/2, 20 * dpY,null);
+            }
+            canvas.drawBitmap(pause,2000 * dpX,50 * dpY,null);
+            canvas.drawBitmap(moneyBitmap,700 * dpX,20 * dpY,null);
         }
-        canvas.drawBitmap(pause,2000 * dpX,50 * dpY,null);
-        canvas.drawBitmap(moneyBitmap,700 * dpX,20 * dpY,null);
+        public void startStage(Canvas canvas){
+            Paint stagePaint = new Paint();
+            stagePaint.setColor(Color.WHITE);
+            stagePaint.setTextSize(200);
+            if(alpha < 255){
+                stagePaint.setAlpha(alpha);
+                alpha += 3;
+            }
+            canvas.drawText("스테이지" + Integer.toString(Data.stage), 800 * dpX, 600 * dpY, stagePaint);
+        }
     }
+
 
 
     public boolean onTouchEvent(MotionEvent event){

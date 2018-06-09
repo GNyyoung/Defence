@@ -164,7 +164,7 @@ public class MainActivity extends AppCompatActivity {
 //    }
 
     private void reset(){
-        Data.playerMoney = 0;
+        Data.playerMoney = 50;
         Data.killedCount = 0;
         Data.pause = false;
         Data.playerHP = 5;

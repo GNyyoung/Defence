@@ -41,8 +41,9 @@ public class WinDialog extends Dialog{
         buttonRestart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent("android.intent.action");
-                getContext().sendBroadcast(intent);
+                Intent intent = new Intent(getContext(), MainActivity.class);
+                Data.destroyActivity = true;
+                getContext().startActivity(intent);
                 dismiss();
             }
         });
