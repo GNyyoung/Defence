@@ -48,12 +48,10 @@ public class GameView extends View {
     private Paint paint = new Paint();
     float dpX, dpY;
     int currentMoney=0;
-    MainActivity mainActivity;
     TextView moneyText;
 
     public GameView(Context context, AttributeSet attributeSet){
         super(context, attributeSet);
-        mainActivity = (MainActivity)context;
         setBackgroundResource(R.drawable.map1);
         Log.i("GameView", Float.toString(GameManager.checkPointList.get(0).getPosX()));
 
