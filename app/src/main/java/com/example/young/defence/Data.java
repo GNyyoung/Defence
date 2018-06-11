@@ -46,5 +46,7 @@ public class Data {
     public static float deviceDpi;
     public static int deviceWidth;
     public static int deviceHeight;
+    public static int widthPixel;
+    public static int heightPixel;
 
 }

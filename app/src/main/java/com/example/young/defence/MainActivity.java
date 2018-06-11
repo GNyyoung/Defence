@@ -49,6 +49,8 @@ public class MainActivity extends AppCompatActivity {
         DisplayMetrics outMetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(outMetrics);
         Data.deviceDpi = outMetrics.densityDpi;
+        Data.widthPixel = outMetrics.widthPixels;
+        Data.heightPixel = outMetrics.heightPixels;
 
         gameManager = new GameManager(this);
         gameManager.start();

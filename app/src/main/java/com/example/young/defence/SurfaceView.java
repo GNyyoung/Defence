@@ -45,8 +45,8 @@ public class SurfaceView extends android.view.SurfaceView implements SurfaceHold
     SurfaceHolder mHolder;
     Bitmap map, mapBitmap;
     ConstraintLayout constraintLayout;
-    boolean isRun = true;
     int frame=0;
+    float x, y;
 
     public SurfaceView(Context context, AttributeSet attrs){
         super(context, attrs);
@@ -108,6 +108,9 @@ public class SurfaceView extends android.view.SurfaceView implements SurfaceHold
         public void run(){
             Log.i("SurfaceThread", "스레드 동작");
             Canvas canvas = null;
+            x = mHolder.getSurfaceFrame().width();
+            y = mHolder.getSurfaceFrame().height();
+            setDp();
 
             while (Data.pause == false){
                 if(Data.destroyActivity){
@@ -214,9 +217,11 @@ public class SurfaceView extends android.view.SurfaceView implements SurfaceHold
     public void setDp(){
         Log.i("SurfaceView", "가로 크기 : " + Data.deviceWidth);
         Log.i("SurfaceView", "세로 크기 : " + Data.deviceHeight);
+        Log.i("SurfaceView", "가로 픽셀 : " + Data.widthPixel);
+        Log.i("SurfaceView", "세로 픽셀 : " + Data.heightPixel);
         Log.i("SurfaceView", "DPI : " + Data.deviceDpi);
-        dpX = Data.deviceDpi / 420f * 1920 / 1920f;
-        dpY = Data.deviceDpi / 420f * (float)Data.deviceHeight / 1080f;
+        dpX = Data.deviceDpi / 420f;
+        dpY = Data.deviceDpi / 420f;
         Log.i("SurfaceView", "가로 크기 : " + Float.toString(dpX));
         Log.i("SurfaceView", "세로 크기 : " + Float.toString(dpY));
     }
