@@ -48,6 +48,7 @@ public class SurfaceView extends android.view.SurfaceView implements SurfaceHold
     Bitmap map, mapBitmap;
     ConstraintLayout constraintLayout;
     boolean isRun = true;
+    int currentMonster=0;
 
     public SurfaceView(Context context, AttributeSet attrs){
         super(context, attrs);
@@ -241,10 +242,31 @@ public class SurfaceView extends android.view.SurfaceView implements SurfaceHold
     private void drawMonster(Canvas canvas){
         for(int i = 0; i < GameManager.monsterArrayList.size(); i++){
             Monster monster = GameManager.monsterArrayList.get(i);
-            float monsterPosX = monster.getPosX() * dpX - (monster.monsterImage.getWidth() / 2);
-            float monsterPosY = monster.getPosY() * dpY - (monster.monsterImage.getHeight() / 2);
+            float monsterPosX = monster.getPosX() * dpX - (monster.monstersRight[currentMonster].getWidth() / 2);
+            float monsterPosY = monster.getPosY() * dpY - (monster.monstersRight[currentMonster].getHeight() / 2);
 
-            canvas.drawBitmap(monster.monsterImage, monsterPosX, monsterPosY,null);
+            if(monster.point.getNumber()==0 || monster.point.getNumber()==1 || monster.point.getNumber()==3 || monster.point.getNumber()==5 || monster.point.getNumber()==7) {
+                canvas.drawBitmap(monster.monstersRight[currentMonster], monsterPosX, monsterPosY, null);
+                currentMonster++;
+                if (currentMonster > 3)
+                    currentMonster = 0;
+                Log.i("direction: ", "Right");
+            }
+            else if(monster.point.getNumber()==2 || monster.point.getNumber()==6){
+                canvas.drawBitmap(monster.monstersBack[currentMonster], monsterPosX, monsterPosY, null);
+                currentMonster++;
+                if (currentMonster > 3)
+                    currentMonster = 0;
+                Log.i("direction: ", "Back");
+            }
+            else if(monster.point.getNumber()==4){
+                canvas.drawBitmap(monster.monstersFront[currentMonster], monsterPosX, monsterPosY, null);
+                currentMonster++;
+                if (currentMonster > 3)
+                    currentMonster = 0;
+                Log.i("direction: ", "Front");
+            }
+
         }
     }
     private  void drawProjectile(Canvas canvas){

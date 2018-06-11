@@ -52,20 +52,48 @@ public class Monster {
     public int state=1;
     public Context context;
     public float hypotenuse;
+    public Bitmap[] monstersRight = new Bitmap[4];
+    public Bitmap[] monstersBack = new Bitmap[4];
+    public Bitmap[] monstersFront = new Bitmap[4];
+
 //    지금은 인자를 받아오는 걸로 해놨지만 스테이지만 받아오고
 //    values에 능력치 파일을 하나 만들어서 거기서 스테이지에 맞는 데이터를 가져올 수 있게 만들자.
     public Monster(Context context, int stage, int number, int version){
 //        몬스터 이미지 추가
         this.context = context;
         if(version == 1){
-            monsterImage = BitmapFactory.decodeResource(context.getResources(), R.drawable.right1);
+//            monsterImage = BitmapFactory.decodeResource(context.getResources(), R.drawable.right1);
+            monstersRight[0] = BitmapFactory.decodeResource(context.getResources(), R.drawable.right1);
+            monstersRight[1] = BitmapFactory.decodeResource(context.getResources(), R.drawable.right2);
+            monstersRight[2] = BitmapFactory.decodeResource(context.getResources(), R.drawable.right3);
+            monstersRight[3] = BitmapFactory.decodeResource(context.getResources(), R.drawable.right4);
+            monstersBack[0] = BitmapFactory.decodeResource(context.getResources(), R.drawable.back1);
+            monstersBack[1] = BitmapFactory.decodeResource(context.getResources(), R.drawable.back2);
+            monstersBack[2] = BitmapFactory.decodeResource(context.getResources(), R.drawable.back3);
+            monstersBack[3] = BitmapFactory.decodeResource(context.getResources(), R.drawable.back4);
+            monstersFront[0] = BitmapFactory.decodeResource(context.getResources(), R.drawable.front1);
+            monstersFront[1] = BitmapFactory.decodeResource(context.getResources(), R.drawable.front2);
+            monstersFront[2] = BitmapFactory.decodeResource(context.getResources(), R.drawable.front3);
+            monstersFront[3] = BitmapFactory.decodeResource(context.getResources(), R.drawable.front4);
             this.hp = Data.monster1HP[stage];
             this.money = Data.monster1Money;
             this.moveSpeed = Data.monster1Speed;
         }
 
         else if(version == 2) {
-            monsterImage = BitmapFactory.decodeResource(context.getResources(), R.drawable.right2_1);
+//            monsterImage = BitmapFactory.decodeResource(context.getResources(), R.drawable.right2_1);
+            monstersRight[0] = BitmapFactory.decodeResource(context.getResources(), R.drawable.right2_1);
+            monstersRight[1] = BitmapFactory.decodeResource(context.getResources(), R.drawable.right2_2);
+            monstersRight[2] = BitmapFactory.decodeResource(context.getResources(), R.drawable.right2_3);
+            monstersRight[3] = BitmapFactory.decodeResource(context.getResources(), R.drawable.right2_4);
+            monstersBack[0] = BitmapFactory.decodeResource(context.getResources(), R.drawable.back2_1);
+            monstersBack[1] = BitmapFactory.decodeResource(context.getResources(), R.drawable.back2_2);
+            monstersBack[2] = BitmapFactory.decodeResource(context.getResources(), R.drawable.back2_3);
+            monstersBack[3] = BitmapFactory.decodeResource(context.getResources(), R.drawable.back2_4);
+            monstersFront[0] = BitmapFactory.decodeResource(context.getResources(), R.drawable.front2_1);
+            monstersFront[1] = BitmapFactory.decodeResource(context.getResources(), R.drawable.front2_2);
+            monstersFront[2] = BitmapFactory.decodeResource(context.getResources(), R.drawable.front2_3);
+            monstersFront[3] = BitmapFactory.decodeResource(context.getResources(), R.drawable.front2_4);
             this.hp = Data.monster2HP[stage];
             this.money = Data.monster2Money;
             this.moveSpeed = Data.monster2Speed;
