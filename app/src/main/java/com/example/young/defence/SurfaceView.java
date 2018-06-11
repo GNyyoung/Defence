@@ -45,8 +45,9 @@ public class SurfaceView extends android.view.SurfaceView implements SurfaceHold
     SurfaceHolder mHolder;
     Bitmap map, mapBitmap;
     ConstraintLayout constraintLayout;
-    int frame=0;
     float x, y;
+    int animationDelay = 5;
+    int frame = 0;
 
     public SurfaceView(Context context, AttributeSet attrs){
         super(context, attrs);
@@ -126,10 +127,12 @@ public class SurfaceView extends android.view.SurfaceView implements SurfaceHold
                 }
             }
         }
+
         public void doDraw(Canvas canvas){
             mapBitmap = Bitmap.createScaledBitmap(map, canvas.getWidth(), canvas.getHeight(), false);
             canvas.drawBitmap(mapBitmap,0,0,null);
             canvas.drawText(""+Data.playerMoney,850*dpX,90*dpY,textPaint);
+
             drawTower(canvas);
             drawMonster(canvas);
             drawProjectile(canvas);
@@ -165,27 +168,27 @@ public class SurfaceView extends android.view.SurfaceView implements SurfaceHold
 
         Log.i("GameView", Float.toString(x) + "," +Float.toString(y));
 
-        if(event.getAction()==MotionEvent.ACTION_DOWN){
+        if(event.getAction() == MotionEvent.ACTION_DOWN){
             Log.i("GameView", Integer.toString(GameManager.towerArrayList.size()));
             Log.i("touchPosition", x + " , " + y);
-            for(int i=0;i<GameManager.towerArrayList.size();i++) {
-                if (x >Data.towerPosX[i]*dpX&&x<(Data.towerPosX[i]*dpX+GameManager.towerArrayList.get(i).towerImage.getWidth())
-                        &&y>Data.towerPosY[i]*dpY&&y<Data.towerPosY[i]*dpY+GameManager.towerArrayList.get(i).towerImage.getHeight()){
+            for(int i = 0; i < GameManager.towerArrayList.size(); i++) {
+                if (x > Data.towerPosX[i] * dpX && x < (Data.towerPosX[i] * dpX + GameManager.towerArrayList.get(i).towerImage.getWidth())
+                        && y > Data.towerPosY[i] * dpY && y < Data.towerPosY[i] * dpY + GameManager.towerArrayList.get(i).towerImage.getHeight()){
 //                        타워가 없는 상태일 때 클릭하면 1단계 타워로 올릴 수 있는 UI가 뜬다.
-                    if(GameManager.towerArrayList.get(i).towerState==0) {
+                    if(GameManager.towerArrayList.get(i).towerState == 0) {
                         popupWindow_ground.setAnimationStyle(android.R.style.Animation_Translucent);
                         popupWindow_ground.showAtLocation(this, Gravity.NO_GRAVITY,
-                                (int) (Data.towerPosX[i]*dpX - 50*dpX), (int) ((Data.towerPosY[i]*dpY) + 100*dpY));
+                                (int) (Data.towerPosX[i] * dpX - 50 * dpX), (int) ((Data.towerPosY[i] * dpY) + 100 * dpY));
                         Log.i("touch", "X: " + x + "Y: " + y);
                         clickedTower = i;
                         Log.i("GameView", "clickedTower= " + clickedTower);
                         return true;
                     }
 //                        타워가 1단계일 때 클릭하면 2단계 타워로 업그레이드할 수 있는 UI가 뜬다.
-                    else if(GameManager.towerArrayList.get(i).towerState==1){
+                    else if(GameManager.towerArrayList.get(i).towerState == 1){
                         popupWindow_base.setAnimationStyle(android.R.style.Animation_Translucent);
                         popupWindow_base.showAtLocation(this, Gravity.NO_GRAVITY,
-                                (int) (Data.towerPosX[i]*dpX - 50*dpX), (int) ((Data.towerPosY[i]*dpY) + 110*dpY));
+                                (int) (Data.towerPosX[i] * dpX - 50 * dpX), (int) ((Data.towerPosY[i] * dpY) + 110 * dpY));
                         Log.i("touch", "X: " + x + "Y: " + y);
                         clickedTower = i;
                         Log.i("GameView", "clickedTower= " + clickedTower);
@@ -193,7 +196,6 @@ public class SurfaceView extends android.view.SurfaceView implements SurfaceHold
 
                     }
                 }
-
             }
 //            일시정지 버튼을 눌렀을 때 아이콘이 바뀌고 게임을 일시정지 하도록 한다.
             if(x > 2000 && x < 2000 + pause.getWidth() && y > 50 && y < 50 + pause.getHeight()){
@@ -243,32 +245,35 @@ public class SurfaceView extends android.view.SurfaceView implements SurfaceHold
     private void drawMonster(Canvas canvas){
         for(int i = 0; i < GameManager.monsterArrayList.size(); i++){
             Monster monster = GameManager.monsterArrayList.get(i);
-            float monsterPosX = monster.getPosX() * dpX - (monster.monstersRight[frame / 5].getWidth() / 2);
-            float monsterPosY = monster.getPosY() * dpY - (monster.monstersRight[frame / 5].getHeight() / 2);
+            float monsterImagePosX;
+            float monsterImagePosY;
 
 //            몬스터 이동 방향에 따라 몬스터 이미지 변경
             switch (monster.state){
                 case 0:
-                    canvas.drawBitmap(monster.monstersRight[frame / 5], monsterPosX, monsterPosY, null);
-                    frame++;
-                    if (frame > 14)
+                    if (frame > (monster.monstersRight.length * 5) - 1)
                         frame = 0;
+                    monsterImagePosX = monster.getPosX() * dpX - (monster.monstersRight[frame / animationDelay].getWidth() / 2);
+                    monsterImagePosY = monster.getPosY() * dpY - (monster.monstersRight[frame / animationDelay].getHeight() / 2);
+                    canvas.drawBitmap(monster.monstersRight[frame / animationDelay], monsterImagePosX, monsterImagePosY, null);
                     break;
                 case 1:
-                    canvas.drawBitmap(monster.monstersBack[frame / 5], monsterPosX, monsterPosY, null);
-                    frame++;
-                    if (frame > 14)
+                    if (frame > (monster.monstersBack.length * 5) - 1)
                         frame = 0;
+                    monsterImagePosX = monster.getPosX() * dpX - (monster.monstersBack[frame / animationDelay].getWidth() / 2);
+                    monsterImagePosY = monster.getPosY() * dpY - (monster.monstersBack[frame / animationDelay].getHeight() / 2);
+                    canvas.drawBitmap(monster.monstersBack[frame / animationDelay], monsterImagePosX, monsterImagePosY, null);
                     break;
                 case 2:
-                    canvas.drawBitmap(monster.monstersFront[frame / 5], monsterPosX, monsterPosY, null);
-                    frame++;
-                    if (frame > 14)
+                    if (frame > (monster.monstersFront.length * 5) - 1)
                         frame = 0;
+                    monsterImagePosX = monster.getPosX() * dpX - (monster.monstersFront[frame / animationDelay].getWidth() / 2);
+                    monsterImagePosY = monster.getPosY() * dpY - (monster.monstersFront[frame / animationDelay].getHeight() / 2);
+                    canvas.drawBitmap(monster.monstersFront[frame / animationDelay], monsterImagePosX, monsterImagePosY, null);
                     break;
             }
-
         }
+        frame++;
     }
     private  void drawProjectile(Canvas canvas){
         for(int i = 0; i < GameManager.projectileArrayList.size(); i++){
