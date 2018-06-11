@@ -37,24 +37,23 @@ public class SurfaceView extends android.view.SurfaceView implements SurfaceHold
     Bitmap monsterImage, monsterBitmap;
     Bitmap projectileImage, projectileBitmap;
     Bitmap heart, heartBitmap, money, moneyBitmap;
-    private float deviceDpi;
     private Paint paint = new Paint();
     Paint textPaint = new Paint();
     float dpX, dpY;
-//    TextView moneyText;
     Context context;
     SurfaceThread surfaceThread;
     SurfaceHolder mHolder;
     Bitmap map, mapBitmap;
     ConstraintLayout constraintLayout;
     boolean isRun = true;
-    int currentMonster=0;
+    int frame=0;
 
     public SurfaceView(Context context, AttributeSet attrs){
         super(context, attrs);
         this.context = context;
         mHolder = getHolder();
         mHolder.addCallback(this);
+        setDp();
         base = findViewById(R.id.base);
         map = BitmapFactory.decodeResource(getResources(), R.drawable.map1);
         popupview_ground = SurfaceView.inflate(getContext(), R.layout.popup_ground, null);
@@ -109,7 +108,8 @@ public class SurfaceView extends android.view.SurfaceView implements SurfaceHold
         public void run(){
             Log.i("SurfaceThread", "스레드 동작");
             Canvas canvas = null;
-            while (isRun){
+
+            while (Data.pause == false){
                 if(Data.destroyActivity){
                     Data.destroyActivity = false;
                     return;
@@ -117,32 +117,19 @@ public class SurfaceView extends android.view.SurfaceView implements SurfaceHold
                 else {
                     canvas = mHolder.lockCanvas();
                     doDraw(canvas);
+                    startStage(canvas);
 
-                    if(Data.startStage){
-                        startStage(canvas);
-                    }
                     mHolder.unlockCanvasAndPost(canvas);
                 }
             }
         }
         public void doDraw(Canvas canvas){
-//            ((ConstraintLayout)this.getParent()).removeView(moneyText);
-//            canvas.drawBitmap(map,0,0,null);
             mapBitmap = Bitmap.createScaledBitmap(map, canvas.getWidth(), canvas.getHeight(), false);
             canvas.drawBitmap(mapBitmap,0,0,null);
-//            moneyText.setText(""+Data.playerMoney);
-//            moneyText.setX(850 * dpX);
-//            moneyText.setY(10 * dpY);
-//            moneyText.setTextSize(30);
             canvas.drawText(""+Data.playerMoney,850*dpX,90*dpY,textPaint);
-//            ConstraintLayout.LayoutParams lp = new ConstraintLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT);
-//            moneyText.setLayoutParams(lp);
-//            ((ConstraintLayout)this.getParent()).addView(moneyText);
-
             drawTower(canvas);
             drawMonster(canvas);
             drawProjectile(canvas);
-
 
             for(int i = 0; i < Data.playerHP ; i++){
                 canvas.drawBitmap(heartBitmap,heartBitmap.getWidth() * dpX * (i+1) - heartBitmap.getWidth()/2, 20 * dpY,null);
@@ -150,15 +137,20 @@ public class SurfaceView extends android.view.SurfaceView implements SurfaceHold
             canvas.drawBitmap(pause,2000 * dpX,50 * dpY,null);
             canvas.drawBitmap(moneyBitmap,700 * dpX,20 * dpY,null);
         }
+
         public void startStage(Canvas canvas){
-            Paint stagePaint = new Paint();
-            stagePaint.setColor(Color.WHITE);
-            stagePaint.setTextSize(200);
-            if(alpha < 255){
-                stagePaint.setAlpha(alpha);
-                alpha += 3;
+            if(Data.startStage == true){
+                Paint stagePaint = new Paint();
+                stagePaint.setColor(Color.WHITE);
+                stagePaint.setTextSize(200);
+                if(alpha < 255){
+                    stagePaint.setAlpha(alpha);
+                    alpha += 3;
+                }
+                canvas.drawText("스테이지" + Integer.toString(Data.stage), 800 * dpX, 600 * dpY, stagePaint);
             }
-            canvas.drawText("스테이지" + Integer.toString(Data.stage), 800 * dpX, 600 * dpY, stagePaint);
+            else
+                alpha = 0;
         }
     }
 
@@ -200,7 +192,7 @@ public class SurfaceView extends android.view.SurfaceView implements SurfaceHold
                 }
 
             }
-//
+//            일시정지 버튼을 눌렀을 때 아이콘이 바뀌고 게임을 일시정지 하도록 한다.
             if(x > 2000 && x < 2000 + pause.getWidth() && y > 50 && y < 50 + pause.getHeight()){
                 if(pause == stop) {
                     pause = play;
@@ -219,10 +211,14 @@ public class SurfaceView extends android.view.SurfaceView implements SurfaceHold
         return this.clickedTower;
     }
 
-    public void setDp(float Dpi){
-        deviceDpi = Dpi;
-        dpX = (float)(deviceDpi / 420 * 16 / 18.5);
-        dpY = deviceDpi / 420;
+    public void setDp(){
+        Log.i("SurfaceView", "가로 크기 : " + Data.deviceWidth);
+        Log.i("SurfaceView", "세로 크기 : " + Data.deviceHeight);
+        Log.i("SurfaceView", "DPI : " + Data.deviceDpi);
+        dpX = Data.deviceDpi / 420f * 1920 / 1920f;
+        dpY = Data.deviceDpi / 420f * (float)Data.deviceHeight / 1080f;
+        Log.i("SurfaceView", "가로 크기 : " + Float.toString(dpX));
+        Log.i("SurfaceView", "세로 크기 : " + Float.toString(dpY));
     }
 
     private void drawTower(Canvas canvas){
@@ -242,29 +238,29 @@ public class SurfaceView extends android.view.SurfaceView implements SurfaceHold
     private void drawMonster(Canvas canvas){
         for(int i = 0; i < GameManager.monsterArrayList.size(); i++){
             Monster monster = GameManager.monsterArrayList.get(i);
-            float monsterPosX = monster.getPosX() * dpX - (monster.monstersRight[currentMonster].getWidth() / 2);
-            float monsterPosY = monster.getPosY() * dpY - (monster.monstersRight[currentMonster].getHeight() / 2);
+            float monsterPosX = monster.getPosX() * dpX - (monster.monstersRight[frame / 5].getWidth() / 2);
+            float monsterPosY = monster.getPosY() * dpY - (monster.monstersRight[frame / 5].getHeight() / 2);
 
-            if(monster.point.getNumber()==0 || monster.point.getNumber()==1 || monster.point.getNumber()==3 || monster.point.getNumber()==5 || monster.point.getNumber()==7) {
-                canvas.drawBitmap(monster.monstersRight[currentMonster], monsterPosX, monsterPosY, null);
-                currentMonster++;
-                if (currentMonster > 3)
-                    currentMonster = 0;
-                Log.i("direction: ", "Right");
-            }
-            else if(monster.point.getNumber()==2 || monster.point.getNumber()==6){
-                canvas.drawBitmap(monster.monstersBack[currentMonster], monsterPosX, monsterPosY, null);
-                currentMonster++;
-                if (currentMonster > 3)
-                    currentMonster = 0;
-                Log.i("direction: ", "Back");
-            }
-            else if(monster.point.getNumber()==4){
-                canvas.drawBitmap(monster.monstersFront[currentMonster], monsterPosX, monsterPosY, null);
-                currentMonster++;
-                if (currentMonster > 3)
-                    currentMonster = 0;
-                Log.i("direction: ", "Front");
+//            몬스터 이동 방향에 따라 몬스터 이미지 변경
+            switch (monster.state){
+                case 0:
+                    canvas.drawBitmap(monster.monstersRight[frame / 5], monsterPosX, monsterPosY, null);
+                    frame++;
+                    if (frame > 14)
+                        frame = 0;
+                    break;
+                case 1:
+                    canvas.drawBitmap(monster.monstersBack[frame / 5], monsterPosX, monsterPosY, null);
+                    frame++;
+                    if (frame > 14)
+                        frame = 0;
+                    break;
+                case 2:
+                    canvas.drawBitmap(monster.monstersFront[frame / 5], monsterPosX, monsterPosY, null);
+                    frame++;
+                    if (frame > 14)
+                        frame = 0;
+                    break;
             }
 
         }

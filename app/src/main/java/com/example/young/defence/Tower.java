@@ -67,7 +67,6 @@ public class Tower {
         if(distance <= radius){
             targetList.add(monster);
             designateTarget();
-
         }
 
     }
@@ -102,6 +101,7 @@ public class Tower {
     }
 //    타겟이 죽거나 범위 밖으로 나갔는지 확인해서 타겟을 null로 바꾼다.
     private void checkTargetStatus(){
+        Log.i("Tower", "타겟 수 : " + Integer.toString(targetList.size()));
         boolean isGetOutRange = false;
         if(target != null){
             if(target.getLive() == false)
@@ -148,7 +148,7 @@ public class Tower {
 
     public void resetTargetList(){
         targetList.clear();
-        if(target != null && target.getLive() == false)
+        if(target != null)
             target = null;
     }
 }

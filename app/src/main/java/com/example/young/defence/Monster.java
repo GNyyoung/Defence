@@ -152,86 +152,20 @@ public class Monster {
 //        x축, y축 이동속도
             float speedX, speedY;
 
-//        사잇값들이 생략되어 있으니 나중에 <= 또는 >=을 조건문에서 충돌나지 않게 넣어줄것.
-
-//            if(distanceX > 0 && distanceY==0){
-////            오른쪽 이미지 출력
-//                if(state==1) {
-//                    monsterImage = BitmapFactory.decodeResource(context.getResources(), R.drawable.right1);
-//                    state++;
-//                }
-//                else if(state==2) {
-//                    monsterImage = BitmapFactory.decodeResource(context.getResources(), R.drawable.right2);
-//                    state++;
-//                }
-//                else if(state==3) {
-//                    monsterImage = BitmapFactory.decodeResource(context.getResources(), R.drawable.right3);
-//                    state++;
-//                }
-//                else if(state==4) {
-//                    monsterImage = BitmapFactory.decodeResource(context.getResources(), R.drawable.right4);
-//                    state=1;
-//                }
+            if(distanceX > 0 && distanceY / distanceX > -1 && distanceY / distanceX < 1){
+                //            오른쪽 이미지 출력
+                state = 0;
+            }
+//            else if(distanceY / distanceX > -1 && distanceX / distanceY < 1){
+//                //            왼쪽 이미지 출력
 //            }
-//            else if(distanceX == 0 && distanceY < 0){
-////            위쪽 이미지 출력
-//                if(state==1) {
-//                    monsterImage = BitmapFactory.decodeResource(context.getResources(), R.drawable.back1);
-//                    state++;
-//                }
-//                else if(state==2) {
-//                    monsterImage = BitmapFactory.decodeResource(context.getResources(), R.drawable.back2);
-//                    state++;
-//                }
-//                else if(state==3) {
-//                    monsterImage = BitmapFactory.decodeResource(context.getResources(), R.drawable.back3);
-//                    state++;
-//                }
-//                else if(state==4) {
-//                    monsterImage = BitmapFactory.decodeResource(context.getResources(), R.drawable.back4);
-//                    state=1;
-//                }
-//            }
-//            else if(distanceX == 0 && distanceY > 0){
-////            아래쪽 이미지 출력
-//                if(state==1) {
-//                    monsterImage = BitmapFactory.decodeResource(context.getResources(), R.drawable.front1);
-//                    state++;
-//                }
-//                else if(state==2) {
-//                    monsterImage = BitmapFactory.decodeResource(context.getResources(), R.drawable.front2);
-//                    state++;
-//                }
-//                else if(state==3) {
-//                    monsterImage = BitmapFactory.decodeResource(context.getResources(), R.drawable.front3);
-//                    state++;
-//                }
-//                else if(state==4) {
-//                    monsterImage = BitmapFactory.decodeResource(context.getResources(), R.drawable.front4);
-//                    state=1;
-//                }
-//            }
-//            else if(distanceX < 0 && distanceY==0){
-////            아래쪽 이미지 출력 오른쪽
-//                if(state==1) {
-//                    monsterImage = BitmapFactory.decodeResource(context.getResources(), R.drawable.left1);
-//                    state++;
-//                }
-//                else if(state==2) {
-//                    monsterImage = BitmapFactory.decodeResource(context.getResources(), R.drawable.left2);
-//                    state++;
-//                }
-//                else if(state==3) {
-//                    monsterImage = BitmapFactory.decodeResource(context.getResources(), R.drawable.left3);
-//                    state++;
-//                }
-//                else if(state==4) {
-//                    monsterImage = BitmapFactory.decodeResource(context.getResources(), R.drawable.left4);
-//                    state=1;
-//                }
-//            }
-
-
+            else if(distanceY < 0 && (distanceY / distanceX < -1 || distanceY / distanceX > 1)){
+                //            위쪽 이미지 출력
+                state = 1;
+            }
+            else if(distanceY > 0 && (distanceY / distanceX < -1 || distanceY / distanceX > 1)){
+                state = 2;
+            }
 
             speedX = moveSpeed * distanceX / hypotenuse;
             speedY = moveSpeed * distanceY / hypotenuse;

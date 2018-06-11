@@ -12,15 +12,18 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Point;
 import android.os.Build;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Display;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.ImageButton;
 import android.widget.PopupWindow;
 import android.widget.Toast;
@@ -28,7 +31,6 @@ import android.widget.Toast;
 public class MainActivity extends AppCompatActivity {
     SurfaceView surfaceView;
     GameManager gameManager;
-    private float deviceDpi;
     private View decorView;
     private int uiOption;
     EndDialog endDialog = null;
@@ -37,19 +39,24 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        WindowManager clsWindowManager = (WindowManager)getSystemService( WINDOW_SERVICE );
+        Display clsDisplay = clsWindowManager.getDefaultDisplay();
+        Point clsSize = new Point();
+        clsDisplay.getSize( clsSize );
+        Data.deviceWidth = clsSize.x;
+        Data.deviceHeight = clsSize.y;
+
+        DisplayMetrics outMetrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(outMetrics);
+        Data.deviceDpi = outMetrics.densityDpi;
+
         gameManager = new GameManager(this);
         gameManager.start();
 
         setContentView(R.layout.activity_main);
         surfaceView = findViewById(R.id.surfaceView);
-        
-        DisplayMetrics outMetrics = new DisplayMetrics();
-        getWindowManager().getDefaultDisplay().getMetrics(outMetrics);
-        deviceDpi = outMetrics.densityDpi;
-        surfaceView.setDp(deviceDpi);
         decorView = getWindow().getDecorView();
         setFullScreen();
-        Log.i("MainActivity", "DPI : " + Float.toString(deviceDpi));
         gameoverDialog = new GameoverDialog(this);
         winDialog = new WinDialog(this);
 
@@ -60,6 +67,8 @@ public class MainActivity extends AppCompatActivity {
                     setFullScreen();
                 }
             });
+
+
     }
 
 //    전체화면으로 만드는 메소드
@@ -149,19 +158,6 @@ public class MainActivity extends AppCompatActivity {
             endDialog.setCancelable(false);
             endDialog.show();
     }
-
-//    public void restart(){
-//        Intent intent = new Intent(this, RestartActivity.class);
-//        startActivity(intent);
-//        finish();
-//    }
-//
-//    public class Receiver extends BroadcastReceiver{
-//        public void onReceive(Context context, Intent intent){
-//            Log.i("Receiver", "메세지 받았음");
-//            restart();
-//        }
-//    }
 
     private void reset(){
         Data.playerMoney = 50;

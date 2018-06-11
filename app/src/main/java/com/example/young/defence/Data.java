@@ -10,12 +10,6 @@ import android.content.res.Resources;
  */
 
 public class Data {
-//    Context context;
-//    GameView gameView;
-//    Resources r = context.getResources();
-//    float density = context.getResources().getDisplayMetrics().density;
-//    int widthDp = (int)(gameView.getWidth()/density);
-//    int heightDp = (int)(gameView.getHeight()/density);
 
     final static float[] checkPointposX = {-50, 370, 370, 820, 820, 1400, 1400, 2100
     };
@@ -48,5 +42,9 @@ public class Data {
     public static int killedCount = 0;
     public static boolean destroyActivity = false;
     public static int delay = 30;
+
+    public static float deviceDpi;
+    public static int deviceWidth;
+    public static int deviceHeight;
 
 }

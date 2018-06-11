@@ -53,7 +53,6 @@ public class SpawnThread extends Thread{
                     }
                 }
                 else{
-                    Log.i("SpawnThread", "몬스터1 소환 완료");
                     finishSpawn1 = true;
                 }
 
@@ -65,7 +64,6 @@ public class SpawnThread extends Thread{
                     }
                 }
                 else{
-                    Log.i("SpawnThread", "몬스터2 소환 완료");
                     finishSpawn2 = true;
                 }
 

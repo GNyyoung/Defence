@@ -70,6 +70,7 @@ public class GameManager extends Thread{
                 if(Data.startStage){
                     if(duration > 2500){
                         Data.startStage = false;
+                        duration = 0;
                         break;
                     }
                     duration += Data.delay;
