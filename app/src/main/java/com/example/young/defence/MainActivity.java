@@ -1,31 +1,15 @@
 package com.example.young.defence;
 
-import android.app.Activity;
-import android.app.Dialog;
-import android.app.TaskStackBuilder;
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
 import android.graphics.Point;
-import android.os.Build;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Display;
-import android.view.Gravity;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.ImageButton;
-import android.widget.PopupWindow;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
@@ -39,6 +23,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         WindowManager clsWindowManager = (WindowManager)getSystemService( WINDOW_SERVICE );
         Display clsDisplay = clsWindowManager.getDefaultDisplay();
         Point clsSize = new Point();
@@ -54,14 +39,11 @@ public class MainActivity extends AppCompatActivity {
 
         gameManager = new GameManager(this);
         gameManager.start();
-
         setContentView(R.layout.activity_main);
         surfaceView = findViewById(R.id.surfaceView);
+
         decorView = getWindow().getDecorView();
         setFullScreen();
-        gameoverDialog = new GameoverDialog(this);
-        winDialog = new WinDialog(this);
-
         decorView.setOnSystemUiVisibilityChangeListener(
             new View.OnSystemUiVisibilityChangeListener() {
                 @Override
@@ -70,7 +52,8 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
 
-
+        gameoverDialog = new GameoverDialog(this);
+        winDialog = new WinDialog(this);
     }
 
 //    전체화면으로 만드는 메소드
@@ -93,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-   public void onClick_Base(View view){
+    public void onClick_Base(View view){
         if(Data.playerMoney >= 20){
             Data.playerMoney -= 20;
             Tower tower = GameManager.towerArrayList.get(surfaceView.getClickedTower());
@@ -106,8 +89,8 @@ public class MainActivity extends AppCompatActivity {
         else
             Toast.makeText(this, "금액이 부족합니다.", Toast.LENGTH_SHORT).show();
 
-   }
-   public void onClick_Evo1(View view){
+    }
+    public void onClick_Evo1(View view){
        if(Data.playerMoney >= 30){
            Data.playerMoney -= 30;
            Tower tower = GameManager.towerArrayList.get(surfaceView.getClickedTower());
@@ -119,7 +102,7 @@ public class MainActivity extends AppCompatActivity {
        else
            Toast.makeText(this, "금액이 부족합니다.", Toast.LENGTH_SHORT).show();
 
-   }
+    }
     public void onClick_Evo2(View view){
        if(Data.playerMoney >= 30){
            Data.playerMoney -= 30;

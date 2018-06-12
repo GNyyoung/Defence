@@ -1,12 +1,9 @@
 package com.example.young.defence;
 
-import android.app.Activity;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 
@@ -17,8 +14,6 @@ import android.widget.ImageView;
 
 public class StartActivity extends AppCompatActivity {
 
-    private ImageButton game_start, exit;
-    private ImageView background, title;
     private View decorView;
     private int uiOption;
 
@@ -26,10 +21,6 @@ public class StartActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         decorView = getWindow().getDecorView();
-        background = findViewById(R.id.background);
-        title = findViewById(R.id.title);
-        game_start = findViewById(R.id.game_start);
-        exit = findViewById(R.id.exit);
         setContentView(R.layout.activity_start);
         setFullScreen();
     }

@@ -1,13 +1,9 @@
 package com.example.young.defence;
 
-import android.app.Dialog;
 import android.content.Context;
 import android.util.Log;
-import android.widget.ImageButton;
 
 import java.util.ArrayList;
-import java.util.logging.Handler;
-import java.util.logging.LogRecord;
 
 /**
  * Created by young on 2018-05-03.
@@ -35,11 +31,8 @@ public class GameManager extends Thread{
                 checkPointList.add(point);
             }
         }
-//        else
-//        오류 출력
     }
 
-//    앱 실행 중에 뒤로 갔다 다시 켜면 스레드가 꺼지지 않은 상태에서 두개가 새로 켜져서 스레드가 4개 돌아가는 상황이 생긴다.
 
     public void run(){
         Log.i("GameManager", "게임매니저 스레드 생성");
@@ -48,21 +41,7 @@ public class GameManager extends Thread{
         SpawnThread spawnThread = new SpawnThread();
         startTower();
         while(true){
-            if(Data.pause == false){
-                isRun = true;
-            }
-            if(isRun == false && spawnThread != null){
-                spawnThread.stop = true;
-            }
-            while(isRun){
-                if(Data.pause == true){
-                    isRun = false;
-                    break;
-                }
-                if(spawnThread != null && spawnThread.isRun == false){
-                    spawnThread.stop = false;
-                }
-
+            while(Data.pause == false){
                 controlMonster();
                 controlProjectile();
                 controlTower();
@@ -167,7 +146,6 @@ public class GameManager extends Thread{
 
     private void controlProjectile(){
         if(projectileArrayList.isEmpty() == false){
-//            Log.i("GameManager", "ProjectileCount : " + Integer.toString(projectileArrayList.size()));
             for(int i = projectileArrayList.size() - 1; i >= 0; i--){
                 if(projectileArrayList.get(i).getLive() == false){
                     projectileArrayList.remove(i);

@@ -1,11 +1,9 @@
 package com.example.young.defence;
 
 import android.content.Context;
-import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.AnimationDrawable;
-import android.graphics.drawable.BitmapDrawable;
 import android.util.Log;
 
 /**
@@ -39,10 +37,6 @@ public class Monster {
 //    몬스터 고유 일련번호
 //    포탑이 누구를 먼저 때릴지 판단할 때 사용한다.
     private int number;
-//    비트맵이 아닌 다른 이미지 형식을 가진다면 수정한다.
-//    import한것도 같이 지우기.
-    public Bitmap monsterImage;
-    public AnimationDrawable animationDrawable;
 //    public BitmapDrawable right1, right2, right3, right4;
     private float collisionRadius = 20;
 //    몬스터가 생존했는지 체크. 죽었을 경우 false로 설정해서 arrayList에서 제거한다.
@@ -62,7 +56,6 @@ public class Monster {
 //        몬스터 이미지 추가
         this.context = context;
         if(version == 1){
-//            monsterImage = BitmapFactory.decodeResource(context.getResources(), R.drawable.right1);
             monstersRight[0] = BitmapFactory.decodeResource(context.getResources(), R.drawable.right1);
             monstersRight[1] = BitmapFactory.decodeResource(context.getResources(), R.drawable.right2);
             monstersRight[2] = BitmapFactory.decodeResource(context.getResources(), R.drawable.right3);
@@ -81,7 +74,6 @@ public class Monster {
         }
 
         else if(version == 2) {
-//            monsterImage = BitmapFactory.decodeResource(context.getResources(), R.drawable.right2_1);
             monstersRight[0] = BitmapFactory.decodeResource(context.getResources(), R.drawable.right2_1);
             monstersRight[1] = BitmapFactory.decodeResource(context.getResources(), R.drawable.right2_2);
             monstersRight[2] = BitmapFactory.decodeResource(context.getResources(), R.drawable.right2_3);
@@ -99,17 +91,6 @@ public class Monster {
             this.moveSpeed = Data.monster2Speed;
         }
 
-
-//        BitmapDrawable right1 = (BitmapDrawable)context.getResources().getDrawable(R.drawable.left1);
-//        BitmapDrawable right2 = (BitmapDrawable)context.getResources().getDrawable(R.drawable.left2);
-//        BitmapDrawable right3 = (BitmapDrawable)context.getResources().getDrawable(R.drawable.front3);
-//        BitmapDrawable right4 = (BitmapDrawable)context.getResources().getDrawable(R.drawable.back4);
-//        animationDrawable = new AnimationDrawable();
-//        animationDrawable.addFrame(right1,500);
-//        animationDrawable.addFrame(right2,500);
-//        animationDrawable.addFrame(right3,500);
-//        animationDrawable.addFrame(right4,500);
-//        animationDrawable.setOneShot(false);
         this.number = number;
         this.point = GameManager.checkPointList.get(0);
         posX = point.getPosX();
@@ -120,17 +101,6 @@ public class Monster {
 //        point는 제일 첫번째 이동해야하는 point로 초기화
 //        position은 몬스터가 생성될 위치로 한다.
 
-    }
-
-
-    public float getPosX(){
-        return posX;
-    }
-    public float getPosY(){
-        return posY;
-    }
-    public int getNumber(){
-        return number;
     }
 
     public void move(){
@@ -180,7 +150,6 @@ public class Monster {
                 }
                 else{
                     point = GameManager.checkPointList.get(point.getNumber() + 1);
-//                    Log.i("Monster", "point number = " + Integer.toString(point.getNumber()));
                 }
             }
         }
@@ -203,9 +172,14 @@ public class Monster {
             Data.killedCount++;
         }
     }
-
-    public void activate(){
-        isActivated = true;
+    public float getPosX(){
+        return posX;
+    }
+    public float getPosY(){
+        return posY;
+    }
+    public int getNumber(){
+        return number;
     }
     public boolean getLive(){
         return isLived;
@@ -213,8 +187,7 @@ public class Monster {
     public int getMoney(){
         return money;
     }
-
-    public void setPoint(CheckPoint checkPoint){
-        point = checkPoint;
+    public void activate(){
+        isActivated = true;
     }
 }

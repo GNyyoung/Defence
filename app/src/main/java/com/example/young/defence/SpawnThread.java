@@ -24,7 +24,6 @@ public class SpawnThread extends Thread{
     private boolean finishSpawn1 = false;
     private boolean finishSpawn2 = false;
     private Context context;
-    boolean stop = false;
 
     public void run(){
         int spawnTimer1 = 0;
@@ -34,14 +33,7 @@ public class SpawnThread extends Thread{
             sleep(3000);
         }catch (InterruptedException e){}
         while(run){
-            if(stop == false){
-                isRun = true;
-            }
-            while(isRun){
-                if(stop == true){
-                    isRun = false;
-                    break;
-                }
+            while(Data.pause == false){
                 spawnTimer1 += Data.delay;
                 spawnTimer2 += Data.delay;
 
