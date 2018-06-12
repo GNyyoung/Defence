@@ -78,21 +78,18 @@ public class Tower {
 
         if(target != null || targetList.isEmpty() == true)
             return;
+        else if(target == null){
+            target = targetList.get(0);
+        }
         else{
-            Monster candidate = targetList.get(0);
-            if(targetList.size() > 1){
-                for(int i = 1; i < targetList.size(); i++){
-                    if(targetList.get(i).point.getNumber() > candidate.point.getNumber()){
-                        candidate = targetList.get(i);
-                    }
-                    else if(targetList.get(i).point.getNumber() == candidate.point.getNumber()){
-                        if(targetList.get(i).hypotenuse < candidate.hypotenuse){
-                            candidate = targetList.get(i);
-                        }
-                    }
+            if(target.point.getNumber() < targetList.get(targetList.size() - 1).point.getNumber()){
+                target = targetList.get(targetList.size() - 1);
+            }
+            else if(target.point.getNumber() == targetList.get(targetList.size() - 1).point.getNumber()){
+                if(target.hypotenuse > targetList.get(targetList.size() - 1).hypotenuse){
+                    target = targetList.get(targetList.size() - 1);
                 }
             }
-            target = candidate;
             Log.i("Tower", "타겟 : " + Integer.toString(target.getNumber()));
         }
     }
