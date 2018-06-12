@@ -1,7 +1,5 @@
 package com.example.young.defence;
 
-import android.content.Context;
-import android.content.res.Resources;
 
 /**
  * Created by young on 2018-05-03.

@@ -1,13 +1,11 @@
 package com.example.young.defence;
 
-import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.os.Message;
 import android.support.constraint.ConstraintLayout;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -15,13 +13,8 @@ import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.PopupWindow;
-import android.widget.TextView;
-
-import java.util.logging.Handler;
-import java.util.logging.LogRecord;
 
 /**
  * Created by young on 2018-06-09.
@@ -34,8 +27,7 @@ public class SurfaceView extends android.view.SurfaceView implements SurfaceHold
     ImageButton base, evolution1, evolution2;
     Bitmap stop, play, pause;
     int clickedTower;
-    Bitmap monsterImage, monsterBitmap;
-    Bitmap projectileImage, projectileBitmap;
+    Bitmap projectileBitmap;
     Bitmap heart, heartBitmap, money, moneyBitmap;
     private Paint paint = new Paint();
     Paint textPaint = new Paint();
@@ -73,8 +65,6 @@ public class SurfaceView extends android.view.SurfaceView implements SurfaceHold
         money = BitmapFactory.decodeResource(getResources(),R.drawable.money);
         moneyBitmap = Bitmap.createScaledBitmap(money, money.getWidth()/2, money.getHeight()/2, false);
         constraintLayout = findViewById(R.id.con);
-//        moneyText = new TextView(context);
-//        moneyText.setTextColor(Color.WHITE);
 
         textPaint.setColor(Color.WHITE);
         textPaint.setTextSize(100);
@@ -113,17 +103,19 @@ public class SurfaceView extends android.view.SurfaceView implements SurfaceHold
             y = mHolder.getSurfaceFrame().height();
             setDp();
 
-            while (Data.pause == false){
-                if(Data.destroyActivity){
-                    Data.destroyActivity = false;
-                    return;
-                }
-                else {
-                    canvas = mHolder.lockCanvas();
-                    doDraw(canvas);
-                    startStage(canvas);
+            while(true){
+                while (Data.pause == false){
+                    if(Data.destroyActivity){
+                        Data.destroyActivity = false;
+                        return;
+                    }
+                    else {
+                        canvas = mHolder.lockCanvas();
+                        doDraw(canvas);
+                        startStage(canvas);
 
-                    mHolder.unlockCanvasAndPost(canvas);
+                        mHolder.unlockCanvasAndPost(canvas);
+                    }
                 }
             }
         }
@@ -153,7 +145,7 @@ public class SurfaceView extends android.view.SurfaceView implements SurfaceHold
                     stagePaint.setAlpha(alpha);
                     alpha += 3;
                 }
-                canvas.drawText("스테이지" + Integer.toString(Data.stage), 800 * dpX, 600 * dpY, stagePaint);
+                canvas.drawText("스테이지" + Integer.toString(Data.stage), 750 * dpX, 550 * dpY, stagePaint);
             }
             else
                 alpha = 0;

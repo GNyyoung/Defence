@@ -4,7 +4,6 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Log;
-import android.widget.ImageButton;
 
 import java.util.ArrayList;
 
@@ -43,7 +42,6 @@ public class Tower {
     public Tower(Context context, int damage, float radius, int reloadTime, float posX, float posY){
         this.context = context;
         towerImage = BitmapFactory.decodeResource(context.getResources(), R.drawable.turret_ground);
-//        projectileImage = BitmapFactory.decodeResource(res, id);
         this.damage = damage;
         this.reloadTime = reloadTime;
         this.radius = radius;
@@ -55,7 +53,6 @@ public class Tower {
 //    몬스터와 포탑 사이의 거리를 체크하고 radius보다 거리가 가까우면 targetList에 추가
 //    몬스터가 이미 타겟리스트에 포함되어 있다면 추가하지 않음.
     public void identifyTarget(Monster monster){
-//        Log.i("Tower", "checkTarget");
         if(isActivated == false)
             return;
 
@@ -134,18 +131,15 @@ public class Tower {
         isActivated = true;
         Log.i("Tower", "activate");
     }
-
     public boolean isTargeted(){
         if(target != null)
             return true;
         else
             return false;
     }
-
     public void increaseTimer(int time){
         timer += time;
     }
-
     public void resetTargetList(){
         targetList.clear();
         if(target != null)
