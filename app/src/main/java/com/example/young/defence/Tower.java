@@ -123,7 +123,11 @@ public class Tower {
     public void attack(){
         if(isActivated == true){
             if(timer >= reloadTime){
-                Projectile projectile = new Projectile(damage, projectileSpeed, posX, posY, target);
+                Projectile projectile = new Projectile(context, damage, projectileSpeed, posX, posY, target);
+                if(towerState==2)
+                    projectile.projectileImage = BitmapFactory.decodeResource(context.getResources(), R.drawable.projectile_e2);
+                else if(towerState==3)
+                    projectile.projectileImage = BitmapFactory.decodeResource(context.getResources(), R.drawable.projectile_e1);
                 GameManager.projectileArrayList.add(projectile);
                 timer = 0;
             }
@@ -150,5 +154,11 @@ public class Tower {
         targetList.clear();
         if(target != null)
             target = null;
+    }
+    public void setDamage(int mdamage){
+        damage = mdamage;
+    }
+    public  void setReloadTime(int mReloadTime){
+        reloadTime = mReloadTime;
     }
 }

@@ -112,6 +112,7 @@ public class MainActivity extends AppCompatActivity {
            Data.playerMoney -= 30;
            Tower tower = GameManager.towerArrayList.get(surfaceView.getClickedTower());
            tower.towerImage = BitmapFactory.decodeResource(getResources(), R.drawable.turret_e1);
+           tower.setDamage(2);
            GameManager.towerArrayList.get(surfaceView.getClickedTower()).towerState=2;
            surfaceView.popupWindow_base.dismiss();
        }
@@ -124,6 +125,7 @@ public class MainActivity extends AppCompatActivity {
            Data.playerMoney -= 30;
            Tower tower = GameManager.towerArrayList.get(surfaceView.getClickedTower());
            tower.towerImage = BitmapFactory.decodeResource(getResources(), R.drawable.turret_e2);
+           tower.setReloadTime(500);
            GameManager.towerArrayList.get(surfaceView.getClickedTower()).towerState=3;
            surfaceView.popupWindow_base.dismiss();
        }

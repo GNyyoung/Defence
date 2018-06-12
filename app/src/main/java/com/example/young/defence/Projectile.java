@@ -1,6 +1,8 @@
 package com.example.young.defence;
 
+import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 
 /**
  * Created by young on 2018-05-03.
@@ -19,12 +21,13 @@ public class Projectile {
     public Bitmap projectileImage;
 
 
-    public Projectile(int damage, float speed, float towerPosX, float towerPosY, Monster target){
+    public Projectile(Context context, int damage, float speed, float towerPosX, float towerPosY, Monster target){
         this.damage = damage;
         this.speed = speed;
         posX = towerPosX;
         posY = towerPosY;
         this.target = target;
+        projectileImage = BitmapFactory.decodeResource(context.getResources(), R.drawable.projectile);
     }
 
 //    thread에서 반복 실행

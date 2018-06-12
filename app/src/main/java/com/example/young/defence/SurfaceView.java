@@ -280,7 +280,7 @@ public class SurfaceView extends android.view.SurfaceView implements SurfaceHold
             Projectile projectile = GameManager.projectileArrayList.get(i);
             float projectilePosX = projectile.getPosX() * dpX - (projectileBitmap.getWidth() / 2);
             float projectilePosY = projectile.getPosY() * dpY - (projectileBitmap.getHeight() / 2);
-            canvas.drawBitmap(projectileBitmap, projectilePosX, projectilePosY, null);
+            canvas.drawBitmap(projectile.projectileImage, projectilePosX, projectilePosY, null);
         }
     }
 }
